@@ -1,0 +1,16 @@
+node_modules/
+.cache/
+*.log
+__pycache__/
+
+# 어휘 분석용 수집 발췌문(저작권): 내 컴퓨터에만 두고 공개 저장소에는 올리지 않아요
+data/vocabulary/corpus/
+data/vocabulary/out/
+
+# 센터 실제 서류 원본(개인정보): 올리지 않아요
+docs/*.hwp
+docs/*.hwpx
+
+# AI 도구 (내 컴퓨터에만)
+.claude/
+.agents/
