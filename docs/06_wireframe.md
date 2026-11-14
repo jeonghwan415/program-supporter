@@ -213,6 +213,14 @@
 
 ![내 프로그램 3개 + 더 보기](images/06_wireframe/24_plans_more.png)
 
+### v2.5 화면
+
+| 시간 · 쉬는 날 | 별이 확인 창 |
+| :---: | :---: |
+| <img src="images/06_wireframe/27_time_offdays.png" alt="시간 4개 항목" width="420"> | <img src="images/06_wireframe/28_ask_dialog.png" alt="별이 확인 창" width="420"> |
+
+![새 별이 비교](images/06_wireframe/26_byeol_v25.png)
+
 ## 시사점 정리
 
 * 빈칸 앞에서 막히는 곳(필요성 2번째 문장, 일지 의견, 평가 의견, 추후계획)에 **고를 수 있는 문장**을 두되, 선생님 문장을 지우지 않게 넣기·빼기만

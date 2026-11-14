@@ -68,15 +68,16 @@ const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAFklEQVR
   await p.evaluate(() => { plan.logs[0].opinion = '참여가 좋았다.'; saveDraft(); });
   await p.click('#back2'); await p.click('[data-act="back"]');
   L('다시 만들기 버튼:', await p.textContent('#makeBtn'));
-  let dlgMsg = ''; p.once('dialog', d => { dlgMsg = d.message(); d.dismiss(); });
-  await p.click('#makeBtn'); await p.waitForTimeout(200);
+  await p.click('#makeBtn'); await p.waitForSelector('#askDlg[open]');
+  const dlgMsg = await p.textContent('#askDlg'); await p.click('#askNo'); await p.waitForTimeout(150);
   L('확인 창:', dlgMsg.includes('일지 1개'), '| 취소 후 일지 남음:', await p.evaluate(() => plan.logs[0].opinion === '참여가 좋았다.'));
 
   // 8) 탭 두 개: 다른 탭에서 같은 프로그램을 고치면 경고
   const p2 = await ctx.newPage(); await p2.goto(url); await p2.click('#plansList [data-popen]'); await p2.waitForSelector('[data-f="title"]');
   await p2.fill('[data-f="title"]', '다른 탭에서 고친 제목'); await p2.dispatchEvent('[data-f="title"]', 'input'); await p2.waitForTimeout(400);
   await p.waitForTimeout(400);
-  L('다른 탭 경고:', (await p.textContent('#bubble')).includes('다른 탭'));
+  L('다른 탭 경고:', (await p.textContent('#bubble')).includes('다른 탭'), '| 다시 열기 창:', await p.$eval('#askDlg', d => d.open));
+  if (await p.$eval('#askDlg', d => d.open)) await p.click('#askNo');
   await p2.close();
 
   // 9) 내 프로그램 3개 + 더 보기

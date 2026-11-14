@@ -55,6 +55,7 @@ tools/analyze_vocabulary.py   형태소 빈도 + 워드클라우드 (개발할 �
 | 8) 2단계 | `renderStep2()`, `indicatorCard()`, `planChecks()`, `checksHTML()`, `refreshChecks()` | 계획서 확인, 평가 지표 맞추기, 서류 점검 |
 | 9) 3단계 | `planDoc()`, `logDoc()`, `evalDoc()`, `noticeDoc()`(가정통신문), `surveyDoc()`, `opinionLine()`, `participateLines()`, `renderDocOpts()`, 모자이크, 워드 저장 | 서류와 출력 |
 | 10) 이동·저장 | `go()`, `saveDraft()`, `saveUi()`, `getPlans()`, `renderPlans()`, `resizeSessions()`, `navHTML()`, `foldOpen()` | 여러 프로그램·백업, 회기 수만 바꾸기, 2단계 목차·접기 (v2.3) |
+| v2.5 추가 | `HWPX_TPL`·`buildHwpx()`·`hwpxCells()`·`zipStore()`, `minText()`·`parseOffDays()`, `ask()`(별이 확인 창), `focusKey()`·`restoreFocus()` | 한글 양식 칸 위치는 `hwpxCells()` 한 곳에 |
 | v2.4 추가 | `HOLIDAYS`·`computeDates()`·`skippedNote()`, `PhotoDB`·`savePhoto()`·`preparePhotos()`·`inlinePhotos()`, `aiDraft()`·`aiPrompt()`·`copyText()`, `makeLabel()`, `indDone()`, `storage` 이벤트, `say()` 아래 알림(`#toast`) | 공휴일은 **해마다 다음 해 추가**. 테스트는 `tools/tests/` 4종, CI `tests.yml` |
 | 11) AI (선택) | `polishWithAI()`, `AI_SCHEMA` | Claude API, 키가 있을 때만 |
 

@@ -93,26 +93,39 @@ button, input, textarea, select { font: inherit; color: inherit; }
 .byeol .b-light { fill: #FFFDF2; stroke: var(--yellow-deep); stroke-width: 1.5; }
 .byeol .b-white { fill: #FFFFFF; }
 .byeol .b-pupil { fill: #1D2939; }
-.byeol .b-line { fill: none; stroke: #1D2939; stroke-width: 5; stroke-linecap: round; }
+.byeol .b-line { fill: none; stroke: #1D2939; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.byeol .b-ear { fill: var(--glass); }
+.byeol .b-star-cheek { fill: #E0607A; }
+.byeol .b-shine-dot { fill: #FFFFFF; opacity: .8; }
+.byeol .b-blush-dot { fill: #FFFFFF; opacity: .75; }
+.byeol .b-star-g { transform-box: fill-box; transform-origin: 50% 100%; animation: wiggle 3.2s ease-in-out infinite; }
+@keyframes wiggle { 0%, 100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }
 .byeol .b-blush { fill: var(--blush); opacity: .7; }
 .byeol .b-star { fill: var(--yellow); stroke: var(--yellow-deep); stroke-width: 1.5; }
-.byeol .b-pole { stroke: var(--yellow-deep); stroke-width: 3; }
+.byeol .b-pole { fill: none; stroke: var(--yellow-deep); stroke-width: 3.5; stroke-linecap: round; }
 .byeol .b-shadow { fill: #000; opacity: .12; }
 .byeol .b-shine { fill: none; stroke: #FFFFFF; stroke-width: 4; stroke-linecap: round; opacity: .7; }
 .byeol .b-plate { fill: #FFFFFF; stroke: var(--yellow-deep); stroke-width: 1.5; }
 .byeol .b-plate-t { fill: #1D2939; font: 11px var(--font-display); }
-.byeol .mouth-o { fill: none; stroke: #1D2939; stroke-width: 4.5; }
+.byeol .b-light { fill: #FFFDF2; stroke: var(--yellow-deep); stroke-width: 2; }
+.byeol .mouth-o { fill: #7A2E3A; stroke: #1D2939; stroke-width: 3; }
 .byeol .eyes-happy, .byeol .mouth-o { display: none; }
 .byeol[data-mood="happy"] .eyes-open { display: none; }
 .byeol[data-mood="happy"] .eyes-happy { display: inline; }
-.byeol[data-mood="think"] .b-pupil { transform: translate(4px, -6px); }
+.byeol .mouth-happy, .byeol .b-spark { display: none; }
+.byeol[data-mood="happy"] .mouth-smile { display: none; }
+.byeol[data-mood="happy"] .mouth-happy, .byeol[data-mood="happy"] .b-spark { display: inline; }
+.byeol .b-mouth { fill: #7A2E3A; stroke: #1D2939; stroke-width: 3; stroke-linejoin: round; }
+.byeol .b-tongue { fill: #FF8A9A; }
+.byeol .b-spark { fill: #FFFFFF; stroke: var(--yellow-deep); stroke-width: 1.5; stroke-linejoin: round; }
+.byeol[data-mood="think"] .b-pupil { transform: translate(2px, -3px); }
 .byeol[data-mood="think"] .mouth-smile { display: none; }
 .byeol[data-mood="think"] .mouth-o { display: inline; }
 .byeol .eyes-open { transform-box: fill-box; transform-origin: center; animation: blink 5s infinite; }
 .byeol.hop { animation: hop .6s ease; }
 @keyframes blink { 0%, 94%, 100% { transform: scaleY(1); } 97% { transform: scaleY(.1); } }
 @keyframes hop { 0%,100% { transform: translateY(0); } 40% { transform: translateY(-14px); } 70% { transform: translateY(2px); } }
-@media (prefers-reduced-motion: reduce) { .byeol .eyes-open, .byeol.hop { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .byeol .eyes-open, .byeol.hop, .byeol .b-star-g { animation: none; } }
 
 /* 카드 */
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; display: grid; gap: 14px; min-width: 0; }
@@ -328,6 +341,9 @@ dialog { border: 0; border-radius: 20px; padding: 0; max-width: min(560px, calc(
 dialog::backdrop { background: rgba(10, 20, 35, .5); }
 .dlg { padding: 24px; display: grid; gap: 14px; }
 .dlg h2 { font-size: 1.4rem; }
+.ask-head { display: flex; align-items: center; gap: 12px; }
+.ask-head .byeol { width: 64px; height: 61px; flex: none; }
+.ask p { margin: 0; white-space: pre-line; }
 .dlg ul { margin: 0; padding-left: 1.2em; color: var(--muted); font-size: .92rem; }
 
 @media (max-width: 640px) {
@@ -348,6 +364,8 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
 .toast strong { font-family: var(--font-display); font-weight: 400; font-size: 1.05rem; color: var(--ink); }
 .toast.alert { border-color: var(--caution-line); }
 .s3-side { display: grid; gap: 16px; }
+.min-custom { display: inline-flex; align-items: center; gap: 8px; margin-top: 8px; font-weight: 700; }
+.min-custom .input { width: 110px; text-align: center; }
 .sec-tools { display: flex; gap: 6px; flex-wrap: wrap; }
 .done-tag { font-family: var(--font-body); font-size: .875rem; color: var(--ok); }
 .plans li.more { justify-content: center; border-style: dashed; background: transparent; }
@@ -399,37 +417,47 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
   </ol>
 
   <div class="guide">
-    <svg class="byeol" id="byeol" viewBox="0 0 200 190" data-mood="normal" role="img" aria-label="노란 승합차 캐릭터 별이">
+    <svg class="byeol" id="byeol" viewBox="0 0 200 190" data-mood="normal" role="img" aria-label="동글동글한 노란 승합차 캐릭터 별이">
       <g id="byeolArt">
-        <ellipse class="b-shadow" cx="100" cy="183" rx="68" ry="6"/>
-        <line class="b-pole" x1="100" y1="30" x2="100" y2="19"/>
-        <polygon class="b-star" points="100,2 102.47,8.6 109.51,8.91 103.99,13.3 105.88,20.09 100,16.2 94.12,20.09 96.01,13.3 90.49,8.91 97.53,8.6"/>
-        <rect class="b-body" x="6" y="76" width="20" height="28" rx="9"/>
-        <rect class="b-body" x="174" y="76" width="20" height="28" rx="9"/>
-        <rect class="b-tire" x="36" y="150" width="30" height="30" rx="10"/>
-        <rect class="b-tire" x="134" y="150" width="30" height="30" rx="10"/>
-        <rect class="b-body" x="20" y="28" width="160" height="136" rx="44"/>
-        <path class="b-shine" d="M52 38 Q100 31 148 38"/>
-        <rect class="b-glass" x="36" y="46" width="128" height="64" rx="28"/>
+        <ellipse class="b-shadow" cx="100" cy="184" rx="62" ry="5.5"/>
+        <path class="b-pole" d="M100 34 Q97 26 101 18"/>
+        <g class="b-star-g"><polygon class="b-star" points="101,1 104.2,8.6 112.4,9.2 106.1,14.5 108.1,22.5 101,18.2 93.9,22.5 95.9,14.5 89.6,9.2 97.8,8.6"/><circle class="b-star-cheek" cx="97.8" cy="13.4" r="1.6"/><circle class="b-star-cheek" cx="104.2" cy="13.4" r="1.6"/></g>
+        <circle class="b-body" cx="20" cy="88" r="12"/>
+        <circle class="b-body" cx="180" cy="88" r="12"/>
+        <circle class="b-ear" cx="20" cy="88" r="5"/>
+        <circle class="b-ear" cx="180" cy="88" r="5"/>
+        <rect class="b-tire" x="40" y="156" width="28" height="26" rx="13"/>
+        <rect class="b-tire" x="132" y="156" width="28" height="26" rx="13"/>
+        <rect class="b-body" x="22" y="32" width="156" height="138" rx="58"/>
+        <path class="b-shine" d="M58 42 Q78 37 96 37"/>
+        <circle class="b-shine-dot" cx="148" cy="45" r="3"/>
+        <rect class="b-glass" x="38" y="50" width="124" height="66" rx="33"/>
         <g class="eyes-open">
-          <circle class="b-white" cx="74" cy="78" r="18"/>
-          <circle class="b-white" cx="126" cy="78" r="18"/>
-          <circle class="b-pupil" cx="77" cy="81" r="10"/>
-          <circle class="b-pupil" cx="123" cy="81" r="10"/>
-          <circle class="b-white" cx="81" cy="76" r="3.5"/>
-          <circle class="b-white" cx="127" cy="76" r="3.5"/>
+          <ellipse class="b-white" cx="74" cy="83" rx="17" ry="19"/>
+          <ellipse class="b-white" cx="126" cy="83" rx="17" ry="19"/>
+          <ellipse class="b-pupil" cx="76" cy="86" rx="12" ry="13.5"/>
+          <ellipse class="b-pupil" cx="124" cy="86" rx="12" ry="13.5"/>
+          <circle class="b-white" cx="80.5" cy="80" r="5"/>
+          <circle class="b-white" cx="128.5" cy="80" r="5"/>
+          <circle class="b-white" cx="72" cy="92" r="2.2"/>
+          <circle class="b-white" cx="120" cy="92" r="2.2"/>
         </g>
         <g class="eyes-happy">
-          <path class="b-line" d="M58 84 Q74 64 90 84"/>
-          <path class="b-line" d="M110 84 Q126 64 142 84"/>
+          <path class="b-line" d="M60 88 Q74 70 88 88"/>
+          <path class="b-line" d="M112 88 Q126 70 140 88"/>
         </g>
-        <rect class="b-light" x="34" y="117" width="132" height="9" rx="4.5"/>
-        <ellipse class="b-blush" cx="50" cy="139" rx="11" ry="6.5"/>
-        <ellipse class="b-blush" cx="150" cy="139" rx="11" ry="6.5"/>
-        <path class="b-line mouth-smile" d="M87 134 Q100 147 113 134"/>
-        <circle class="mouth-o" cx="100" cy="139" r="6"/>
-        <rect class="b-plate" x="78" y="148" width="44" height="13" rx="3"/>
-        <text class="b-plate-t" x="100" y="158.5" text-anchor="middle">별이</text>
+        <ellipse class="b-blush" cx="52" cy="128" rx="13" ry="8"/>
+        <ellipse class="b-blush" cx="148" cy="128" rx="13" ry="8"/>
+        <circle class="b-blush-dot" cx="48" cy="126" r="2"/>
+        <circle class="b-blush-dot" cx="144" cy="126" r="2"/>
+        <path class="b-line mouth-smile" d="M88 124 Q94 132 100 125 Q106 132 112 124"/>
+        <g class="mouth-happy"><path class="b-mouth" d="M88 122 Q100 122 112 122 Q111 137 100 137 Q89 137 88 122 Z"/><path class="b-tongue" d="M93 132 Q100 126 107 132 Q104 136.5 100 136.5 Q96 136.5 93 132 Z"/></g>
+        <g class="b-spark"><path d="M160 22 l2.4 6 6 2.4 -6 2.4 -2.4 6 -2.4 -6 -6 -2.4 6 -2.4 Z"/><path d="M38 30 l1.6 4 4 1.6 -4 1.6 -1.6 4 -1.6 -4 -4 -1.6 4 -1.6 Z"/></g>
+        <path class="mouth-o" d="M94 127 Q100 120 106 127 Q106 134 100 134 Q94 134 94 127 Z"/>
+        <circle class="b-light" cx="44" cy="150" r="6.5"/>
+        <circle class="b-light" cx="156" cy="150" r="6.5"/>
+        <rect class="b-plate" x="78" y="143" width="44" height="15" rx="7.5"/>
+        <text class="b-plate-t" x="100" y="154.5" text-anchor="middle">별이</text>
       </g>
     </svg>
     <div class="bubble" id="bubble" aria-live="polite"></div>
@@ -484,6 +512,10 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
             <span id="startLabel">첫 수업 날짜</span>
             <input class="input" id="startDate" type="date">
           </label>
+          <label class="field" id="offField">
+            <span>센터 쉬는 날 <span class="optional">선택 · 공휴일은 자동으로 빠져요</span></span>
+            <input class="input" id="offDays" type="text" maxlength="120" placeholder="예: 12/24, 12/31, 1/2 (쉼표로 나눠 쓰기)">
+          </label>
           <div class="field" id="sessField">
             <span>총 몇 번 하나요?</span>
             <div class="counter" data-key="sessions" data-min="2" data-max="24" data-unit="회">
@@ -496,8 +528,9 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
           <div class="chips" id="freqChips"></div>
         </div>
         <div class="field" id="minField">
-          <span>한 번에 몇 분 하나요?</span>
+          <span>한 번에 얼마나 하나요?</span>
           <div class="chips" id="minChips"></div>
+          <label class="min-custom" id="minCustomWrap" hidden><input class="input" id="minCustom" type="number" min="10" max="480" step="5" inputmode="numeric" aria-label="한 번에 하는 시간(분)"><span>분</span></label>
         </div>
         <div class="field" id="nightField">
           <span>며칠 동안 가나요?</span>
@@ -561,7 +594,8 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
       <div class="actions no-print" style="margin-top:0">
         <button type="button" class="btn btn-sub" id="back2">← 계획서 다시 고치기</button>
         <div class="right">
-          <button type="button" class="btn btn-sub" id="wordBtn">워드(한글) 파일로 저장</button>
+          <button type="button" class="btn btn-sub" id="hwpxBtn" title="센터 양식(계획서·일지·평가서)에 채워서 한글 파일로 저장">한글(.hwpx) 파일로 저장</button>
+          <button type="button" class="btn btn-sub" id="wordBtn">워드(.doc) 파일로 저장</button>
           <button type="button" class="btn btn-main" id="printBtn">인쇄하기</button>
         </div>
       </div>
@@ -571,7 +605,7 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
   </main>
 
   <footer class="site-foot no-print">
-    <span>프로그램 서포터 v2.4 · 만든 사람 jeonghwan0415</span>
+    <span>프로그램 서포터 v2.5 · 만든 사람 jeonghwan0415</span>
     <span>문장·양식 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> · 코드 MIT · 무료로 쓰고 나눠 주세요 (판매 금지)</span>
     <span><a href="https://github.com/jeonghwan415/program-supporter/blob/main/docs/%EC%82%AC%EC%9A%A9%EC%84%A4%EB%AA%85%EC%84%9C.md" target="_blank" rel="noopener">사용 설명서</a> · <a href="https://github.com/jeonghwan415/program-supporter" target="_blank" rel="noopener">GitHub</a></span>
   </footer>
@@ -594,6 +628,16 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
   </div>
 </dialog>
 
+<dialog id="askDlg" aria-labelledby="askTitle">
+  <form class="dlg ask" method="dialog">
+    <div class="ask-head"><svg class="byeol" viewBox="0 0 200 190" data-mood="think" aria-hidden="true" id="askByeol"></svg><h2 id="askTitle"></h2></div>
+    <p id="askMsg"></p>
+    <div class="actions" style="margin-top:4px;justify-content:flex-end">
+      <button type="button" class="btn btn-sub btn-small" id="askNo">취소</button>
+      <button type="button" class="btn btn-main btn-small" id="askYes">계속</button>
+    </div>
+  </form>
+</dialog>
 <dialog id="aiDlg">
   <form class="dlg" method="dialog">
     <h2>AI로 문장 다듬기 설정</h2>
@@ -1323,7 +1367,8 @@ const TRAITS = [
 ];
 const GRADES = ["초1", "초2", "초3", "초4", "초5", "초6", "중학생"];
 const FREQS = [["week1", "주 1회"], ["week2", "주 2회"], ["daily", "평일 매일"]];
-const MINUTES = [40, 60, 90];
+const MINUTES = [40, 60, 90]; // v2.5 칩: 40분 · 1시간 · 90분 · 직접 입력
+function minText(m) { m = Number(m) || 0; return m === 60 ? "1시간" : m >= 120 && m % 60 === 0 ? m / 60 + "시간" : m + "분"; }
 const NIGHTS = [[1, "1박 2일"], [2, "2박 3일"], [3, "3박 4일"]];
 const COMMON_SURVEY = ["프로그램이 전체적으로 재미있었나요?", "선생님의 설명이 이해하기 쉬웠나요?", "다음에도 이런 프로그램에 참여하고 싶나요?"];
 const OPEN_Q = ["가장 기억에 남는 활동은 무엇인가요?", "다음에 해 보고 싶은 활동이 있나요?"];
@@ -1553,7 +1598,20 @@ function makeLabel() {
   b.textContent = plan ? "계획서 다시 만들기 (지금 프로그램에 덮어써요)" : "별이야, 계획서 만들어 줘!";
   b.title = plan ? "고친 내용과 일지가 새 초안으로 바뀌어요. 다른 프로그램을 만들려면 위 '+ 새 프로그램 만들기'를 누르세요." : "";
 }
+/* v2.5 키보드로 칩을 누르면 화면을 다시 그려도 그 칩에 포커스가 남게 함 */
+function focusKey(root) {
+  const el = document.activeElement;
+  if (!el || el === document.body || !root.contains(el) || el.matches("input[type=text], input[type=number], input:not([type]), textarea")) return null;
+  const k = Object.keys(el.dataset || {})[0];
+  if (k) return "[data-" + k.replace(/[A-Z]/g, c => "-" + c.toLowerCase()) + '="' + CSS.escape(el.dataset[k]) + '"]';
+  return el.id ? "#" + CSS.escape(el.id) : null;
+}
+function restoreFocus(root, sel) { if (!sel) return; const n = root.querySelector(sel); if (n && n !== document.activeElement) n.focus({ preventScroll: true }); }
 function renderStep1() {
+  const s1 = document.getElementById("step1"), fk = focusKey(s1);
+  renderStep1Inner(); restoreFocus(s1, fk);
+}
+function renderStep1Inner() {
   makeLabel();
   document.getElementById("typeChips").innerHTML = TYPES.map(([v, l, d]) =>
     '<button type="button" class="type" aria-pressed="' + (input.type === v) + '" data-type="' + v + '"><b>' + l + "</b><small>" + d + "</small></button>").join("");
@@ -1568,7 +1626,11 @@ function renderStep1() {
   document.getElementById("gradeChips").innerHTML = chipHTML("전체", GRADES.every(g => input.grades.includes(g)), 'data-grade="ALL"') +
     GRADES.map(g => chipHTML(g, input.grades.includes(g), 'data-grade="' + g + '"')).join("");
   document.getElementById("freqChips").innerHTML = FREQS.map(([v, l]) => chipHTML(l, input.freq === v, 'data-freq="' + v + '"')).join("");
-  document.getElementById("minChips").innerHTML = MINUTES.map(m => chipHTML(m + "분", input.minutes === m, 'data-min="' + m + '"')).join("");
+  const custom = !!input.minCustom || !MINUTES.includes(input.minutes);
+  document.getElementById("minChips").innerHTML = MINUTES.map(m => chipHTML(minText(m), !custom && input.minutes === m, 'data-min="' + m + '"')).join("") +
+    chipHTML("직접 입력", custom, 'data-min="custom"');
+  document.getElementById("minCustomWrap").hidden = !custom;
+  const mc = document.getElementById("minCustom"); if (document.activeElement !== mc) mc.value = input.minutes;
   document.getElementById("nightChips").innerHTML = NIGHTS.map(([v, l]) => chipHTML(l, input.nights === v, 'data-night="' + v + '"')).join("");
   document.getElementById("traitChips").innerHTML = TRAITS.map((t, i) => chipHTML(t.name, input.traits.includes(i), 'data-trait="' + i + '"')).join("");
   document.querySelectorAll(".counter").forEach(c => { const o = c.querySelector("output"); if (o) o.textContent = input[c.dataset.key] + c.dataset.unit; });
@@ -1576,6 +1638,7 @@ function renderStep1() {
   if (document.activeElement !== ci) ci.value = input.count;
   document.getElementById("kwCustom").value = input.custom;
   document.getElementById("startDate").value = input.start;
+  const od = document.getElementById("offDays"); if (document.activeElement !== od) od.value = input.offDays || "";
   document.getElementById("memo").value = input.memo;
   document.getElementById("requests").value = input.requests;
   document.getElementById("center").value = input.center;
@@ -1584,6 +1647,7 @@ function renderStep1() {
   document.getElementById("startLabel").textContent = t === "regular" ? "첫 수업 날짜" : t === "event" ? "행사 날짜" : "출발 날짜";
   document.getElementById("sessField").hidden = t !== "regular";
   document.getElementById("freqField").hidden = t !== "regular";
+  document.getElementById("offField").hidden = t !== "regular";
   document.getElementById("minField").hidden = t !== "regular";
   document.getElementById("nightField").hidden = t !== "camp";
   renderReady();
@@ -1614,7 +1678,8 @@ document.getElementById("step1").addEventListener("click", e => {
   else if (b.dataset.grade === "ALL") { input.grades = GRADES.every(g => input.grades.includes(g)) ? [] : [...GRADES]; }
   else if (b.dataset.grade) { const g = b.dataset.grade; input.grades = input.grades.includes(g) ? input.grades.filter(x => x !== g) : [...input.grades, g]; input.grades.sort((a, c) => GRADES.indexOf(a) - GRADES.indexOf(c)); }
   else if (b.dataset.freq) input.freq = b.dataset.freq;
-  else if (b.dataset.min) input.minutes = Number(b.dataset.min);
+  else if (b.dataset.min === "custom") { input.minCustom = true; saveDraft(); renderStep1(); const mc = document.getElementById("minCustom"); mc.focus(); mc.select(); return; }
+  else if (b.dataset.min) { input.minutes = Number(b.dataset.min); input.minCustom = false; }
   else if (b.dataset.night) input.nights = Number(b.dataset.night);
   else if (b.dataset.trait) { const i = Number(b.dataset.trait); input.traits = input.traits.includes(i) ? input.traits.filter(x => x !== i) : [...input.traits, i]; }
   else if (b.dataset.d) {
@@ -1624,6 +1689,14 @@ document.getElementById("step1").addEventListener("click", e => {
   saveDraft(); renderStep1();
 });
 document.getElementById("kwCustom").addEventListener("input", e => { input.custom = e.target.value; saveDraft(); document.querySelectorAll("#kwGroups .chip").forEach(c => c.setAttribute("aria-pressed", String(!input.custom.trim() && c.dataset.kw === input.keyword))); renderReady(); });
+document.getElementById("offDays").addEventListener("input", e => { input.offDays = e.target.value; saveDraft(); });
+document.getElementById("minCustom").addEventListener("input", e => {
+  const v = Math.round(Number(e.target.value));
+  if (v >= 10 && v <= 480) { input.minutes = v; input.minCustom = true; saveDraft(); }
+});
+document.getElementById("minCustom").addEventListener("change", e => {
+  const v = Math.min(480, Math.max(10, Math.round(Number(e.target.value)) || 60)); input.minutes = v; input.minCustom = true; e.target.value = v; saveDraft(); renderStep1();
+});
 document.getElementById("startDate").addEventListener("change", e => { input.start = e.target.value; saveDraft(); renderReady(); });
 // 인원 직접 입력: 1~200명. 비우거나 잘못 쓰면 칸을 벗어날 때 원래 숫자로 돌아감
 const countIn = document.getElementById("countIn");
@@ -1635,13 +1708,13 @@ countIn.addEventListener("focus", () => countIn.select());
   input[id] = e.target.value; store.set("info", { center: input.center, teacher: input.teacher }); saveDraft();
 }));
 
-document.getElementById("makeBtn").addEventListener("click", () => {
+document.getElementById("makeBtn").addEventListener("click", async () => {
   if (!curKw()) return warn("어떤 분야인지 알려 주세요!", "2번에서 키워드를 하나 누르거나 직접 써 주세요.", "kwGroups");
   if (!input.grades.length) return warn("누가 참여하나요?", "3번에서 학년을 하나 이상 골라 주세요.", "gradeChips");
   if (!input.start) return warn("날짜가 비어 있어요.", "4번에서 날짜를 골라 주세요.", "startDate");
   if (plan) {
     const written = plan.logs.filter(l => l && (String(l.opinion || "").trim() || (l.photos || []).length)).length;
-    if (written && !confirm("지금 프로그램의 일지 " + written + "개가 지워지고 새 초안으로 바뀌어요. 계속할까요?\n(다른 프로그램을 만들려면 '취소' 후 '+ 새 프로그램 만들기'를 누르세요.)")) return;
+    if (written && !(await ask("일지 " + written + "개가 지워져요", "지금 프로그램을 새 초안으로 다시 만들면 써 둔 일지와 사진이 지워져요.\n다른 프로그램을 만들려면 '취소'를 누르고 위의 '+ 새 프로그램 만들기'를 눌러 주세요.", "지우고 다시 만들기"))) return;
     plan.logs.forEach(l => (l && l.photos || []).forEach(dropPhoto));
   }
   plan = buildPlan(input, 0);
@@ -1649,6 +1722,19 @@ document.getElementById("makeBtn").addEventListener("click", () => {
   saveDraft();
   go(2);
 });
+/* v2.5 브라우저 기본 확인 창 대신 별이 창 (Esc·바깥 = 취소) */
+function ask(title, msg, yes, no) {
+  const d = document.getElementById("askDlg");
+  document.getElementById("askTitle").textContent = title; document.getElementById("askMsg").textContent = msg;
+  document.getElementById("askYes").textContent = yes || "계속"; document.getElementById("askNo").textContent = no || "취소";
+  return new Promise(res => {
+    const done = v => { d.close(); res(v); };
+    document.getElementById("askYes").onclick = () => done(true);
+    document.getElementById("askNo").onclick = () => done(false);
+    d.oncancel = e => { e.preventDefault(); done(false); };
+    d.showModal(); document.getElementById("askNo").focus();
+  });
+}
 function warn(t, m, id) {
   say(t, m, "think", true);
   document.getElementById(id).scrollIntoView({ behavior: "smooth", block: "center" });
@@ -1669,13 +1755,28 @@ const HOLIDAYS = {
   "2027-07-19": "대체공휴일", "2027-08-15": "광복절", "2027-08-16": "대체공휴일", "2027-09-14": "추석 연휴", "2027-09-15": "추석", "2027-09-16": "추석 연휴",
   "2027-10-03": "개천절", "2027-10-04": "대체공휴일", "2027-10-09": "한글날", "2027-10-11": "대체공휴일", "2027-12-25": "성탄절", "2027-12-27": "대체공휴일"
 };
-let lastSkipped = [];
-function computeDates(startStr, freq, c) {
-  const dt = fromISO(startStr), out = []; lastSkipped = [];
+let lastSkipped = [], lastNoData = [];
+const HOLIDAY_YEARS = [...new Set(Object.keys(HOLIDAYS).map(k => +k.slice(0, 4)))];
+// "12/24, 2027-01-02, 1.2" → ISO 날짜 Set. 연도 없으면 시작일 기준으로 시작 달보다 앞이면 다음 해
+function parseOffDays(text, startStr) {
+  const st = fromISO(startStr), out = new Set();
+  String(text || "").split(/[,\s]+/).forEach(t => {
+    let m = t.match(/^(\d{4})[-.\/](\d{1,2})[-.\/](\d{1,2})$/), y, mo, d;
+    if (m) { y = +m[1]; mo = +m[2]; d = +m[3]; }
+    else if ((m = t.match(/^(\d{1,2})[.\/월](\d{1,2})일?$/))) { mo = +m[1]; d = +m[2]; y = st.getFullYear() + (mo < st.getMonth() + 1 ? 1 : 0); }
+    else return;
+    if (mo >= 1 && mo <= 12 && d >= 1 && d <= 31) out.add(y + "-" + String(mo).padStart(2, "0") + "-" + String(d).padStart(2, "0"));
+  });
+  return out;
+}
+function computeDates(startStr, freq, c, offText) {
+  const dt = fromISO(startStr), out = [], off = parseOffDays(offText, startStr); lastSkipped = []; lastNoData = [];
   let i = 0, guard = 0;
   while (out.length < c && guard++ < 1000) {
     const iso = toISO(dt), wk = dt.getDay() === 0 || dt.getDay() === 6;
+    if (!HOLIDAY_YEARS.includes(dt.getFullYear()) && !lastNoData.includes(dt.getFullYear())) lastNoData.push(dt.getFullYear());
     if (HOLIDAYS[iso]) lastSkipped.push(fmtShort(dt) + " " + HOLIDAYS[iso]);
+    else if (off.has(iso)) lastSkipped.push(fmtShort(dt) + " 센터 쉬는 날");
     else if (!(freq === "daily" && wk)) out.push(new Date(dt));
     if (freq === "week1") dt.setDate(dt.getDate() + 7);
     else if (freq === "week2") dt.setDate(dt.getDate() + (i % 2 === 0 ? 3 : 4));
@@ -1684,7 +1785,10 @@ function computeDates(startStr, freq, c) {
   }
   return out;
 }
-function skippedNote() { return lastSkipped.length ? " 공휴일 " + lastSkipped.length + "일(" + lastSkipped.slice(0, 3).join(", ") + (lastSkipped.length > 3 ? " 등" : "") + ")은 건너뛰었어요." : ""; }
+function skippedNote() {
+  return (lastSkipped.length ? " 공휴일·쉬는 날 " + lastSkipped.length + "일(" + lastSkipped.slice(0, 3).join(", ") + (lastSkipped.length > 3 ? " 등" : "") + ")은 건너뛰었어요." : "") +
+    (lastNoData.length ? " " + lastNoData.join("·") + "년 공휴일 정보는 아직 없어요. 날짜를 달력과 꼭 맞춰 보세요." : "");
+}
 function pickSessions(L, c) {
   const first = L[0], last = L[L.length - 1], mid = L.slice(1, -1), need = c - 2, picked = [];
   if (need <= mid.length) {
@@ -1750,12 +1854,12 @@ function buildPlan(inp, variant) {
   const start = fromISO(inp.start);
   let dates, schedule, scheduleWhy, sessionsInfo, period;
   if (type === "regular") {
-    dates = computeDates(inp.start, inp.freq, c);
+    dates = computeDates(inp.start, inp.freq, c, inp.offDays);
     const freqLabel = FREQS.find(f => f[0] === inp.freq)[1];
     schedule = pickSessions(K.sessions, c).map((s, i) => ({ date: fmtShort(dates[i]), topic: s[0], act: s[1] }));
     scheduleWhy = K.generic ? "목록에 없는 키워드라 기본 틀로 만들었어요. 활동 내용을 꼭 확인해 주세요."
                             : "'" + kw + "' 기본 활동 " + K.sessions.length + "개에서 " + c + "회에 맞게 골랐어요. 날짜는 " + freqLabel + " 기준이에요." + (c > K.sessions.length ? " 기본 활동보다 회기가 많아 '(심화)' 회기가 있어요. 꼭 고쳐 주세요." : "") + skippedNote();
-    sessionsInfo = freqLabel + ", 총 " + c + "회, 회당 " + inp.minutes + "분";
+    sessionsInfo = freqLabel + ", 총 " + c + "회, 회당 " + minText(inp.minutes);
     period = fmtDot(dates[0]) + " ~ " + fmtDot(dates[dates.length - 1]);
   } else if (type === "event") {
     dates = [start];
@@ -1799,13 +1903,13 @@ function buildPlan(inp, variant) {
 function resizeSessions(n) {
   if (!plan || plan.type !== "regular") return;
   input.sessions = n;
-  const K = kwData(plan.kw), dates = computeDates(input.start, input.freq, n), freqLabel = FREQS.find(f => f[0] === input.freq)[1];
+  const K = kwData(plan.kw), dates = computeDates(input.start, input.freq, n, input.offDays), freqLabel = FREQS.find(f => f[0] === input.freq)[1];
   const old = plan.schedule;
   plan.schedule = pickSessions(K.sessions, n).map((x, i) => ({ date: fmtShort(dates[i]), topic: x[0], act: x[1] }));
   // 이미 고친 회기 내용은 같은 주제면 살림
   plan.schedule.forEach(sc => { const o = old.find(q => q.topic === sc.topic); if (o) sc.act = o.act; });
   plan.dates = dates.map(toISO);
-  plan.sessionsInfo = freqLabel + ", 총 " + n + "회, 회당 " + input.minutes + "분";
+  plan.sessionsInfo = freqLabel + ", 총 " + n + "회, 회당 " + minText(input.minutes);
   plan.period = fmtDot(dates[0]) + " ~ " + fmtDot(dates[dates.length - 1]);
   plan.scheduleWhy = "'" + plan.kw + "' 기본 활동 " + K.sessions.length + "개에서 " + n + "회에 맞게 다시 골랐어요. 날짜는 " + freqLabel + " 기준이에요." + skippedNote();
   const att = plan.goals.find(g => g.measure === "출석부");
@@ -1881,6 +1985,10 @@ function budgetTotal(rows) {
 }
 
 function renderStep2() {
+  const s2el = document.getElementById("step2"), fk = focusKey(s2el), y = scrollY;
+  renderStep2Inner(); if (fk) { restoreFocus(s2el, fk); scrollTo(0, y); }
+}
+function renderStep2Inner() {
   const hasKey = !!getKey() && !EMBED;
   const s2 = document.getElementById("step2");
   const tm = plan.timeMode;
@@ -2090,7 +2198,7 @@ step2.addEventListener("click", e => {
     else if (d.ib) plan[d.ib] = !plan[d.ib];
     else if (d.op) plan.opinion.from = plan.opinion.from.includes(d.op) ? plan.opinion.from.filter(x => x !== d.op) : [...plan.opinion.from, d.op];
     else if (d.sh) plan.share = plan.share.includes(d.sh) ? plan.share.filter(x => x !== d.sh) : [...plan.share, d.sh];
-    const card = document.getElementById("indCard"); card.outerHTML = indicatorCard(card.open);
+    const card = document.getElementById("indCard"), fk = focusKey(card); card.outerHTML = indicatorCard(card.open); restoreFocus(document.getElementById("indCard"), fk);
     saveDraft(); refreshChecks();
     if (d.ind) say(IND[d.ind].name + "로 낼 거군요.", "평가 때 보는 항목을 점검 목록에 넣었어요. 칸마다 '이 칸은 이렇게 써요'를 열어 보세요.", "happy");
     return;
@@ -2411,7 +2519,10 @@ function renderDocOpts() {
   }
   box.querySelectorAll("textarea").forEach(autoGrow);
 }
-function renderStep3() { renderDocOpts(); renderPaper(); }
+function renderStep3() {
+  const s3 = document.getElementById("step3"), fk = focusKey(s3);
+  renderDocOpts(); renderPaper(); restoreFocus(s3, fk);
+}
 
 document.getElementById("docTabs").addEventListener("click", e => {
   const t = e.target.closest("[data-tab]"); if (!t) return;
@@ -2660,6 +2771,109 @@ document.getElementById("wordBtn").addEventListener("click", () => {
   say(name + " 파일을 저장했어요.", "다운로드 폴더에서 열어 보세요. 한글에서도 열려요. 사진은 워드 파일에 들어가지 않으니 인쇄나 PDF를 써 주세요.", "happy");
 });
 
+
+/* ============================================================
+   v2.5 한글(.hwpx) 저장 — 센터 양식(「8월 워터파크 프로그램」을 hwpx로 저장한 것)의 빈칸에 채움
+   양식은 값 칸을 비우고 미리보기 그림·작성자 정보를 뺀 뒤 gzip+base64로 넣어 둠 (약 12KB)
+   표 0 = 계획서, 표 1 = 일지, 표 2 = 평가서. 칸 위치는 [열, 행] (한글 cellAddr)
+   ============================================================ */
+const HWPX_TPL = "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";
+const HP_NS = "http://www.hancom.co.kr/hwpml/2011/paragraph";
+const CRC_T = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+function crc32(u8) { let c = 0xFFFFFFFF; for (let i = 0; i < u8.length; i++) c = CRC_T[(c ^ u8[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+// 압축 없이(STORE) 묶는 zip. mimetype은 맨 앞 (hwpx·epub 규칙)
+function zipStore(entries) {
+  const enc = new TextEncoder(), parts = [], central = []; let off = 0;
+  const d = new Date(), time = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1), date = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+  for (const e of entries) {
+    const name = enc.encode(e.name), data = typeof e.data === "string" ? enc.encode(e.data) : e.data, crc = crc32(data);
+    const h = new DataView(new ArrayBuffer(30));
+    h.setUint32(0, 0x04034b50, true); h.setUint16(4, 20, true); h.setUint16(6, 0x0800, true); h.setUint16(8, 0, true);
+    h.setUint16(10, time, true); h.setUint16(12, date, true); h.setUint32(14, crc, true); h.setUint32(18, data.length, true); h.setUint32(22, data.length, true);
+    h.setUint16(26, name.length, true); h.setUint16(28, 0, true);
+    parts.push(h, name, data);
+    const c = new DataView(new ArrayBuffer(46));
+    c.setUint32(0, 0x02014b50, true); c.setUint16(4, 20, true); c.setUint16(6, 20, true); c.setUint16(8, 0x0800, true); c.setUint16(10, 0, true);
+    c.setUint16(12, time, true); c.setUint16(14, date, true); c.setUint32(16, crc, true); c.setUint32(20, data.length, true); c.setUint32(24, data.length, true);
+    c.setUint16(28, name.length, true); c.setUint32(42, off, true);
+    central.push(c, name);
+    off += 30 + name.length + data.length;
+  }
+  const cdSize = central.reduce((a, x) => a + x.byteLength, 0), end = new DataView(new ArrayBuffer(22));
+  end.setUint32(0, 0x06054b50, true); end.setUint16(8, entries.length, true); end.setUint16(10, entries.length, true); end.setUint32(12, cdSize, true); end.setUint32(16, off, true);
+  return new Blob([...parts, ...central, end], { type: "application/hwp+zip" });
+}
+async function hwpxTemplate() {
+  const bin = Uint8Array.from(atob(HWPX_TPL), c => c.charCodeAt(0));
+  return JSON.parse(await new Response(new Blob([bin]).stream().pipeThrough(new DecompressionStream("gzip"))).text());
+}
+const xmlSafe = t => String(t == null ? "" : t).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "");
+function hwpxSetCell(doc, tc, text) {
+  const sub = [...tc.children].find(x => x.localName === "subList"); if (!sub) return;
+  const tpl = [...sub.children].find(x => x.localName === "p"); if (!tpl) return;
+  const run = [...tpl.children].find(x => x.localName === "run"), cp = run ? run.getAttribute("charPrIDRef") : "0";
+  while (sub.firstChild) sub.removeChild(sub.firstChild);
+  String(xmlSafe(text)).split("\n").forEach(line => {
+    const p = tpl.cloneNode(false), r = doc.createElementNS(HP_NS, "hp:run"), t = doc.createElementNS(HP_NS, "hp:t");
+    r.setAttribute("charPrIDRef", cp); t.textContent = line; r.appendChild(t); p.appendChild(r); sub.appendChild(p);
+  });
+}
+function hwpxCells(p, logIdx) {
+  const L = p.logs[logIdx] || {}, E = p.evalr, st = surveyStats(p);
+  const date = p.dates[logIdx] ? fmtDot(fromISO(p.dates[logIdx])) : (p.schedule[logIdx] ? p.schedule[logIdx].date : "");
+  const sub = p.type === "regular" ? p.title + " (" + (logIdx + 1) + "회기" + (p.schedule[logIdx] ? ": " + p.schedule[logIdx].topic : "") + ")"
+            : p.type === "camp" ? p.title + " (" + (logIdx + 1) + "일차)" : p.title;
+  const sched = p.schedule.map((s, i) => p.timeMode ? s.date + "  " + s.topic + (s.act ? " (" + s.act + ")" : "") : (i + 1) + "회 " + s.date + "  " + s.topic + (s.act ? " - " + s.act : "")).join("\n");
+  const eff = lines(p.effects).map(x => "• " + x.replace(/^[•\-]\s*/, "")).join("\n");
+  const bud = p.budget.filter(b => b.item || b.calc || b.amount).map(b => "• " + (b.item || "") + (b.calc ? " : " + b.calc : "") + (b.amount ? " = " + b.amount : "")).join("\n");
+  const budget = (bud ? bud + "\n" : "") + "합계 : " + (budgetTotal(p.budget) || "");
+  const evalLines = p.goals.map((g, i) => (i + 1) + ". " + g.measure + " (목표 " + (i + 1) + ")").join("\n") + (p.evaluation ? "\n" + p.evaluation : "") + participateLines(p).map(x => "\n• " + x).join("");
+  const evalText = p.goals.map((g, i) => { const r = E.results[i] || {}; return (i + 1) + ". " + g.text + "\n    " + (r.status ? "→ " + r.status : "→ □ 달성  □ 일부 달성  □ 미달성") + (r.note ? " (" + r.note + ")" : ""); }).join("\n") +
+    (st ? "\n※ 만족도 조사: " + st.summary : "") + participateLines(p).map(x => "\n• " + x).join("");
+  const target = p.target + " " + p.count + "명", ap = ui.approvers.length > 2 ? [ui.approvers[0], ui.approvers[ui.approvers.length - 1]] : ui.approvers;
+  const head = { "5,0": ap[0] || "", "6,0": ap[1] || "", "5,1": "", "6,1": "" };
+  return [
+    Object.assign({ "1,2": catText(p), "1,3": p.title, "4,3": input.teacher, "1,4": p.period + (p.sessionsInfo ? " / " + p.sessionsInfo : ""), "4,4": (input.center ? input.center + " " : "") + target,
+      "1,5": p.place, "4,5": p.materials, "1,6": p.need + (opinionLine(p) ? "\n" + opinionLine(p) : ""), "1,7": p.purpose, "1,8": goalsText(p),
+      "1,9": sched + (p.methods ? "\n\n" + p.methods : ""), "1,10": eff, "1,11": budget, "1,12": evalLines }, head),
+    Object.assign({ "1,2": catText(p), "1,3": sub, "3,3": input.teacher, "1,4": p.place, "3,4": date, "1,5": L.leader || input.teacher, "3,5": p.materials,
+      "1,6": L.participants || "", "1,7": L.content || "", "1,8": L.opinion || "", "0,10": (L.photos || []).length ? "(사진 " + L.photos.length + "장은 한글에서 '입력 → 그림'으로 넣어 주세요)" : "" }, head),
+    Object.assign({ "1,2": catText(p), "1,3": p.title, "4,3": input.teacher, "1,4": p.period, "4,4": target, "1,5": p.place, "4,5": p.materials, "1,6": E.participants || "",
+      "1,7": p.need, "1,8": p.purpose, "1,9": goalsText(p), "1,10": eff, "1,11": sched, "1,12": evalText, "1,13": E.opinion || "", "1,14": E.next || "" }, head)
+  ];
+}
+async function buildHwpx(p, logIdx) {
+  const f = await hwpxTemplate();
+  const doc = new DOMParser().parseFromString(f["Contents/section0.xml"], "application/xml");
+  if (doc.getElementsByTagName("parsererror").length) throw new Error("양식을 읽지 못했어요.");
+  const tbls = doc.getElementsByTagNameNS(HP_NS, "tbl"), vals = hwpxCells(p, logIdx);
+  [...tbls].slice(0, 3).forEach((tbl, ti) => {
+    [...tbl.getElementsByTagNameNS(HP_NS, "tc")].forEach(tc => {
+      const a = tc.getElementsByTagNameNS(HP_NS, "cellAddr")[0]; if (!a) return;
+      const k = a.getAttribute("colAddr") + "," + a.getAttribute("rowAddr");
+      if (k in vals[ti]) hwpxSetCell(doc, tc, vals[ti][k]);
+    });
+  });
+  f["Contents/section0.xml"] = '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>' + new XMLSerializer().serializeToString(doc.documentElement);
+  f["Preview/PrvText.txt"] = "<프로그램계획서><" + xmlSafe(p.title) + ">";
+  const now = new Date().toISOString().replace(/\.\d+Z$/, "Z");
+  f["Contents/content.hpf"] = f["Contents/content.hpf"].replace(/(<opf:meta name="(?:CreatedDate|ModifiedDate)" content="text">)/g, "$1" + now)
+    .replace("<opf:title/>", "<opf:title>" + esc(xmlSafe(p.title)) + "</opf:title>");
+  const order = ["version.xml", "Contents/header.xml", "Contents/section0.xml", "Preview/PrvText.txt", "settings.xml", "META-INF/container.rdf", "Contents/content.hpf", "META-INF/container.xml", "META-INF/manifest.xml"];
+  return zipStore([{ name: "mimetype", data: "application/hwp+zip" }, ...order.map(n => ({ name: n, data: f[n] }))]);
+}
+document.getElementById("hwpxBtn").addEventListener("click", async () => {
+  if (typeof DecompressionStream === "undefined") return say("이 브라우저는 한글 저장을 못 해요.", "크롬이나 엣지 최신 버전에서 해 주세요. 워드(.doc) 저장은 돼요.", "think", true);
+  const li = ui.log >= 0 ? ui.log : 0;
+  try {
+    const blob = await buildHwpx(plan, li);
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+    a.download = (plan.title || "프로그램").replace(/[\\\/:*?"<>|]/g, "") + "_계획서·일지" + (li + 1) + "·평가서.hwpx";
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    say("한글 파일을 저장했어요.", "센터 양식 한 파일에 계획서 · " + (li + 1) + "회 일지 · 평가서가 들어 있어요." + (ui.log === -1 ? " (전체 일지는 1회만 들어가요. 다른 회기는 일지에서 회기를 고른 뒤 다시 저장하세요.)" : " 다른 회기 일지는 회기를 고른 뒤 다시 저장하세요.") + " 사진은 한글에서 넣어 주세요.", "happy");
+  } catch (err) { say("한글 파일을 만들지 못했어요.", (err && err.message ? err.message + " " : "") + "워드(.doc) 저장이나 인쇄를 써 주세요.", "think", true); }
+});
+
 /* ============================================================
    10) 화면 이동과 저장
    ============================================================ */
@@ -2698,8 +2912,10 @@ addEventListener("storage", e => {
     let all = {}; try { all = JSON.parse(e.newValue || "{}"); } catch (err) {}
     if (step === 1) renderPlans();
     if (curId && all[curId] && (all[curId].updated || 0) > lastSave) {
-      say("다른 탭에서 이 프로그램이 바뀌었어요!", "여기서 계속 고치면 그 탭의 내용이 덮어써져요. 한쪽 탭만 쓰시고, 최신 내용을 보려면 이 탭을 새로고침해 주세요.", "think", true);
+      say("다른 탭에서 이 프로그램이 바뀌었어요!", "여기서 계속 고치면 그 탭의 내용이 덮어써져요. 한쪽 탭만 써 주세요.", "think", true);
       lastSave = all[curId].updated;
+      if (!document.getElementById("askDlg").open) ask("다른 탭에서 바뀌었어요", "같은 프로그램이 다른 탭에서 저장됐어요.\n최신 내용으로 다시 열까요? (이 탭에서 저장 안 된 변경은 없어요)", "최신 내용 불러오기", "이 탭에서 계속")
+        .then(ok => { if (ok) location.reload(); });
     }
   }
 });
@@ -2740,7 +2956,7 @@ function renderPlans() {
   document.getElementById("storageHint").textContent = "브라우저 저장 공간 약 " + pct + "% 사용 (사진이 많으면 늘어나요). 브라우저 기록을 지우면 사라지니 가끔 '백업 파일 받기'를 눌러 주세요." + (pct >= 70 ? " ⚠ 공간이 부족해지고 있어요. 다 끝난 프로그램은 백업한 뒤 지워 주세요." : "");
 }
 function freshInput() {
-  return Object.assign({}, input, { type: "regular", keyword: "", custom: "", grades: [], count: 10, start: nextMonday(), freq: "week1", sessions: 8, minutes: 60, nights: 1, traits: [], memo: "", requests: "" });
+  return Object.assign({}, input, { type: "regular", keyword: "", custom: "", grades: [], count: 10, start: nextMonday(), freq: "week1", sessions: 8, minutes: 60, minCustom: false, offDays: "", nights: 1, traits: [], memo: "", requests: "" });
 }
 function saveUi() { store.set("ui", { tab: ui.tab, survey: ui.survey, approvers: ui.approvers }); }
 
@@ -2870,6 +3086,7 @@ async function polishWithAI() {
   // 머리말의 작은 별이: 큰 별이 그림을 그대로 복사 (색이 빠지지 않게)
   const mini = document.getElementById("miniByeol");
   mini.innerHTML = document.getElementById("byeolArt").outerHTML.replace('id="byeolArt"', "");
+  document.getElementById("askByeol").innerHTML = mini.innerHTML;
 
   const su = store.get("ui");
   if (su && Array.isArray(su.approvers) && su.approvers.length) ui = Object.assign(ui, su);

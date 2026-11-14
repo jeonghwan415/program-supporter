@@ -95,7 +95,8 @@ const [, , htmlPath, outDir] = process.argv;
   for (const kw of ['미디어·AI 리터러시', '경제·용돈', '세계문화·다문화', '아동권리·자치']) {
     await page.click('[data-act="back"]');
     await page.click('[data-kw="' + kw + '"]');
-    await page.click('#makeBtn');
+    await page.click('#makeBtn'); await page.waitForTimeout(150);
+    if (await page.$eval('#askDlg', d => d.open)) await page.click('#askYes'); // v2.5 별이 확인 창
     await page.waitForSelector('#checkCard');
     log(kw, '→', await page.inputValue('[data-f="title"]'), '|', await page.$eval('#step2', s => s.querySelectorAll('[data-sk="topic"]').length) + '회기', '| 목표1:', await page.inputValue('[data-g="0"][data-gk="text"]'));
   }
