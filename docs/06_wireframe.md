@@ -225,6 +225,12 @@
 
 ![작년 평가 반영](images/06_wireframe/29_prev_feedback.png)
 
+### v2.7 화면: 증빙 기록지 · 평가 안내 자료
+
+| 증빙 기록지 (아동 평가회 기록지 + 보관함) | 평가 안내 자료 |
+| :---: | :---: |
+| <img src="images/06_wireframe/30_proof.png" alt="증빙 기록지" width="420"> | <img src="images/06_wireframe/31_guides.png" alt="평가 안내 자료" width="420"> |
+
 ## 시사점 정리
 
 * 빈칸 앞에서 막히는 곳(필요성 2번째 문장, 일지 의견, 평가 의견, 추후계획)에 **고를 수 있는 문장**을 두되, 선생님 문장을 지우지 않게 넣기·빼기만

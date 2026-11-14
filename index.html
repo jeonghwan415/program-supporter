@@ -160,7 +160,7 @@ button, input, textarea, select { font: inherit; color: inherit; }
 .kw-group > span { font-weight: 700; color: var(--navy); padding-top: 12px; font-size: .95rem; }
 
 /* 서류 탭 */
-.tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
 @media (max-width: 640px) { .tabs { grid-template-columns: repeat(2, 1fr); } }
 .tab { border: 2px solid var(--line); background: var(--surface); border-radius: 16px; padding: 14px 10px; cursor: pointer; text-align: center; display: grid; gap: 2px; }
 .tab b { font-family: var(--font-display); font-weight: 400; font-size: 1.25rem; }
@@ -364,6 +364,23 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
 .toast strong { font-family: var(--font-display); font-weight: 400; font-size: 1.05rem; color: var(--ink); }
 .toast.alert { border-color: var(--caution-line); }
 .s3-side { display: grid; gap: 16px; }
+.orig { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 8px; font-size: .9rem; }
+.orig > span:first-child { font-weight: 700; color: var(--navy); }
+.orig .bar { flex: 0 1 180px; height: 10px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); overflow: hidden; }
+.orig .bar i { display: block; height: 100%; background: var(--ok); }
+.orig small { color: var(--muted); flex-basis: 100%; }
+.draft-same { border-left: 5px solid var(--caution-line) !important; }
+.nudge { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; border: 2px solid var(--caution-line); background: var(--caution-soft); border-radius: 14px; padding: 10px 14px; font-size: .95rem; }
+.nudge b { color: var(--caution); }
+.nudge .sp { flex: 1 1 200px; }
+.fbox { border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; display: grid; gap: 6px; }
+.fbox-h { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.fbox-h small { color: var(--muted); flex: 1 1 160px; }
+.flist { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.flist li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; align-items: center; background: var(--bg); border-radius: 10px; padding: 6px 10px; }
+.flist li small { color: var(--muted); }
+.flist li > span:last-child { display: flex; gap: 6px; }
+.wline { border-bottom: 1px solid #999; height: 22px; }
 .fb-guide { border-left: 6px solid var(--navy); background: var(--bg); border-radius: 0 12px 12px 0; padding: 10px 14px; font-size: .95rem; }
 .fb-check { margin: 0; font-size: .9rem; font-weight: 700; color: var(--caution); }
 .fb-check.ok { color: var(--ok); }
@@ -413,11 +430,11 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
     <button type="button" class="ai-set" id="aiSetBtn">AI 설정: <span id="aiState">꺼짐</span></button>
   </header>
 
-  <ol class="steps" id="steps">
+  <nav aria-label="진행 단계"><ol class="steps" id="steps">
     <li data-s="1"><span class="num">1</span><span>내용 고르기</span></li>
     <li data-s="2"><span class="num">2</span><span>계획서 확인</span></li>
     <li data-s="3"><span class="num">3</span><span>서류 만들기</span></li>
-  </ol>
+  </ol></nav>
 
   <div class="guide">
     <svg class="byeol" id="byeol" viewBox="0 0 200 190" data-mood="normal" role="img" aria-label="동글동글한 노란 승합차 캐릭터 별이">
@@ -476,9 +493,20 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
             <label class="btn btn-sub btn-small file-btn">백업 불러오기<input type="file" accept=".json,application/json" id="restoreIn"></label>
           </span>
         </div>
+        <div class="nudge" id="backupNudge" hidden></div>
         <ul class="plans" id="plansList"></ul>
         <p class="hint" id="storageHint" style="margin:0"></p>
       </div>
+
+      <details class="card fold" id="guideCard">
+        <summary><h2>평가 안내 자료 <span class="optional" id="guideCount">선택</span></h2><small class="fold-sum" id="guideSum">아동권리보장원 평가 지표(PDF)를 이 컴퓨터에 첨부해 두고 열어 볼 수 있어요.</small></summary>
+        <div class="fold-body">
+          <div class="nudge" id="guideNudge" hidden></div>
+          <p class="hint" style="margin:0">새 평가 지표(예: 2027년 지역아동센터 평가사업 안내)는 보통 연초에 <a href="https://www.ncrc.or.kr" target="_blank" rel="noopener">아동권리보장원</a> 누리집에 올라와요. 받은 PDF를 여기에 넣어 두면 계획서를 쓸 때 바로 열 수 있어요. 이 도구의 점검 기준은 <b>2026년 지표</b> 기준이에요.</p>
+          <ul class="flist" id="guideList"></ul>
+          <label class="btn btn-sub btn-small file-btn" style="justify-self:start">평가 자료 첨부<input type="file" id="guideIn" accept=".pdf,.hwp,.hwpx,.doc,.docx,image/*" multiple></label>
+        </div>
+      </details>
 
       <div class="card">
         <h2><span class="q">1</span>어떤 형태의 프로그램인가요?</h2>
@@ -516,8 +544,8 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
             <input class="input" id="startDate" type="date">
           </label>
           <label class="field" id="offField">
-            <span>센터 쉬는 날 <span class="optional">선택 · 공휴일은 자동으로 빠져요</span></span>
-            <input class="input" id="offDays" type="text" maxlength="120" placeholder="예: 12/24, 12/31, 1/2 (쉼표로 나눠 쓰기)">
+            <span>센터 쉬는 날 <span class="optional">선택 · 공휴일·대체공휴일은 해마다 자동 계산</span></span>
+            <input class="input" id="offDays" type="text" maxlength="120" placeholder="예: 12/24, 12/31, 1/2 (선거일 같은 임시공휴일도 여기에)">
           </label>
           <div class="field" id="sessField">
             <span>총 몇 번 하나요?</span>
@@ -583,6 +611,7 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
           <button type="button" class="tab" role="tab" data-tab="log"><b>일지</b><small>회기마다 · 실행</small></button>
           <button type="button" class="tab" role="tab" data-tab="eval"><b>평가서</b><small>끝나면 · 평가</small></button>
           <button type="button" class="tab" role="tab" data-tab="notice"><b>가정통신문</b><small>선택 · 보호자 안내</small></button>
+          <button type="button" class="tab" role="tab" data-tab="proof"><b>증빙 기록지</b><small>회의록 · 평가회 · 보관</small></button>
         </div>
         <div class="field">
           <span>결재란</span>
@@ -608,7 +637,7 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
   </main>
 
   <footer class="site-foot no-print">
-    <span>프로그램 서포터 v2.6 · 만든 사람 jeonghwan0415</span>
+    <span>프로그램 서포터 v2.7 · 만든 사람 jeonghwan0415</span>
     <span>문장·양식 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> · 코드 MIT · 무료로 쓰고 나눠 주세요 (판매 금지)</span>
     <span><a href="https://github.com/jeonghwan415/program-supporter/blob/main/docs/%EC%82%AC%EC%9A%A9%EC%84%A4%EB%AA%85%EC%84%9C.md" target="_blank" rel="noopener">사용 설명서</a> · <a href="https://github.com/jeonghwan415/program-supporter" target="_blank" rel="noopener">GitHub</a></span>
   </footer>
@@ -1723,13 +1752,13 @@ document.getElementById("makeBtn").addEventListener("click", async () => {
     if (written && !(await ask("일지 " + written + "개가 지워져요", "지금 프로그램을 새 초안으로 다시 만들면 써 둔 일지와 사진이 지워져요.\n다른 프로그램을 만들려면 '취소'를 누르고 위의 '+ 새 프로그램 만들기'를 눌러 주세요.", "지우고 다시 만들기"))) return;
     plan.logs.forEach(l => (l && l.photos || []).forEach(dropPhoto));
   }
-  plan = buildPlan(input, 0);
+  plan = buildPlan(input, centerSeed());
   ui.log = 0;
   saveDraft();
   go(2);
 });
 /* v2.5 브라우저 기본 확인 창 대신 별이 창 (Esc·바깥 = 취소) */
-function ask(title, msg, yes, no) {
+function ask(title, msg, yes, no, cancelValue) {
   const d = document.getElementById("askDlg");
   document.getElementById("askTitle").textContent = title; document.getElementById("askMsg").textContent = msg;
   document.getElementById("askYes").textContent = yes || "계속"; document.getElementById("askNo").textContent = no || "취소";
@@ -1737,7 +1766,7 @@ function ask(title, msg, yes, no) {
     const done = v => { d.close(); res(v); };
     document.getElementById("askYes").onclick = () => done(true);
     document.getElementById("askNo").onclick = () => done(false);
-    d.oncancel = e => { e.preventDefault(); done(false); };
+    d.oncancel = e => { e.preventDefault(); done(cancelValue === undefined ? false : cancelValue); };
     d.showModal(); document.getElementById("askNo").focus();
   });
 }
@@ -1751,7 +1780,7 @@ function warn(t, m, id) {
    ============================================================ */
 /* v2.4 공휴일(대체공휴일 포함) — 2026·2027년. 인사혁신처 발표 기준으로 정리, 해마다 다음 해를 더해 주세요.
    회기 날짜가 공휴일이면 그 회기는 건너뛰고 다음 날짜로 미룸 */
-const HOLIDAYS = {
+const HOLIDAYS_FALLBACK = {
   "2026-01-01": "신정", "2026-02-16": "설날 연휴", "2026-02-17": "설날", "2026-02-18": "설날 연휴", "2026-03-01": "삼일절", "2026-03-02": "대체공휴일",
   "2026-05-01": "노동절", "2026-05-05": "어린이날", "2026-05-24": "부처님오신날", "2026-05-25": "대체공휴일", "2026-06-03": "지방선거", "2026-06-06": "현충일",
   "2026-07-17": "제헌절", "2026-08-15": "광복절", "2026-08-17": "대체공휴일", "2026-09-24": "추석 연휴", "2026-09-25": "추석", "2026-09-26": "추석 연휴",
@@ -1762,7 +1791,45 @@ const HOLIDAYS = {
   "2027-10-03": "개천절", "2027-10-04": "대체공휴일", "2027-10-09": "한글날", "2027-10-11": "대체공휴일", "2027-12-25": "성탄절", "2027-12-27": "대체공휴일"
 };
 let lastSkipped = [], lastNoData = [];
-const HOLIDAY_YEARS = [...new Set(Object.keys(HOLIDAYS).map(k => +k.slice(0, 4)))];
+const HOLIDAY_YEARS = [...new Set(Object.keys(HOLIDAYS_FALLBACK).map(k => +k.slice(0, 4)))];
+/* v2.7 공휴일 자동 계산 — 해마다 손으로 고치지 않아도 됨
+   · 양력: 신정 · 삼일절 · 노동절(2026~) · 어린이날 · 현충일 · 제헌절(2026~) · 광복절 · 개천절 · 한글날 · 성탄절
+   · 음력(브라우저의 한국 음력 달력 Intl dangi): 설날 3일 · 부처님오신날 · 추석 3일
+   · 대체공휴일(「공휴일에 관한 법률」): 설·추석은 일요일이나 다른 공휴일과 겹치면, 어린이날은 토·일·겹치면, 국경일·부처님오신날·성탄절·노동절·제헌절은 토·일이면 다음 평일
+   · 선거일 같은 임시공휴일은 미리 알 수 없어 HOLIDAY_EXTRA에 적어 둠 (선생님은 '센터 쉬는 날'에 써도 됨)
+   2026·2027 인사혁신처 발표와 하루도 다르지 않은지 테스트로 확인함 (tools/tests/test_v27_*) */
+const HOLIDAY_EXTRA = { "2026-06-03": "지방선거", "2028-04-12": "국회의원선거" };
+const holidayCache = {};
+const LUNAR_OK = (() => { try { const p = new Intl.DateTimeFormat("ko-KR-u-ca-dangi", { month: "numeric", day: "numeric" }).formatToParts(new Date(2026, 1, 17)); return p.find(x => x.type === "month").value === "1" && p.find(x => x.type === "day").value === "1"; } catch (e) { return false; } })();
+function holidaysFor(y) {
+  if (holidayCache[y]) return holidayCache[y];
+  const H = {};
+  if (!LUNAR_OK) { Object.keys(HOLIDAYS_FALLBACK).filter(k => +k.slice(0, 4) === y).forEach(k => H[k] = HOLIDAYS_FALLBACK[k]); }
+  else {
+    const add = (d, n) => { const k = toISO(d); H[k] = H[k] && !H[k].includes(n) ? H[k] + "·" + n : n; };
+    const fixed = [["01-01", "신정", 0], ["03-01", "삼일절", 1], ["05-05", "어린이날", 2], ["06-06", "현충일", 0], ["08-15", "광복절", 1], ["10-03", "개천절", 1], ["10-09", "한글날", 1], ["12-25", "성탄절", y >= 2023 ? 1 : 0]];
+    if (y >= 2026) fixed.push(["05-01", "노동절", 1], ["07-17", "제헌절", 1]);
+    const fmt = new Intl.DateTimeFormat("ko-KR-u-ca-dangi", { month: "numeric", day: "numeric" });
+    const lunar = d => { const q = fmt.formatToParts(d); return q.find(x => x.type === "month").value + "/" + q.find(x => x.type === "day").value; };
+    const groups = [], three = (d, name) => { const a = new Date(d); a.setDate(a.getDate() - 1); const c = new Date(d); c.setDate(c.getDate() + 1); add(a, name + " 연휴"); add(new Date(d), name); add(c, name + " 연휴"); groups.push([[a, new Date(d), c], 3]); };
+    fixed.forEach(([md, n, r]) => { const d = new Date(y, +md.slice(0, 2) - 1, +md.slice(3)); add(d, n); if (r) groups.push([[d], r]); });
+    for (let d = new Date(y, 0, 1); d.getFullYear() === y; d.setDate(d.getDate() + 1)) {
+      const l = lunar(d);
+      if (l === "1/1") three(d, "설날"); else if (l === "8/15") three(d, "추석");
+      else if (l === "4/8") { add(new Date(d), "부처님오신날"); groups.push([[new Date(d)], 1]); }
+    }
+    const cnt = {}; groups.forEach(g => g[0].forEach(d => { cnt[toISO(d)] = (cnt[toISO(d)] || 0) + 1; }));
+    groups.forEach(([ds, rule]) => {
+      let need = 0;
+      ds.forEach(d => { const w = d.getDay(), ov = cnt[toISO(d)] > 1; if ((rule === 1 && (w === 0 || w === 6)) || (rule === 2 && (w === 0 || w === 6 || ov)) || (rule === 3 && (w === 0 || ov))) need++; });
+      const d = new Date(ds[ds.length - 1]);
+      while (need > 0) { d.setDate(d.getDate() + 1); if (!H[toISO(d)] && d.getDay() !== 0 && d.getDay() !== 6) { H[toISO(d)] = "대체공휴일"; need--; } }
+    });
+  }
+  Object.keys(HOLIDAY_EXTRA).filter(k => +k.slice(0, 4) === y).forEach(k => { H[k] = H[k] || HOLIDAY_EXTRA[k]; });
+  return (holidayCache[y] = H);
+}
+function holidayName(iso) { return holidaysFor(+iso.slice(0, 4))[iso] || ""; }
 // "12/24, 2027-01-02, 1.2" → ISO 날짜 Set. 연도 없으면 시작일 기준으로 시작 달보다 앞이면 다음 해
 function parseOffDays(text, startStr) {
   const st = fromISO(startStr), out = new Set();
@@ -1780,8 +1847,8 @@ function computeDates(startStr, freq, c, offText) {
   let i = 0, guard = 0;
   while (out.length < c && guard++ < 1000) {
     const iso = toISO(dt), wk = dt.getDay() === 0 || dt.getDay() === 6;
-    if (!HOLIDAY_YEARS.includes(dt.getFullYear()) && !lastNoData.includes(dt.getFullYear())) lastNoData.push(dt.getFullYear());
-    if (HOLIDAYS[iso]) lastSkipped.push(fmtShort(dt) + " " + HOLIDAYS[iso]);
+    if (!LUNAR_OK && !HOLIDAY_YEARS.includes(dt.getFullYear()) && !lastNoData.includes(dt.getFullYear())) lastNoData.push(dt.getFullYear());
+    if (holidayName(iso)) lastSkipped.push(fmtShort(dt) + " " + holidayName(iso));
     else if (off.has(iso)) lastSkipped.push(fmtShort(dt) + " 센터 쉬는 날");
     else if (!(freq === "daily" && wk)) out.push(new Date(dt));
     if (freq === "week1") dt.setDate(dt.getDate() + 7);
@@ -1793,7 +1860,7 @@ function computeDates(startStr, freq, c, offText) {
 }
 function skippedNote() {
   return (lastSkipped.length ? " 공휴일·쉬는 날 " + lastSkipped.length + "일(" + lastSkipped.slice(0, 3).join(", ") + (lastSkipped.length > 3 ? " 등" : "") + ")은 건너뛰었어요." : "") +
-    (lastNoData.length ? " " + lastNoData.join("·") + "년 공휴일 정보는 아직 없어요. 날짜를 달력과 꼭 맞춰 보세요." : "");
+    (lastNoData.length ? " " + lastNoData.join("·") + "년 공휴일을 이 브라우저에서 계산하지 못했어요. 날짜를 달력과 꼭 맞춰 보세요." : "");
 }
 function pickSessions(L, c) {
   const first = L[0], last = L[L.length - 1], mid = L.slice(1, -1), need = c - 2, picked = [];
@@ -1819,6 +1886,9 @@ function targetText(grades) {
   return parts.join(", ");
 }
 
+/* v2.7 센터마다 첫 초안이 같지 않게: 센터 이름+키워드로 제목·기대효과 순서를 다르게 고름 */
+function titlePool(K, kw) { return [...K.titles, ...TITLE_MORE.map(t => fillK(t, kw))].filter((t, i, a) => a.indexOf(t) === i); }
+function centerSeed() { let h = 7; for (const ch of (input.center || "") + "|" + curKw()) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h; }
 function buildPlan(inp, variant) {
   const kw = curKw();
   const K = kwData(kw);
@@ -1886,7 +1956,7 @@ function buildPlan(inp, variant) {
   const p = {
     kw, generic: !!K.generic, type, timeMode: type !== "regular", nights: inp.nights,
     category: K.cat, sub: K.sub,
-    titleOptions: K.titles, title: K.titles[variant % K.titles.length],
+    titleOptions: K.titles, title: titlePool(K, kw)[variant % titlePool(K, kw).length],
     target: targetText(inp.grades), count: n,
     period, sessionsInfo,
     dates: dates.map(toISO),
@@ -1896,13 +1966,15 @@ function buildPlan(inp, variant) {
     methodsWhy: "대상 학년, 프로그램 형태" + (inp.traits.length ? ", 아동 특성 " + inp.traits.length + "가지" : "") + (inp.requests.trim() ? ", 직접 쓰신 요청" : "") + (K.extraMethod ? ", '" + kw + "' 안전 수칙" : "") + "을 반영했어요.",
     schedule, scheduleWhy,
     materials: K.materials,
-    effects: K.effects.join("\n"),
+    effects: (variant % 2 ? [...K.effects].reverse() : K.effects).join("\n"),
     budget: [{ item: "", calc: "", amount: "" }, { item: "", calc: "", amount: "" }, { item: "", calc: "", amount: "" }],
     evaluation: "프로그램이 끝나면 아동 만족도 조사(5점 척도)를 실시하여 4점 이상 응답 비율 80% 이상을 목표로 한다.",
     survey: [...COMMON_SURVEY, ...K.survey],
     open: [...OPEN_Q],
     variant
   };
+  // v2.7 자동 초안 원본 — 고치지 않은 칸을 알려 주는 데 씀 (다른 센터와 문장이 같아지는 것 막기)
+  p.base = { need: p.need, purpose: p.purpose, methods: p.methods, effects: p.effects, goals: p.goals.map(g => g.text) };
   return ensurePlan(p);
 }
 
@@ -1946,6 +2018,7 @@ function ensurePlan(p) {
   if (!p.evalr) p.evalr = { participants: "", results: [], survey: "", opinion: "", next: "" };
   if (typeof p.evalr.childVoice !== "string") p.evalr.childVoice = "";
   if (typeof p.evalr.change !== "string") p.evalr.change = "";
+  if (!Array.isArray(p.files)) p.files = []; // v2.7 증빙 보관함: {ref, kind, name, type, size, added}
   // v2.2 평가 지표 맞추기 · 가정통신문 (예전 저장 내용에는 없으므로 여기서 채움)
   if (!p.ind || !IND[p.ind]) p.ind = defaultIndicator(p);
   if (!p.opinion) p.opinion = { from: [], note: "" };
@@ -2007,7 +2080,8 @@ function surveyStats(p) {
    8) 2단계: 계획서 확인하고 고치기
    ============================================================ */
 function ta(field, rows, cls) {
-  return '<textarea class="input ' + (cls || "") + '" data-f="' + field + '" rows="' + (rows || 3) + '">' + esc(plan[field]) + "</textarea>";
+  const LB = { need: "필요성", purpose: "목적", methods: "운영 방법", effects: "기대효과", evaluation: "평가 방법" };
+  return '<textarea class="input ' + (cls || "") + '" data-f="' + field + '" rows="' + (rows || 3) + '" aria-label="' + (LB[field] || field) + '">' + esc(plan[field]) + "</textarea>";
 }
 function aiCls(f) { return plan.aiChanged && plan.aiChanged.includes(f) ? "ai-changed" : ""; }
 function budgetTotal(rows) {
@@ -2018,7 +2092,7 @@ function budgetTotal(rows) {
 
 function renderStep2() {
   const s2el = document.getElementById("step2"), fk = focusKey(s2el), y = scrollY;
-  renderStep2Inner(); if (fk) { restoreFocus(s2el, fk); scrollTo(0, y); }
+  renderStep2Inner(); markDraftSame(); if (fk) { restoreFocus(s2el, fk); scrollTo(0, y); }
 }
 function renderStep2Inner() {
   const hasKey = !!getKey() && !EMBED;
@@ -2076,9 +2150,9 @@ function renderStep2Inner() {
       '<div class="tbl-wrap"><table class="sched"><thead><tr>' + (tm ? "" : "<th>회기</th>") + '<th style="width:' + (plan.type === "camp" ? 150 : 120) + 'px">' + (tm ? "시간" : "날짜") + "</th><th>" + (tm ? "내용" : "주제") + "</th><th>" + (tm ? "비고" : "활동 내용") + "</th></tr></thead><tbody>" +
       plan.schedule.map((s, i) =>
         "<tr>" + (tm ? "" : '<td class="n">' + (i + 1) + "</td>") +
-        '<td><input class="input" data-s="' + i + '" data-sk="date" value="' + esc(s.date) + '"></td>' +
-        '<td><input class="input" data-s="' + i + '" data-sk="topic" value="' + esc(s.topic) + '"></td>' +
-        '<td><input class="input" data-s="' + i + '" data-sk="act" value="' + esc(s.act) + '"></td></tr>').join("") +
+        '<td><input class="input" data-s="' + i + '" data-sk="date" value="' + esc(s.date) + '" aria-label="' + (i + 1) + (tm ? "번째 시간" : "회기 날짜") + '"></td>' +
+        '<td><input class="input" data-s="' + i + '" data-sk="topic" value="' + esc(s.topic) + '" aria-label="' + (i + 1) + (tm ? "번째 내용" : "회기 주제") + '"></td>' +
+        '<td><input class="input" data-s="' + i + '" data-sk="act" value="' + esc(s.act) + '" aria-label="' + (i + 1) + (tm ? "번째 비고" : "회기 활동 내용") + '"></td></tr>').join("") +
       "</tbody></table></div>" +
       "<h3>운영 방법</h3>" + ta("methods", 5, aiCls("methods")) + '<span class="why">' + esc(plan.methodsWhy) + "</span></div>" +
 
@@ -2089,9 +2163,9 @@ function renderStep2Inner() {
     foldOpen("sec-budget", "프로그램 예산", "선택 · 비워 두면 빈칸으로 인쇄", budgetTotal(plan.budget) ? "합계 " + budgetTotal(plan.budget) : "아직 비어 있어요") + tipBox("budget") +
       '<div class="tbl-wrap"><table class="sched"><thead><tr><th>항목</th><th>산출 근거</th><th style="width:160px">금액</th></tr></thead><tbody>' +
       plan.budget.map((b, i) =>
-        '<tr><td><input class="input" data-b="' + i + '" data-bk="item" value="' + esc(b.item) + '" placeholder="예: 입장료"></td>' +
-        '<td><input class="input" data-b="' + i + '" data-bk="calc" value="' + esc(b.calc) + '" placeholder="예: 20,000원 × 10명"></td>' +
-        '<td><input class="input" data-b="' + i + '" data-bk="amount" value="' + esc(b.amount) + '" placeholder="예: 200,000"></td></tr>').join("") +
+        '<tr><td><input class="input" data-b="' + i + '" data-bk="item" value="' + esc(b.item) + '" placeholder="예: 입장료" aria-label="예산 ' + (i + 1) + ' 항목"></td>' +
+        '<td><input class="input" data-b="' + i + '" data-bk="calc" value="' + esc(b.calc) + '" placeholder="예: 20,000원 × 10명" aria-label="예산 ' + (i + 1) + ' 산출 근거"></td>' +
+        '<td><input class="input" data-b="' + i + '" data-bk="amount" value="' + esc(b.amount) + '" placeholder="예: 200,000" aria-label="예산 ' + (i + 1) + ' 금액"></td></tr>').join("") +
       "</tbody></table></div>" +
       '<div class="row"><button type="button" class="btn btn-sub btn-small" data-act="addBudget">+ 줄 추가</button><span id="budgetSum" class="sc-sum">' + (budgetTotal(plan.budget) ? "합계 " + budgetTotal(plan.budget) : "") + "</span></div>" +
     "</div></details>" +
@@ -2180,20 +2254,40 @@ function planChecks(p) {
     add(p.childPlan || p.childEval, "아동이 계획·평가에 참여해요.", "[평가 ⑤ 아동의 참여] 아동이 계획이나 평가에 참여하는 방법을 골라 주세요.", "#indCard");
     add(p.share.length > 0, "지역사회 공유: " + p.share.join(", "), "[평가 ⑦ 지역사회와 공유] 결과를 어떻게 알릴지 골라 주세요.", "#indCard");
   }
+  const same = sameAsDraft(p);
+  if (same) out.push({ ok: !same.length, label: "우리 센터 문장", jump: same.length ? '[data-f="' + (same[0].f || "need") + '"]' : '[data-f="need"]',
+    text: !same.length ? "자동 초안을 우리 센터에 맞게 고쳤어요." : "자동 초안 그대로인 칸: " + same.map(x => x.n).join(" · ") + ". 다른 센터와 문장이 같아질 수 있어요. 우리 센터 아동 수·사례·자치회 의견을 넣어 고쳐 주세요." });
   if (p.prev && p.prev.on) {
     const ok = !!(p.prev.voice.trim() && p.prev.change.trim());
     out.push({ ok, label: "작년 평가 반영", jump: "#prevRow", text: ok ? "작년 평가(아동 의견)를 올해 계획에 반영했어요." : "[평가 ⑥ 환류] 작년에도 한 프로그램이면 작년 평가에서 나온 아동 의견과 올해 바꾼 점을 써 주세요." });
   }
   return out.filter(Boolean);
 }
+// v2.7 자동 초안에서 하나도 안 고친 칸 (base가 없는 예전 계획서는 null)
+function sameAsDraft(p) {
+  if (!p.base) return null;
+  const B = p.base, out = [];
+  if (p.need.trim() === B.need.trim()) out.push({ f: "need", n: "필요성" });
+  if (p.purpose.trim() === B.purpose.trim()) out.push({ f: "purpose", n: "목적" });
+  if (p.goals.length === B.goals.length && p.goals.every((g, i) => g.text === B.goals[i])) out.push({ f: "", n: "목표" });
+  if (p.methods.trim() === B.methods.trim()) out.push({ f: "methods", n: "운영 방법" });
+  if (p.effects.trim() === B.effects.trim()) out.push({ f: "effects", n: "기대효과" });
+  return out;
+}
+function originality(p) { const s = sameAsDraft(p); return s ? Math.round((5 - s.length) / 5 * 100) : null; }
 function checksHTML() {
   const c = planChecks(plan), bad = c.filter(x => !x.ok).length;
   return '<div class="sec-head"><h2>서류 만들기 전 점검</h2><span class="check-sum">' + (bad ? "확인할 곳 " + bad + "개" : "모두 좋아요!") + "</span></div>" +
     '<ul class="checks">' + c.filter(x => !x.ok).map(x => '<li class="warn"><span>' + esc(x.text) + "</span>" +
       '<button type="button" class="btn btn-sub btn-small" data-jump="' + esc(x.jump) + '">고치러 가기</button></li>').join("") +
-    "</ul>" + (c.some(x => x.ok) ? '<div class="ready" style="margin-top:6px">' + c.filter(x => x.ok).map(x => '<span class="ok" title="' + esc(x.text) + '">' + esc(x.label) + "</span>").join("") + "</div>" : "");
+    "</ul>" + (originality(plan) != null ? '<div class="orig"><span>우리 센터 문장</span><span class="bar"><i style="width:' + originality(plan) + '%"></i></span><b>' + originality(plan) + "%</b><small>필요성·목적·목표·운영 방법·기대효과 중 고친 칸 비율 · 80% 이상 권장</small></div>" : "") +
+    (c.some(x => x.ok) ? '<div class="ready" style="margin-top:6px">' + c.filter(x => x.ok).map(x => '<span class="ok" title="' + esc(x.text) + '">' + esc(x.label) + "</span>").join("") + "</div>" : "");
 }
-function refreshChecks() { const c = document.getElementById("checkCard"); if (c) c.innerHTML = checksHTML(); const n = document.getElementById("secNav"); if (n) n.innerHTML = navHTML(); }
+function refreshChecks() { const c = document.getElementById("checkCard"); if (c) c.innerHTML = checksHTML(); const n = document.getElementById("secNav"); if (n) n.innerHTML = navHTML(); markDraftSame(); }
+function markDraftSame() {
+  const same = (plan && sameAsDraft(plan) || []).map(x => x.f).filter(Boolean);
+  ["need", "purpose", "methods", "effects"].forEach(f => { const el = document.querySelector('#step2 [data-f="' + f + '"]'); if (el) { el.classList.toggle("draft-same", same.includes(f)); el.title = same.includes(f) ? "자동 초안 그대로예요. 우리 센터 이야기를 넣어 고쳐 주세요." : ""; } });
+}
 
 /* v2.3 2단계 목차와 접기: 긴 화면에서 지금 위치와 남은 일을 한눈에 */
 const openFolds = new Set();
@@ -2205,7 +2299,7 @@ function navHTML() {
   const items = [
     ["sec-basic", "기본 정보", warn("제목") || warn("장소")],
     ["indCard", "평가 지표", warn("사업계획서 반영") || warn("의견 수렴") || warn("10회기") || warn("아동 참여") || warn("지역사회 공유") || warn("작년 평가 반영")],
-    ["sec-need", "필요성", warn("필요성")],
+    ["sec-need", "필요성", warn("필요성") || warn("우리 센터 문장")],
     ["sec-purpose", "목적", false],
     ["sec-goals", "목표", warn("숫자 목표") || warn("평가 방법")],
     ["sec-content", "내용", warn("일정")],
@@ -2434,6 +2528,37 @@ function evalDoc(p) {
     "</table>");
 }
 
+/* v2.7 증빙 기록지: 아동자치회 회의록(③ 의견 수렴) · 아동 평가회 기록지(⑤ 아동 참여 · ⑥ 환류) */
+function blankRows(n) { return Array.from({ length: n }, () => '<div class="wline"></div>').join(""); }
+function minutesDoc(p) {
+  const qs = ["이번 '" + p.kw + "' 프로그램에서 해 보고 싶은 활동은 무엇인가요?", p.timeMode ? "가고 싶은 곳이나 하고 싶은 시간은 언제인가요?" : "언제(요일·시간), 몇 번 하면 좋을까요?", "함께 지킬 약속은 무엇인가요?"];
+  if (p.prev && p.prev.on && p.prev.voice.trim()) qs.push("작년에 '" + p.prev.voice.trim() + "' 의견이 있었어요. 올해 " + (p.prev.change.trim() || "이렇게") + " 바꾸려고 해요. 어떻게 생각하나요?");
+  return wrapPaper(headHTML("아동자치회 회의록") +
+    '<table class="form">' + COLS +
+    "<tr><th>일 시</th><td>20&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;&nbsp;(&nbsp;&nbsp;)&nbsp;&nbsp;&nbsp;:</td><th>장 소</th><td>" + esc(input.center ? input.center + " " : "") + "프로그램실</td></tr>" +
+    "<tr><th>참 석</th><td>아동 &nbsp;&nbsp;&nbsp;&nbsp;명 / 교사 &nbsp;&nbsp;&nbsp;명</td><th>진 행</th><td>아동 대표:</td></tr>" +
+    '<tr><th>안 건</th><td colspan="3"><b>「' + esc(p.title) + "」 프로그램 계획 의견 수렴</b> (" + esc(p.period) + ")</td></tr>" +
+    '<tr><th>회의 내용</th><td colspan="3" class="vt">' + qs.map((q, i) => '<p style="margin-top:' + (i ? 8 : 0) + 'px"><b>' + (i + 1) + ". " + esc(q) + "</b></p>" + blankRows(2)).join("") + "</td></tr>" +
+    '<tr><th>결정 사항</th><td colspan="3" class="vt">' + blankRows(3) + "</td></tr>" +
+    '<tr><th>계획에<br>반영할 점</th><td colspan="3" class="vt">' + blankRows(2) + '<p class="small-note">→ 계획서 \'필요성\'과 2단계 \'③ 의견 수렴\' 칸에 옮겨 적어요.</p></td></tr>' +
+    '<tr><th>확 인</th><td>아동 대표: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(서명)</td><th>담당 교사</th><td>' + esc(input.teacher) + " &nbsp;&nbsp;&nbsp;(서명)</td></tr>" +
+    "</table>");
+}
+function childEvalDoc(p) {
+  const last = p.dates.length ? fmtDot(fromISO(p.dates[p.dates.length - 1])) : "";
+  return wrapPaper(headHTML("아동 평가회 기록지") +
+    '<table class="form">' + COLS +
+    "<tr><th>프로그램</th><td colspan=\"3\"><b>" + esc(p.title) + "</b> (" + esc(p.period) + ")</td></tr>" +
+    "<tr><th>일 시</th><td>" + esc(last) + "</td><th>참여 아동</th><td>&nbsp;&nbsp;&nbsp;&nbsp;명 / " + esc(p.count) + "명</td></tr>" +
+    '<tr><th>목표 돌아보기</th><td colspan="3" class="vt">' + p.goals.map((g, i) => '<p style="margin-top:' + (i ? 6 : 0) + 'px">' + (i + 1) + ". " + esc(g.text) + '</p><p class="small-note">&nbsp;&nbsp;잘 됐어요 ○ ( &nbsp;&nbsp;명) · 조금 ( &nbsp;&nbsp;명) · 아쉬워요 ( &nbsp;&nbsp;명)</p>').join("") + "</td></tr>" +
+    '<tr><th>가장 좋았던<br>활동</th><td colspan="3" class="vt">' + blankRows(2) + "</td></tr>" +
+    '<tr><th>바꾸고 싶은 점</th><td colspan="3" class="vt">' + blankRows(2) + "</td></tr>" +
+    '<tr><th>아동의 말<br>(그대로)</th><td colspan="3" class="vt"><p class="small-note">따옴표로 적고 몇 명이 같은 말을 했는지 써요. 예) \'더 길게 하고 싶어요\'(8명)</p>' + blankRows(3) + "</td></tr>" +
+    '<tr><th>다음 계획에<br>반영할 점</th><td colspan="3" class="vt">' + blankRows(2) + '<p class="small-note">→ 평가서 \'아동 의견\'·\'다음에 바꿀 점\'에 옮기면 내년 계획서 \'작년 평가 반영(환류)\'로 이어져요.</p></td></tr>' +
+    '<tr><th>확 인</th><td>아동 대표: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(서명)</td><th>담당 교사</th><td>' + esc(input.teacher) + " &nbsp;&nbsp;&nbsp;(서명)</td></tr>" +
+    "</table>");
+}
+
 /* v2.2 가정통신문 (선택): 계획서 내용으로 보호자 안내문 + 참가 회신서 */
 function noticeDoc(p) {
   const N = p.notice, K = kwData(p.kw), center = input.center || "○○지역아동센터";
@@ -2501,6 +2626,7 @@ function currentPapers() {
   if (ui.tab === "plan") return [planDoc(p)].concat(ui.survey ? [surveyDoc(p)] : []);
   if (ui.tab === "log") return ui.log === -1 ? Array.from({ length: logCount(p) }, (_, i) => logDoc(p, i)) : [logDoc(p, ui.log)];
   if (ui.tab === "notice") return [noticeDoc(p)];
+  if (ui.tab === "proof") return [ui.proof === "childeval" ? childEvalDoc(p) : minutesDoc(p)];
   return [evalDoc(p)];
 }
 function renderPaper() {
@@ -2580,6 +2706,19 @@ function renderDocOpts() {
       '<label class="field"><span>추후계획</span><textarea class="input" data-e="next" rows="3" placeholder="예: 아동 의견을 반영하여 다음 학기에도 운영한다.">' + esc(E.next) + "</textarea></label>" +
       '<p class="fb-check' + (hasFeedback(E.next) ? " ok" : "") + '" id="fbCheck">' + fbCheckText(E.next) + "</p>" +
       phraseBox("eval.next", NEXT_PHRASES, E.next, "추후계획 · 환류 문장 도우미", "평가 지표 ⑥ 환류: 평가 결과가 다음 연도 계획에 어떻게 반영되는지 쓰면 좋아요.") + tipBox("eval");
+  } else if (ui.tab === "proof") {
+    const K2 = [["minutes", "아동자치회 회의록", "계획 전 의견 수렴 (지표 ③)"], ["childeval", "아동 평가회 기록지", "아동 참여 ⑤ · 환류 ⑥"], ["other", "기타 증빙", "보호자 동의서 · 사진 동의 · 회의 자료"]];
+    box.innerHTML = "<h3>증빙 기록지</h3>" +
+      '<p class="hint">평가 때 \'체크\'만으로는 인정되지 않아요. 아래 양식을 인쇄해 쓰고, 다 쓴 기록은 사진·스캔·한글 파일로 보관함에 넣어 두세요. 백업 파일에도 함께 들어가요.</p>' +
+      '<div class="chips">' + chipHTML("아동자치회 회의록", ui.proof !== "childeval", 'data-proof="minutes"', "sm") + chipHTML("아동 평가회 기록지", ui.proof === "childeval", 'data-proof="childeval"', "sm") + "</div>" +
+      "<h3 style=\"margin-top:6px\">보관함 <span class=\"optional\">" + p.files.length + "개 · 이 컴퓨터에만 저장</span></h3>" +
+      K2.map(([k, label, why]) => {
+        const fs = p.files.map((f, i) => ({ f, i })).filter(x => x.f.kind === k);
+        return '<div class="fbox"><div class="fbox-h"><b>' + label + '</b><small>' + why + '</small><label class="btn btn-sub btn-small file-btn">파일 넣기<input type="file" multiple data-fkind="' + k + '" accept="image/*,.pdf,.hwp,.hwpx,.doc,.docx,.xlsx,.xls"></label></div>' +
+          (fs.length ? '<ul class="flist">' + fs.map(x => '<li><span>' + esc(x.f.name) + ' <small>' + Math.max(1, Math.round(x.f.size / 1024)) + "KB · " + esc(x.f.added) + '</small></span><span><button type="button" class="btn btn-sub btn-small" data-fopen="' + x.i + '">열기</button><button type="button" class="btn btn-sub btn-small" data-fdel="' + x.i + '">지우기</button></span></li>').join("") + "</ul>"
+            : '<p class="hint" style="margin:0">아직 없어요.</p>') + "</div>";
+      }).join("") +
+      '<p class="hint" style="margin:0">한 파일에 10MB까지. 아동 이름·얼굴이 있는 파일은 공용 컴퓨터에 두지 마세요.</p>';
   } else {
     const N = p.notice;
     box.innerHTML = "<h3>가정통신문 <span class=\"optional\">선택</span></h3>" +
@@ -2615,7 +2754,8 @@ document.getElementById("docTabs").addEventListener("click", e => {
   const msg = { plan: ["계획서예요.", "결재란 모양을 고르고 '인쇄하기'나 '워드 파일로 저장'을 누르세요."],
                 log: ["일지예요.", "하나를 고르고 참여자와 담당자 의견만 채우면 돼요. 나머지는 계획서에서 가져왔어요."],
                 eval: ["평가서예요.", "목표마다 달성했는지 누르고, 만족도 응답 수를 넣으면 평균과 그래프가 들어가요."],
-                notice: ["가정통신문이에요. (선택)", "계획서 내용으로 안내문과 참가 회신서를 만들었어요. 참가비·집결 장소·마감일만 채우면 돼요."] }[ui.tab];
+                notice: ["가정통신문이에요. (선택)", "계획서 내용으로 안내문과 참가 회신서를 만들었어요. 참가비·집결 장소·마감일만 채우면 돼요."],
+                proof: ["증빙 기록지예요.", "아동자치회 회의록과 아동 평가회 기록지를 인쇄해 쓰고, 다 쓴 기록(사진·스캔·한글 파일)은 아래 보관함에 넣어 두세요."] }[ui.tab];
   say(msg[0], msg[1], "happy");
 });
 document.getElementById("approveChips").addEventListener("click", e => {
@@ -2644,6 +2784,12 @@ docOpts.addEventListener("click", e => {
   if (b.dataset.opt === "survey") ui.survey = !ui.survey;
   else if (b.dataset.log) ui.log = Number(b.dataset.log);
   else if (b.dataset.nb) plan.notice[b.dataset.nb] = !plan.notice[b.dataset.nb];
+  else if (b.dataset.proof) ui.proof = b.dataset.proof;
+  else if (b.dataset.fopen) { openStoredFile(plan.files[Number(b.dataset.fopen)]); return; }
+  else if (b.dataset.fdel) {
+    if (!b.dataset.armed) { b.dataset.armed = "1"; b.textContent = "한 번 더 누르면 지워져요"; return; }
+    const f = plan.files.splice(Number(b.dataset.fdel), 1)[0]; if (f) dropPhoto(f.ref);
+  }
   else if (b.dataset.fb) {
     const t = feedbackSentence(plan); plan.evalr.next = (plan.evalr.next.trim() ? plan.evalr.next.trim() + "\n" : "") + t;
     say("환류 문장을 넣었어요.", plan.evalr.change.trim() ? "추후계획 맨 아래에 들어갔어요. 우리 센터 말투로 다듬어 주세요." : "'다음에 바꿀 점'이 비어서 ○○로 넣었어요. 바꿀 점을 채우고 고쳐 주세요.", plan.evalr.change.trim() ? "happy" : "think");
@@ -2703,6 +2849,7 @@ async function loadPlanPhotos(p) {
 // 예전 방식(사진 글자를 그대로 저장)의 사진을 큰 저장소로 옮김. 옮긴 수를 돌려줌
 async function migratePhotos(p) {
   let n = 0;
+  for (const f of (p && p.files || [])) { if (String(f.ref).startsWith("data:")) { const r = await savePhoto(f.ref); if (r !== f.ref) { f.ref = r; n++; } } }
   for (const l of (p && p.logs || [])) {
     if (!l || !Array.isArray(l.photos)) continue;
     for (let k = 0; k < l.photos.length; k++) {
@@ -2714,6 +2861,8 @@ async function migratePhotos(p) {
 // 백업용: idb 사진을 다시 사진 글자로 펼친 복사본
 async function inlinePhotos(p) {
   const c = JSON.parse(JSON.stringify(p));
+  for (const f of (c.files || [])) { const r = String(f.ref); if (r.startsWith("idb:")) { let v = photoCache[r.slice(4)]; if (!v) { try { v = await PhotoDB.get(r.slice(4)); } catch (e) {} } f.ref = v || ""; } }
+  if (c.files) c.files = c.files.filter(f => f.ref);
   for (const l of (c.logs || [])) {
     if (!l || !Array.isArray(l.photos)) continue;
     for (let k = 0; k < l.photos.length; k++) {
@@ -2743,6 +2892,25 @@ function loadPhoto(file) {
     reader.onerror = () => resolve(null);
     reader.readAsDataURL(file);
   });
+}
+// v2.7 증빙 파일 넣기 (회의록·평가회 기록지·기타) → 사진과 같은 큰 저장소(IndexedDB)
+docOpts.addEventListener("change", async e => {
+  const k = e.target.dataset && e.target.dataset.fkind; if (!k || !e.target.files.length) return;
+  let added = 0, big = 0;
+  for (const f of e.target.files) {
+    if (f.size > 10 * 1024 * 1024) { big++; continue; }
+    const d = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.onerror = () => r(null); fr.readAsDataURL(f); });
+    if (!d) continue;
+    plan.files.push({ ref: await savePhoto(d), kind: k, name: f.name, type: f.type, size: f.size, added: fmtDot(new Date()) }); added++;
+  }
+  e.target.value = ""; saveDraft(); renderStep3();
+  say(added ? added + "개를 보관했어요." : "넣지 못했어요.", (big ? big + "개는 10MB가 넘어서 빠졌어요. " : "") + "보관한 파일은 백업 파일에도 함께 들어가요.", added ? "happy" : "think", !added);
+});
+async function openStoredFile(f) {
+  if (!f) return;
+  let d = photoSrc(f.ref); if (!d && String(f.ref).startsWith("idb:")) { try { d = await PhotoDB.get(f.ref.slice(4)); } catch (e) {} }
+  if (!d) return say("파일을 찾지 못했어요.", "브라우저 기록을 지웠다면 백업 파일에서 다시 불러와 주세요.", "think", true);
+  const a = document.createElement("a"); a.href = d; a.download = f.name; document.body.appendChild(a); a.click(); a.remove();
 }
 docOpts.addEventListener("change", async e => {
   if (e.target.id !== "photoIn" || !e.target.files.length) return;
@@ -2851,7 +3019,7 @@ document.getElementById("wordBtn").addEventListener("click", () => {
   const T = n => "<" + n + ">";
   const html = T("html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word'") + T("he" + "ad") + "<meta charset='utf-8'>" + T("title") + esc(plan.title) + T("/title") + T("style") + css + T("/style") + T("/he" + "ad") + T("bo" + "dy") +
     body.replace(/<p>([\s\S]*?)<\/p>/g, (m, t) => "<p>" + t.replace(/\n/g, "<br>") + "</p>") + T("/bo" + "dy") + T("/ht" + "ml");
-  const name = { plan: "계획서", log: "일지", eval: "평가서", notice: "가정통신문" }[ui.tab];
+  const name = { plan: "계획서", log: "일지", eval: "평가서", notice: "가정통신문", proof: ui.proof === "childeval" ? "아동평가회기록지" : "아동자치회회의록" }[ui.tab];
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob(["﻿", html], { type: "application/msword" }));
   a.download = (plan.title || "프로그램").replace(/[\\\/:*?"<>|]/g, "") + "_" + name + ".doc";
@@ -2953,13 +3121,29 @@ async function buildHwpx(p, logIdx) {
 }
 document.getElementById("hwpxBtn").addEventListener("click", async () => {
   if (typeof DecompressionStream === "undefined") return say("이 브라우저는 한글 저장을 못 해요.", "크롬이나 엣지 최신 버전에서 해 주세요. 워드(.doc) 저장은 돼요.", "think", true);
-  const li = ui.log >= 0 ? ui.log : 0;
+  const li = ui.log >= 0 ? ui.log : 0, photos = (plan.logs[li] && plan.logs[li].photos) || [];
+  let withPhotos = false;
+  if (photos.length) {
+    const r = await ask("사진은 한글 파일에 들어가지 않아요", (li + 1) + "회 일지 사진 " + photos.length + "장은 한글 파일에 넣을 수 없어서, 사진 칸에는 안내 문구만 들어가요.\n" +
+      "· '사진 따로 받기'를 고르면 사진 파일(.zip)도 함께 받아요. 한글에서 [입력 → 그림]으로 넣으세요.\n· 사진까지 한 번에 필요하면 '인쇄하기'에서 PDF로 저장하세요.", "한글 + 사진 따로 받기", "한글만 받기", null);
+    if (r === null) return;
+    withPhotos = r;
+  }
   try {
     const blob = await buildHwpx(plan, li);
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
     a.download = (plan.title || "프로그램").replace(/[\\\/:*?"<>|]/g, "") + "_계획서·일지" + (li + 1) + "·평가서.hwpx";
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
-    say("한글 파일을 저장했어요.", "센터 양식 한 파일에 계획서 · " + (li + 1) + "회 일지 · 평가서가 들어 있어요." + (ui.log === -1 ? " (전체 일지는 1회만 들어가요. 다른 회기는 일지에서 회기를 고른 뒤 다시 저장하세요.)" : " 다른 회기 일지는 회기를 고른 뒤 다시 저장하세요.") + " 사진은 한글에서 넣어 주세요. 아동 이름이 들어 있으니 메일·USB로 옮긴 뒤에는 지워 주세요.", "happy");
+    if (withPhotos) {
+      await loadPlanPhotos(plan);
+      const enc = d => { const b = atob(String(d).split(",")[1] || ""); const u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; };
+      const z = zipStore(photos.map((r, k) => ({ name: (li + 1) + "회_사진" + (k + 1) + ".jpg", data: enc(photoSrc(r)) })).filter(x => x.data.length));
+      const b2 = document.createElement("a"); b2.href = URL.createObjectURL(z); b2.download = (plan.title || "프로그램").replace(/[\\\/:*?"<>|]/g, "") + "_" + (li + 1) + "회_사진.zip";
+      document.body.appendChild(b2); b2.click(); b2.remove(); setTimeout(() => URL.revokeObjectURL(b2.href), 2000);
+    }
+    say("한글 파일을 저장했어요.", "센터 양식 한 파일에 계획서 · " + (li + 1) + "회 일지 · 평가서가 들어 있어요." + (ui.log === -1 ? " (전체 일지는 1회만 들어가요. 다른 회기는 일지에서 회기를 고른 뒤 다시 저장하세요.)" : " 다른 회기 일지는 회기를 고른 뒤 다시 저장하세요.") +
+      (photos.length ? (withPhotos ? " 사진 " + photos.length + "장은 zip 파일로 따로 받았어요. 한글에서 [입력 → 그림]으로 넣어 주세요." : " 사진은 한글 파일에 들어가지 않았어요. 한글에서 넣거나 PDF로 저장해 주세요.") : "") +
+      " 아동 이름이 들어 있으니 메일·USB로 옮긴 뒤에는 지워 주세요.", "happy");
   } catch (err) { say("한글 파일을 만들지 못했어요.", (err && err.message ? err.message + " " : "") + "워드(.doc) 저장이나 인쇄를 써 주세요.", "think", true); }
 });
 
@@ -2976,9 +3160,10 @@ function go(n) {
     if (s === n) li.setAttribute("aria-current", "step"); else li.removeAttribute("aria-current");
   });
   if (n === 1) {
-    renderStep1(); renderPlans();
-    const cnt = Object.keys(getPlans()).length;
-    say("안녕하세요, 저는 별이예요!", cnt ? "전에 쓰던 프로그램 " + cnt + "개가 아래 '내 프로그램'에 있어요. '열기'로 이어 쓰거나, 다섯 가지를 골라 새로 만들어 보세요."
+    renderStep1(); renderPlans(); renderGuides();
+    const cnt = Object.keys(getPlans()).length, due = backupDue();
+    if (due) say("백업할 때예요!", (due.never ? "아직 백업 파일을 받은 적이 없어요." : "마지막 백업이 " + due.days + "일 전이에요.") + " '내 프로그램'의 '지금 백업 받기'를 눌러 주세요. 달력에 매달 알림을 넣을 수도 있어요.", "think", true);
+    else say("안녕하세요, 저는 별이예요!", cnt ? "전에 쓰던 프로그램 " + cnt + "개가 아래 '내 프로그램'에 있어요. '열기'로 이어 쓰거나, 다섯 가지를 골라 새로 만들어 보세요."
       : "다섯 가지만 골라 주시면 계획서를 만들고, 일지와 평가서도 채워 드릴게요. 모르는 칸은 비워 두셔도 괜찮아요.", "normal");
   }
   if (n === 2) {
@@ -3041,8 +3226,47 @@ function renderPlans() {
       '<div class="pb"><button type="button" class="btn btn-sub btn-small" data-popen="' + id + '">열기</button><button type="button" class="btn btn-sub btn-small" data-pdel="' + id + '">지우기</button></div></li>';
   }).join("") + (more ? '<li class="more"><button type="button" class="btn btn-sub btn-small" id="plansMore">' + (ids.length - shown.length) + "개 더 보기</button></li>" : "") +
     '<li class="new"><button type="button" class="btn btn-sub btn-small" id="newPlanBtn">+ 새 프로그램 만들기</button></li>';
+  renderBackupNudge();
   const kb = storageUse() / 1024, pct = Math.min(100, Math.round(kb / 5000 * 100));
   document.getElementById("storageHint").textContent = "브라우저 저장 공간 약 " + pct + "% 사용 (사진이 많으면 늘어나요). 브라우저 기록을 지우면 사라지니 가끔 '백업 파일 받기'를 눌러 주세요." + (pct >= 70 ? " ⚠ 공간이 부족해지고 있어요. 다 끝난 프로그램은 백업한 뒤 지워 주세요." : "");
+}
+/* v2.7 한 달에 한 번 백업 알림 — 마지막 백업에서 30일이 지나면 '내 프로그램' 위에 알림
+   (서버가 없어서 앱을 열 때 알려 줌. '달력에 알림 넣기'는 매달 1일 알림이 있는 .ics 파일을 받아 달력 앱에 넣는 방법) */
+function backupDue() {
+  const plans = getPlans(), ids = Object.keys(plans); if (!ids.length) return null;
+  const last = store.get("lastBackup") || 0, oldest = Math.min(...ids.map(id => plans[id].updated || Date.now()));
+  const days = Math.floor((Date.now() - (last || oldest)) / 86400000);
+  return days >= 30 ? { days, never: !last } : null;
+}
+function renderBackupNudge() {
+  const el = document.getElementById("backupNudge"), d = backupDue(); el.hidden = !d; if (!d) return;
+  el.innerHTML = '<span class="sp"><b>백업할 때예요.</b> ' + (d.never ? "아직 백업 파일을 받은 적이 없어요." : "마지막 백업이 " + d.days + "일 전이에요.") + " 브라우저 기록을 지우면 내용이 사라지니 한 달에 한 번 받아 두세요.</span>" +
+    '<button type="button" class="btn btn-main btn-small" data-nudge="backup">지금 백업 받기</button><button type="button" class="btn btn-sub btn-small" data-nudge="ics">달력에 매달 알림 넣기</button>';
+}
+function downloadIcs() {
+  const t = new Date(), y = t.getFullYear(), m = t.getMonth() + 2, first = new Date(y, m - 1, 1), ymd = first.getFullYear() + String(first.getMonth() + 1).padStart(2, "0") + "01";
+  const uid = "ps-backup-" + Date.now() + "@program-supporter", stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+/, "");
+  const url = location.protocol.startsWith("http") ? location.href.split("#")[0] : "https://jeonghwan415.github.io/program-supporter/";
+  const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//program-supporter//KO", "CALSCALE:GREGORIAN", "BEGIN:VEVENT", "UID:" + uid, "DTSTAMP:" + stamp,
+    "DTSTART;TZID=Asia/Seoul:" + ymd + "T090000", "DTEND;TZID=Asia/Seoul:" + ymd + "T091500", "RRULE:FREQ=MONTHLY;BYMONTHDAY=1",
+    "SUMMARY:프로그램 서포터 백업 받기 · 평가 지표 확인", "DESCRIPTION:프로그램 서포터를 열고 '백업 파일 받기'를 눌러 주세요. 새 평가 지표(아동권리보장원)가 나왔는지도 확인해요. " + url,
+    "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:프로그램 서포터 백업", "TRIGGER:-PT0M", "END:VALARM", "END:VEVENT", "END:VCALENDAR"].join("\r\n");
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([ics], { type: "text/calendar" })); a.download = "프로그램서포터_매달_백업알림.ics";
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  say("달력 알림 파일을 받았어요.", "받은 .ics 파일을 열면 아웃룩·구글 캘린더·휴대폰 달력에 '매달 1일 오전 9시' 알림이 들어가요.", "happy");
+}
+/* v2.7 평가 안내 자료: 새 평가 지표 PDF를 첨부해 두고 열기. 매달 처음 열 때 '새 지표가 나왔는지' 확인 알림 */
+function getGuides() { const g = store.get("guides"); return Array.isArray(g) ? g : []; }
+function renderGuides() {
+  const g = getGuides(), ym = toISO(new Date()).slice(0, 7), y = new Date().getFullYear(), nextY = new Date().getMonth() >= 9 ? y + 1 : y;
+  document.getElementById("guideCount").textContent = g.length ? g.length + "개 첨부" : "선택";
+  document.getElementById("guideSum").textContent = g.length ? g.map(x => x.name).join(", ") : "아동권리보장원 평가 지표(PDF)를 이 컴퓨터에 첨부해 두고 열어 볼 수 있어요.";
+  document.getElementById("guideList").innerHTML = g.map((x, i) => '<li><span>' + esc(x.name) + " <small>" + Math.max(1, Math.round(x.size / 1024)) + "KB · " + esc(x.added) + '</small></span><span><button type="button" class="btn btn-sub btn-small" data-gopen="' + i + '">열기</button><button type="button" class="btn btn-sub btn-small" data-gdel="' + i + '">지우기</button></span></li>').join("");
+  const has = g.some(x => x.name.includes(String(nextY))), nudge = document.getElementById("guideNudge");
+  nudge.hidden = has || store.get("guideMonth") === ym;
+  nudge.innerHTML = '<span class="sp"><b>이달 확인:</b> ' + nextY + "년 지역아동센터 평가 지표가 나왔나요? 나왔으면 PDF를 받아 아래 '평가 자료 첨부'로 넣어 두세요.</span>" +
+    '<a class="btn btn-sub btn-small" href="https://www.ncrc.or.kr" target="_blank" rel="noopener">아동권리보장원 열기</a><button type="button" class="btn btn-sub btn-small" data-gseen="1">이달은 확인했어요</button>';
+  if (!nudge.hidden) document.getElementById("guideCard").open = true;
 }
 function freshInput() {
   return Object.assign({}, input, { type: "regular", keyword: "", custom: "", grades: [], count: 10, start: nextMonday(), freq: "week1", sessions: 8, minutes: 60, minCustom: false, offDays: "", nights: 1, traits: [], memo: "", requests: "" });
@@ -3206,7 +3430,8 @@ async function polishWithAI() {
       store.set("cur", curId); ui.log = 0; go(2);
     } else if (b.dataset.pdel) {
       if (!b.dataset.armed) { b.dataset.armed = "1"; b.textContent = "한 번 더 누르면 지워져요"; return; }
-      ((all[b.dataset.pdel] || {}).plan || { logs: [] }).logs.forEach(l => (l && l.photos || []).forEach(dropPhoto));
+      const dp = (all[b.dataset.pdel] || {}).plan || { logs: [] };
+      dp.logs.forEach(l => (l && l.photos || []).forEach(dropPhoto)); (dp.files || []).forEach(f => dropPhoto(f.ref));
       delete all[b.dataset.pdel]; store.set("plans", all);
       if (b.dataset.pdel === curId) { curId = null; plan = null; store.del("cur"); input = freshInput(); renderStep1(); }
       renderPlans(); say("지웠어요.", "그 프로그램의 계획서·일지·평가서가 지워졌어요.", "normal");
@@ -3222,6 +3447,7 @@ async function polishWithAI() {
     a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: "application/json" }));
     a.download = "프로그램서포터_백업_" + toISO(t).replaceAll("-", "") + ".json";
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    store.set("lastBackup", Date.now()); renderBackupNudge();
     say("백업 파일을 받았어요.", "다운로드 폴더에 있어요. 다른 컴퓨터에서 '백업 불러오기'로 열 수 있어요. 아동 이름·사진이 들어 있으니 USB나 메일로 옮긴 뒤 지워 주세요.", "happy");
   });
   document.getElementById("restoreIn").addEventListener("change", e => {
@@ -3238,6 +3464,31 @@ async function polishWithAI() {
       renderPlans(); say(n + "개를 불러왔어요.", "같은 프로그램이 이미 있으면 더 최근 것을 남겼어요.", "happy");
     };
     r.readAsText(f); e.target.value = "";
+  });
+  document.getElementById("backupNudge").addEventListener("click", e => {
+    const b = e.target.closest("[data-nudge]"); if (!b) return;
+    if (b.dataset.nudge === "backup") document.getElementById("backupBtn").click(); else downloadIcs();
+  });
+  const gc = document.getElementById("guideCard");
+  gc.addEventListener("click", async e => {
+    const b = e.target.closest("button"); if (!b) return;
+    const g = getGuides();
+    if (b.dataset.gseen) { store.set("guideMonth", toISO(new Date()).slice(0, 7)); renderGuides(); say("확인했어요.", "다음 달 처음 열 때 다시 알려 드릴게요.", "happy"); }
+    else if (b.dataset.gopen) openStoredFile(g[Number(b.dataset.gopen)]);
+    else if (b.dataset.gdel) {
+      if (!b.dataset.armed) { b.dataset.armed = "1"; b.textContent = "한 번 더 누르면 지워져요"; return; }
+      const x = g.splice(Number(b.dataset.gdel), 1)[0]; if (x) dropPhoto(x.ref); store.set("guides", g); renderGuides();
+    }
+  });
+  document.getElementById("guideIn").addEventListener("change", async e => {
+    const g = getGuides(); let n = 0;
+    for (const f of e.target.files) {
+      if (f.size > 30 * 1024 * 1024) continue;
+      const d = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.onerror = () => r(null); fr.readAsDataURL(f); });
+      if (d) { g.push({ ref: await savePhoto(d), name: f.name, type: f.type, size: f.size, added: fmtDot(new Date()) }); n++; }
+    }
+    e.target.value = ""; store.set("guides", g); renderGuides();
+    say(n ? n + "개를 첨부했어요." : "첨부하지 못했어요.", n ? "'열기'로 언제든 볼 수 있어요. 이 컴퓨터에만 저장돼요." : "30MB 이하 파일만 넣을 수 있어요.", n ? "happy" : "think", !n);
   });
   document.getElementById("infoClear").addEventListener("click", () => {
     input.center = ""; input.teacher = ""; store.del("info"); saveDraft(); renderStep1();

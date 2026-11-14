@@ -44,7 +44,8 @@ const [, , htmlPath, out] = process.argv;
   await p.click('[data-act="back"]');
   const titles = await p.$$eval('#plansList li:not(.new) b', x => x.map(e => e.textContent)); L('3개:', titles.length, titles);
   // 열기 → 독서 계획 필요성 유지
-  const idx = titles.findIndex(t => t.includes('책')); await p.click(`#plansList li:nth-child(${idx + 1}) [data-popen]`);
+  const kws = await p.$$eval('#plansList li:not(.new) small', x => x.map(e => e.textContent)); const idx = kws.findIndex(t => t.includes('독서')); // v2.7: 제목은 센터마다 달라져서 키워드로 찾음 await p.waitForTimeout(600); // 1단계로 돌아오며 부드럽게 스크롤하는 동안 누르지 않게
+  await p.click(`#plansList li:nth-child(${idx + 1}) [data-popen]`);
   L('다른 프로그램 열기:', (await p.inputValue('[data-f="need"]')).startsWith('직접 고친'));
   await p.click('[data-act="back"]');
   // 백업
