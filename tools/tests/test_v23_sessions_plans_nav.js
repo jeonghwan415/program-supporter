@@ -64,5 +64,5 @@ const [, , htmlPath, out] = process.argv;
   L('잘못된 파일 안내:', (await p.textContent('#bubble')).includes('백업 파일이 아니에요'));
   // 휴대폰
   await p.setViewportSize({ width: 390, height: 844 }); await p.click('#plansList [data-popen]'); await p.waitForTimeout(500); await p.screenshot({ path: out + '/mobile_nav.png' });
-  L('ERRORS:', errs.length ? errs : 'none'); await b.close();
+  L('ERRORS:', errs.length ? errs : 'none'); if (errs.length) process.exitCode = 1; await b.close();
 })();

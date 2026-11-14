@@ -52,5 +52,5 @@ const [, , htmlPath, out] = process.argv;
   await p.click('[data-tab="notice"]'); const c = await p.textContent('#paperArea');
   L('캠프 통신문 숙소 안내:', c.includes('숙소 안전 점검'), '| 기본 지표 문화:', true);
   await p.setViewportSize({ width: 390, height: 844 }); await p.screenshot({ path: out + '/mobile_tabs.png' });
-  L('ERRORS:', errs.length ? errs : 'none'); await b.close();
+  L('ERRORS:', errs.length ? errs : 'none'); if (errs.length) process.exitCode = 1; await b.close();
 })();

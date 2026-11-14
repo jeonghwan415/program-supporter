@@ -23,6 +23,7 @@
   --blush: #FF9BA9;
   --ok: #23845A;
   --warn: #B4471F;
+  --caution: #B54708; --caution-soft: #FFF4E5; --caution-line: #F79009;
   --paper: #FFFFFF;
   --paper-ink: #111111;
   --paper-head: #EEF0F3;
@@ -35,13 +36,13 @@
   :root:not([data-theme="light"]) {
     --bg: #131A23; --surface: #1C2531; --ink: #EDF1F6; --muted: #A6B0BD; --line: #2E3A49;
     --yellow: #FFCB3D; --yellow-deep: #D99F00; --yellow-soft: #3A3420; --navy: #9DBCF0;
-    --glass: #3B5670; --ok: #5FD19B; --warn: #FF9A73; color-scheme: dark;
+    --glass: #3B5670; --ok: #5FD19B; --warn: #FF9A73; --caution: #FFB46B; --caution-soft: #3A2A1A; --caution-line: #E08A00; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #131A23; --surface: #1C2531; --ink: #EDF1F6; --muted: #A6B0BD; --line: #2E3A49;
   --yellow: #FFCB3D; --yellow-deep: #D99F00; --yellow-soft: #3A3420; --navy: #9DBCF0;
-  --glass: #3B5670; --ok: #5FD19B; --warn: #FF9A73; color-scheme: dark;
+  --glass: #3B5670; --ok: #5FD19B; --warn: #FF9A73; --caution: #FFB46B; --caution-soft: #3A2A1A; --caution-line: #E08A00; color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -64,8 +65,8 @@ button, input, textarea, select { font: inherit; color: inherit; }
 .brand { display: flex; align-items: center; gap: 10px; }
 .brand .mini { width: 50px; height: 48px; flex: none; }
 .brand h1 { font-size: 1.6rem; color: var(--ink); }
-.brand small { display: block; font-family: var(--font-body); font-size: .8rem; color: var(--muted); }
-.ai-set { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 8px 16px; cursor: pointer; font-size: .85rem; color: var(--muted); }
+.brand small { display: block; font-family: var(--font-body); font-size: .875rem; color: var(--muted); }
+.ai-set { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 8px 16px; cursor: pointer; font-size: .875rem; color: var(--muted); }
 .ai-set b { color: var(--ok); }
 
 /* 단계 표시 */
@@ -120,7 +121,7 @@ button, input, textarea, select { font: inherit; color: inherit; }
 .card h3 { font-size: 1.1rem; }
 .card h2 .q { flex: none; width: 30px; height: 30px; border-radius: 9px; background: var(--navy); color: var(--surface); font-size: 1rem; display: grid; place-items: center; }
 .hint { color: var(--muted); font-size: .9rem; margin: -6px 0 0; }
-.optional { font-family: var(--font-body); font-size: .8rem; color: var(--muted); background: var(--bg); border-radius: 999px; padding: 2px 10px; }
+.optional { font-family: var(--font-body); font-size: .875rem; color: var(--muted); background: var(--bg); border-radius: 999px; padding: 2px 10px; }
 .row { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: flex-end; }
 .field { display: grid; gap: 6px; min-width: 0; }
 .field > span { font-weight: 700; font-size: .95rem; }
@@ -134,11 +135,11 @@ button, input, textarea, select { font: inherit; color: inherit; }
 .chip[aria-pressed="true"]::before { content: ""; width: 10px; height: 6px; border-left: 3px solid currentColor; border-bottom: 3px solid currentColor; transform: rotate(-45deg) translateY(-2px); flex: none; }
 .chip.big { font-size: 1.05rem; min-width: 104px; justify-content: center; }
 .chip.sm { min-height: 42px; padding: 6px 14px; font-size: .92rem; }
-.chip .new { font-size: .68rem; font-weight: 800; background: var(--navy); color: var(--surface); border-radius: 999px; padding: 1px 7px; }
+.chip .new { font-size: .75rem; font-weight: 800; background: var(--navy); color: var(--surface); border-radius: 999px; padding: 1px 7px; }
 .types { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .type { border: 2px solid var(--line); background: var(--surface); border-radius: 16px; padding: 14px; cursor: pointer; text-align: left; display: grid; gap: 4px; }
 .type b { font-family: var(--font-display); font-weight: 400; font-size: 1.25rem; }
-.type small { color: var(--muted); font-size: .85rem; line-height: 1.45; }
+.type small { color: var(--muted); font-size: .9rem; line-height: 1.45; }
 .type[aria-pressed="true"] { background: var(--yellow); border-color: var(--yellow-deep); color: #1D2939; }
 .type[aria-pressed="true"] small { color: #1D2939; }
 .kw-group { display: grid; grid-template-columns: 112px 1fr; gap: 10px; align-items: start; padding-block: 10px; border-top: 1px dashed var(--line); }
@@ -150,7 +151,7 @@ button, input, textarea, select { font: inherit; color: inherit; }
 @media (max-width: 640px) { .tabs { grid-template-columns: repeat(2, 1fr); } }
 .tab { border: 2px solid var(--line); background: var(--surface); border-radius: 16px; padding: 14px 10px; cursor: pointer; text-align: center; display: grid; gap: 2px; }
 .tab b { font-family: var(--font-display); font-weight: 400; font-size: 1.25rem; }
-.tab small { color: var(--muted); font-size: .82rem; }
+.tab small { color: var(--muted); font-size: .875rem; }
 .tab[aria-selected="true"] { background: var(--yellow); border-color: var(--yellow-deep); color: #1D2939; }
 .tab[aria-selected="true"] small { color: #1D2939; }
 
@@ -171,7 +172,7 @@ textarea.input { resize: vertical; line-height: 1.7; min-height: 90px; }
 #mosDlg { max-width: min(900px, calc(100vw - 32px)); }
 #mosCv { display: block; margin: 0 auto; max-width: 100%; max-height: 60vh; width: auto; height: auto; touch-action: none; cursor: crosshair; border-radius: 10px; background: var(--bg); }
 .photos figure .ph-btns { position: absolute; left: 4px; right: 4px; bottom: 4px; display: flex; gap: 4px; }
-.photos figure .ph-btns button { position: static; flex: 1; padding: 4px 6px; min-height: 30px; font-size: .8rem; }
+.photos figure .ph-btns button { position: static; flex: 1; padding: 4px 6px; min-height: 32px; font-size: .875rem; }
 
 /* 버튼 */
 .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; margin-top: 20px; }
@@ -190,16 +191,16 @@ textarea.input { resize: vertical; line-height: 1.7; min-height: 90px; }
 
 /* 2단계 */
 .sec-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
-.why { display: inline-flex; gap: 6px; align-items: flex-start; font-size: .85rem; color: var(--muted); background: var(--bg); border-radius: 10px; padding: 6px 10px; }
+.why { display: inline-flex; gap: 6px; align-items: flex-start; font-size: .9rem; color: var(--muted); background: var(--bg); border-radius: 10px; padding: 6px 10px; }
 .why::before { content: "근거"; flex: none; font-weight: 700; color: var(--navy); }
 .goal { display: grid; grid-template-columns: 1fr minmax(160px, 260px); gap: 8px 12px; padding: 14px; border: 1px solid var(--line); border-radius: 14px; }
 .goal .why { grid-column: 1 / -1; }
-.goal label { display: grid; gap: 4px; font-size: .85rem; font-weight: 700; color: var(--muted); min-width: 0; }
+.goal label { display: grid; gap: 4px; font-size: .9rem; font-weight: 700; color: var(--muted); min-width: 0; }
 .goal-eval { display: grid; gap: 8px; padding: 14px; border: 1px solid var(--line); border-radius: 14px; }
 .goal-eval p { margin: 0; font-weight: 500; }
 .tbl-wrap { overflow-x: auto; }
 .sched { width: 100%; border-collapse: collapse; min-width: 620px; }
-.sched th { text-align: left; font-size: .85rem; color: var(--muted); padding: 6px 8px; border-bottom: 2px solid var(--line); }
+.sched th { text-align: left; font-size: .9rem; color: var(--muted); padding: 6px 8px; border-bottom: 2px solid var(--line); }
 .sched td { padding: 6px 4px; border-bottom: 1px solid var(--line); vertical-align: top; }
 .sched td.n { font-family: var(--font-display); font-size: 1.1rem; text-align: center; width: 48px; padding-top: 16px; }
 .sched .input { min-height: 44px; padding: 8px 10px; font-size: .95rem; }
@@ -216,7 +217,7 @@ textarea.input { resize: vertical; line-height: 1.7; min-height: 90px; }
 .photos figure button { position: absolute; top: 4px; right: 4px; }
 .file-btn { position: relative; overflow: hidden; display: inline-flex; align-items: center; }
 .file-btn input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-.site-foot { display: flex; flex-wrap: wrap; gap: 4px 14px; justify-content: center; margin: 36px 0 12px; font-size: .8rem; color: var(--muted); text-align: center; }
+.site-foot { display: flex; flex-wrap: wrap; gap: 4px 14px; justify-content: center; margin: 36px 0 12px; font-size: .875rem; color: var(--muted); text-align: center; }
 .site-foot a { color: inherit; }
 
 /* v2.1 표현 도우미: 눌러서 문장 넣기 / 한 번 더 누르면 빼기 */
@@ -227,17 +228,17 @@ textarea.input { resize: vertical; line-height: 1.7; min-height: 90px; }
 .phr[open] > summary::before { content: "−"; }
 .phr > summary small { font-weight: 400; color: var(--muted); }
 .phr-body { display: grid; gap: 10px; padding: 0 14px 14px; }
-.phr-tip { font-size: .85rem; color: var(--muted); background: var(--bg); border-radius: 10px; padding: 8px 10px; margin: 0; }
+.phr-tip { font-size: .9rem; color: var(--muted); background: var(--bg); border-radius: 10px; padding: 8px 10px; margin: 0; }
 .phr-g { display: grid; gap: 6px; }
-.phr-g > b { font-size: .85rem; color: var(--muted); }
+.phr-g > b { font-size: .9rem; color: var(--muted); }
 .phr-g .chips { gap: 6px; }
 .chip.phrase { min-height: 0; padding: 8px 12px; font-size: .9rem; font-weight: 400; text-align: left; line-height: 1.45; border-radius: 12px; }
 .chip.phrase[aria-pressed="true"] { font-weight: 500; }
 /* v2.3 2단계 목차(위에 붙음)와 접는 카드 */
 .secnav { position: sticky; top: 0; z-index: 5; display: flex; gap: 6px; overflow-x: auto; padding: 8px; margin: 0 -4px; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); scrollbar-width: thin; }
 .secnav .nav-i { flex: none; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 12px; font-size: .9rem; cursor: pointer; color: var(--ink); }
-.secnav .nav-i.warn { border: 2px solid #E08A00; color: #8A4B00; font-weight: 700; }
-.secnav .nav-sum { flex: none; align-self: center; font-size: .85rem; font-weight: 700; color: var(--navy); padding: 0 6px; }
+.secnav .nav-i.warn { border: 2px solid var(--caution-line); color: var(--caution); background: var(--caution-soft); font-weight: 700; }
+.secnav .nav-sum { flex: none; align-self: center; font-size: .9rem; font-weight: 700; color: var(--navy); padding: 0 6px; }
 #step2 .card { scroll-margin-top: 96px; }
 details.fold > summary { cursor: pointer; list-style: none; display: grid; gap: 4px; }
 details.fold > summary::-webkit-details-marker { display: none; }
@@ -252,12 +253,12 @@ details.fold[open] .fold-sum { display: none; }
 .plans li.cur { border: 2px solid var(--yellow-deep); background: var(--yellow-soft); }
 .plans .pt { display: grid; gap: 2px; min-width: 0; }
 .plans .pt b { font-size: 1rem; }
-.plans .pt small { color: var(--muted); font-size: .85rem; }
+.plans .pt small { color: var(--muted); font-size: .9rem; }
 .plans .pb { display: flex; gap: 6px; flex-wrap: wrap; }
 .plans li.new { justify-content: center; border-style: dashed; }
 /* v2.2 평가위원 팁 · 평가 지표 */
 .tip { border-left: 6px solid var(--navy); background: var(--bg); border-radius: 0 12px 12px 0; padding: 0; }
-.tip > summary { cursor: pointer; list-style: none; padding: 8px 12px; font-size: .88rem; font-weight: 700; color: var(--navy); }
+.tip > summary { cursor: pointer; list-style: none; padding: 8px 12px; font-size: .9rem; font-weight: 700; color: var(--navy); }
 .tip > summary::-webkit-details-marker { display: none; }
 .tip > summary::before { content: "평가위원 팁 ▸ "; }
 .tip[open] > summary::before { content: "평가위원 팁 ▾ "; }
@@ -268,17 +269,17 @@ details.fold[open] .fold-sum { display: none; }
 .ind-row > span { font-weight: 700; font-size: .95rem; }
 .ind-row > span small { font-weight: 400; color: var(--muted); }
 /* v2.1 준비 상태 · 빈칸 점검 */
-.ready { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: .88rem; color: var(--muted); }
+.ready { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: .9rem; color: var(--muted); }
 .ready .ok, .ready .no { border-radius: 999px; padding: 4px 10px; font-weight: 700; }
 .ready .ok { background: var(--bg); color: var(--navy); }
 .ready .ok::before { content: "✓ "; }
-.ready .no { background: var(--yellow-soft); color: #8A5A00; border: 1px dashed var(--yellow-deep); }
+.ready .no { background: var(--caution-soft); color: var(--caution); border: 1px dashed var(--caution-line); }
 .ready .no::before { content: "○ "; }
 .checks { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .checks li { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 8px 12px; border-radius: 12px; background: var(--bg); font-size: .92rem; }
-.checks li.warn { background: var(--yellow-soft); border: 1px dashed var(--yellow-deep); }
+.checks li.warn { background: var(--caution-soft); border: 1px dashed var(--caution-line); }
 .checks li span::before { content: "✓"; display: inline-block; width: 1.4em; font-weight: 800; color: var(--navy); }
-.checks li.warn span::before { content: "!"; color: #B54708; }
+.checks li.warn span::before { content: "!"; color: var(--caution); }
 .checks .btn { min-height: 34px; padding: 4px 12px; }
 .check-sum { font-weight: 700; color: var(--navy); }
 
@@ -331,7 +332,7 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
 
 @media (max-width: 640px) {
   html { font-size: 17px; }
-  .steps li { flex-direction: column; text-align: center; gap: 4px; padding: 10px 6px; font-size: .85rem; }
+  .steps li { flex-direction: column; text-align: center; gap: 4px; padding: 10px 6px; font-size: .875rem; }
   .guide .byeol { width: 84px; height: 80px; }
   .types { grid-template-columns: 1fr; }
   .kw-group { grid-template-columns: 1fr; gap: 6px; }
@@ -342,6 +343,24 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
 }
 
 /* 인쇄: A4 여백 12mm 안쪽(186mm 폭)에 표가 꼭 맞게. 긴 칸은 다음 장으로 이어짐 */
+/* v2.4 */
+.toast { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 40; max-width: min(640px, calc(100vw - 24px)); background: var(--surface); color: var(--ink); border: 2px solid var(--yellow-deep); border-radius: 16px; padding: 12px 16px; box-shadow: 0 10px 30px rgba(0,0,0,.2); font-size: .95rem; }
+.toast strong { font-family: var(--font-display); font-weight: 400; font-size: 1.05rem; color: var(--ink); }
+.toast.alert { border-color: var(--caution-line); }
+.s3-side { display: grid; gap: 16px; }
+.sec-tools { display: flex; gap: 6px; flex-wrap: wrap; }
+.done-tag { font-family: var(--font-body); font-size: .875rem; color: var(--ok); }
+.plans li.more { justify-content: center; border-style: dashed; background: transparent; }
+@media (min-width: 1280px) {
+  body[data-step="3"] .wrap { max-width: 1400px; }
+  #step3:not([hidden]) { display: grid; grid-template-columns: minmax(360px, 420px) 1fr; gap: 20px; align-items: start; }
+  #step3 .s3-side { position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow-y: auto; display: grid; gap: 18px; padding-right: 4px; scrollbar-width: thin; }
+  #step3 .paper-area { grid-column: 2; grid-row: 1; }
+  #step3 .actions { flex-direction: column; align-items: stretch; }
+  #step3 .actions .right { flex-direction: column; }
+  #step3 .actions .btn { width: 100%; }
+  #step3 .tabs { grid-template-columns: repeat(2, 1fr); }
+}
 @media print {
   @page { size: A4 portrait; margin: 12mm; }
   html, body { background: #fff !important; padding: 0 !important; margin: 0 !important; width: auto !important; }
@@ -519,6 +538,7 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
 
     <!-- 3단계 -->
     <section id="step3" class="stack" hidden>
+      <div class="s3-side no-print">
       <div class="card no-print">
         <h2>어떤 서류를 만들까요?</h2>
         <p class="hint">계획 → 실행 → 평가 순서예요. 모두 같은 계획서 내용으로 채워져 있어요.</p>
@@ -538,22 +558,24 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
         </div>
       </div>
       <div class="card no-print" id="docOpts"></div>
-      <div class="paper-area" id="paperArea"></div>
-      <div class="actions no-print">
+      <div class="actions no-print" style="margin-top:0">
         <button type="button" class="btn btn-sub" id="back2">← 계획서 다시 고치기</button>
         <div class="right">
           <button type="button" class="btn btn-sub" id="wordBtn">워드(한글) 파일로 저장</button>
           <button type="button" class="btn btn-main" id="printBtn">인쇄하기</button>
         </div>
       </div>
+      </div>
+      <div class="paper-area" id="paperArea"></div>
     </section>
   </main>
 
   <footer class="site-foot no-print">
-    <span>프로그램 서포터 v2.3 · 만든 사람 jeonghwan0415</span>
+    <span>프로그램 서포터 v2.4 · 만든 사람 jeonghwan0415</span>
     <span>문장·양식 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> · 코드 MIT · 무료로 쓰고 나눠 주세요 (판매 금지)</span>
     <span><a href="https://github.com/jeonghwan415/program-supporter/blob/main/docs/%EC%82%AC%EC%9A%A9%EC%84%A4%EB%AA%85%EC%84%9C.md" target="_blank" rel="noopener">사용 설명서</a> · <a href="https://github.com/jeonghwan415/program-supporter" target="_blank" rel="noopener">GitHub</a></span>
   </footer>
+  <div class="toast no-print" id="toast" role="status" aria-live="polite" hidden></div>
 </div>
 
 <dialog id="mosDlg">
@@ -1483,6 +1505,13 @@ function say(title, text, mood, alert) {
   b.classList.toggle("alert", !!alert);
   byeol.dataset.mood = mood || "normal";
   byeol.classList.remove("hop"); void byeol.getBoundingClientRect(); byeol.classList.add("hop");
+  // v2.4 말풍선이 화면 밖이면 아래쪽 알림으로도 보여 줌
+  const r = b.getBoundingClientRect(), off = r.bottom < 0 || r.top > innerHeight, t = document.getElementById("toast");
+  clearTimeout(say.timer);
+  if (off && b.offsetParent && Date.now() > (say.quietUntil || 0)) {
+    t.innerHTML = "<strong>" + esc(title) + "</strong> " + esc(text); t.classList.toggle("alert", !!alert); t.hidden = false;
+    say.timer = setTimeout(() => { t.hidden = true; }, alert ? 7000 : 4500);
+  } else t.hidden = true;
 }
 function esc(s) {
   return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -1519,7 +1548,13 @@ function syncPhraseChips(target, current) {
 /* ============================================================
    5) 1단계 화면
    ============================================================ */
+function makeLabel() {
+  const b = document.getElementById("makeBtn");
+  b.textContent = plan ? "계획서 다시 만들기 (지금 프로그램에 덮어써요)" : "별이야, 계획서 만들어 줘!";
+  b.title = plan ? "고친 내용과 일지가 새 초안으로 바뀌어요. 다른 프로그램을 만들려면 위 '+ 새 프로그램 만들기'를 누르세요." : "";
+}
 function renderStep1() {
+  makeLabel();
   document.getElementById("typeChips").innerHTML = TYPES.map(([v, l, d]) =>
     '<button type="button" class="type" aria-pressed="' + (input.type === v) + '" data-type="' + v + '"><b>' + l + "</b><small>" + d + "</small></button>").join("");
   document.getElementById("kwGroups").innerHTML = Object.keys(CATS).map(cat => {
@@ -1604,6 +1639,11 @@ document.getElementById("makeBtn").addEventListener("click", () => {
   if (!curKw()) return warn("어떤 분야인지 알려 주세요!", "2번에서 키워드를 하나 누르거나 직접 써 주세요.", "kwGroups");
   if (!input.grades.length) return warn("누가 참여하나요?", "3번에서 학년을 하나 이상 골라 주세요.", "gradeChips");
   if (!input.start) return warn("날짜가 비어 있어요.", "4번에서 날짜를 골라 주세요.", "startDate");
+  if (plan) {
+    const written = plan.logs.filter(l => l && (String(l.opinion || "").trim() || (l.photos || []).length)).length;
+    if (written && !confirm("지금 프로그램의 일지 " + written + "개가 지워지고 새 초안으로 바뀌어요. 계속할까요?\n(다른 프로그램을 만들려면 '취소' 후 '+ 새 프로그램 만들기'를 누르세요.)")) return;
+    plan.logs.forEach(l => (l && l.photos || []).forEach(dropPhoto));
+  }
   plan = buildPlan(input, 0);
   ui.log = 0;
   saveDraft();
@@ -1617,16 +1657,34 @@ function warn(t, m, id) {
 /* ============================================================
    6) 규칙으로 계획서 만들기
    ============================================================ */
+/* v2.4 공휴일(대체공휴일 포함) — 2026·2027년. 인사혁신처 발표 기준으로 정리, 해마다 다음 해를 더해 주세요.
+   회기 날짜가 공휴일이면 그 회기는 건너뛰고 다음 날짜로 미룸 */
+const HOLIDAYS = {
+  "2026-01-01": "신정", "2026-02-16": "설날 연휴", "2026-02-17": "설날", "2026-02-18": "설날 연휴", "2026-03-01": "삼일절", "2026-03-02": "대체공휴일",
+  "2026-05-01": "노동절", "2026-05-05": "어린이날", "2026-05-24": "부처님오신날", "2026-05-25": "대체공휴일", "2026-06-03": "지방선거", "2026-06-06": "현충일",
+  "2026-07-17": "제헌절", "2026-08-15": "광복절", "2026-08-17": "대체공휴일", "2026-09-24": "추석 연휴", "2026-09-25": "추석", "2026-09-26": "추석 연휴",
+  "2026-10-03": "개천절", "2026-10-05": "대체공휴일", "2026-10-09": "한글날", "2026-12-25": "성탄절",
+  "2027-01-01": "신정", "2027-02-06": "설날 연휴", "2027-02-07": "설날", "2027-02-08": "설날 연휴", "2027-02-09": "대체공휴일", "2027-03-01": "삼일절",
+  "2027-05-01": "노동절", "2027-05-03": "대체공휴일", "2027-05-05": "어린이날", "2027-05-13": "부처님오신날", "2027-06-06": "현충일", "2027-07-17": "제헌절",
+  "2027-07-19": "대체공휴일", "2027-08-15": "광복절", "2027-08-16": "대체공휴일", "2027-09-14": "추석 연휴", "2027-09-15": "추석", "2027-09-16": "추석 연휴",
+  "2027-10-03": "개천절", "2027-10-04": "대체공휴일", "2027-10-09": "한글날", "2027-10-11": "대체공휴일", "2027-12-25": "성탄절", "2027-12-27": "대체공휴일"
+};
+let lastSkipped = [];
 function computeDates(startStr, freq, c) {
-  const dt = fromISO(startStr); const out = [];
-  for (let i = 0; i < c; i++) {
-    out.push(new Date(dt));
+  const dt = fromISO(startStr), out = []; lastSkipped = [];
+  let i = 0, guard = 0;
+  while (out.length < c && guard++ < 1000) {
+    const iso = toISO(dt), wk = dt.getDay() === 0 || dt.getDay() === 6;
+    if (HOLIDAYS[iso]) lastSkipped.push(fmtShort(dt) + " " + HOLIDAYS[iso]);
+    else if (!(freq === "daily" && wk)) out.push(new Date(dt));
     if (freq === "week1") dt.setDate(dt.getDate() + 7);
     else if (freq === "week2") dt.setDate(dt.getDate() + (i % 2 === 0 ? 3 : 4));
     else { do { dt.setDate(dt.getDate() + 1); } while (dt.getDay() === 0 || dt.getDay() === 6); }
+    i++;
   }
   return out;
 }
+function skippedNote() { return lastSkipped.length ? " 공휴일 " + lastSkipped.length + "일(" + lastSkipped.slice(0, 3).join(", ") + (lastSkipped.length > 3 ? " 등" : "") + ")은 건너뛰었어요." : ""; }
 function pickSessions(L, c) {
   const first = L[0], last = L[L.length - 1], mid = L.slice(1, -1), need = c - 2, picked = [];
   if (need <= mid.length) {
@@ -1696,7 +1754,7 @@ function buildPlan(inp, variant) {
     const freqLabel = FREQS.find(f => f[0] === inp.freq)[1];
     schedule = pickSessions(K.sessions, c).map((s, i) => ({ date: fmtShort(dates[i]), topic: s[0], act: s[1] }));
     scheduleWhy = K.generic ? "목록에 없는 키워드라 기본 틀로 만들었어요. 활동 내용을 꼭 확인해 주세요."
-                            : "'" + kw + "' 기본 활동 " + K.sessions.length + "개에서 " + c + "회에 맞게 골랐어요. 날짜는 " + freqLabel + " 기준이에요." + (c > K.sessions.length ? " 기본 활동보다 회기가 많아 '(심화)' 회기가 있어요. 꼭 고쳐 주세요." : "");
+                            : "'" + kw + "' 기본 활동 " + K.sessions.length + "개에서 " + c + "회에 맞게 골랐어요. 날짜는 " + freqLabel + " 기준이에요." + (c > K.sessions.length ? " 기본 활동보다 회기가 많아 '(심화)' 회기가 있어요. 꼭 고쳐 주세요." : "") + skippedNote();
     sessionsInfo = freqLabel + ", 총 " + c + "회, 회당 " + inp.minutes + "분";
     period = fmtDot(dates[0]) + " ~ " + fmtDot(dates[dates.length - 1]);
   } else if (type === "event") {
@@ -1749,7 +1807,7 @@ function resizeSessions(n) {
   plan.dates = dates.map(toISO);
   plan.sessionsInfo = freqLabel + ", 총 " + n + "회, 회당 " + input.minutes + "분";
   plan.period = fmtDot(dates[0]) + " ~ " + fmtDot(dates[dates.length - 1]);
-  plan.scheduleWhy = "'" + plan.kw + "' 기본 활동 " + K.sessions.length + "개에서 " + n + "회에 맞게 다시 골랐어요. 날짜는 " + freqLabel + " 기준이에요.";
+  plan.scheduleWhy = "'" + plan.kw + "' 기본 활동 " + K.sessions.length + "개에서 " + n + "회에 맞게 다시 골랐어요. 날짜는 " + freqLabel + " 기준이에요." + skippedNote();
   const att = plan.goals.find(g => g.measure === "출석부");
   if (att) att.reason = "총 " + n + "회 중 평균 " + Math.ceil(n * 0.8) + "회 이상 출석. 출석부로 바로 확인할 수 있어요.";
   plan.logs = plan.logs.slice(0, n);
@@ -1832,7 +1890,8 @@ function renderStep2() {
     (plan.aiChanged ? '<div class="ai-note"><span>별이가 AI로 문장을 다듬었어요. <b>노란 칸</b>이 바뀐 곳이에요. 숫자가 그대로인지 확인해 주세요.</span><button type="button" class="btn btn-sub btn-small" data-act="undoAi">AI 고치기 전으로 되돌리기</button></div>' : "") +
 
     '<div class="card" id="sec-basic"><div class="sec-head"><h2>기본 정보</h2>' +
-      (hasKey ? '<button type="button" class="btn btn-ai btn-small" data-act="ai" id="aiBtn">AI로 문장 다듬기</button>' : "") + "</div>" +
+      '<div class="sec-tools">' + (hasKey ? '<button type="button" class="btn btn-ai btn-small" data-act="ai" id="aiBtn">AI로 문장 다듬기</button>' : "") +
+      '<button type="button" class="btn btn-sub btn-small" data-act="aiCopy" id="aiCopyBtn" title="키가 없어도 돼요. 복사한 글을 Claude·ChatGPT 채팅창에 붙여 넣으세요.">AI에게 부탁할 글 복사</button></div></div>' +
       '<div class="field"><span>프로그램 영역 (대분류)</span><div class="chips">' +
         Object.keys(CATS).map(c => chipHTML(c, plan.category === c, 'data-cat="' + c + '"', "sm")).join("") + "</div></div>" +
       '<div class="field"><span>세부 영역 (중분류)</span><div class="chips">' +
@@ -1911,16 +1970,19 @@ function renderStep2() {
 function autoGrow(t) { t.style.height = "auto"; t.style.height = (t.scrollHeight + 4) + "px"; }
 
 /* v2.2 평가 지표 맞추기: 평가 때 보는 항목을 계획 단계에서 미리 챙김 */
-function indicatorCard() {
-  const I = IND[plan.ind];
+function indDone(p) { return planChecks(p).every(c => !["사업계획서 반영", "의견 수렴", "10회기", "아동 참여", "지역사회 공유"].includes(c.label) || c.ok); }
+/* v2.4 다 채우면 한 줄로 접힘 (열려 있던 카드는 그대로 둠) */
+function indicatorCard(keepOpen) {
+  const I = IND[plan.ind], done = indDone(plan), open = keepOpen || !done || openFolds.has("indCard");
   const chk = (key, on, label) => chipHTML(label, on, 'data-ib="' + key + '"', "sm");
-  return '<div class="card" id="indCard"><div class="sec-head"><h2>평가 지표 맞추기 <span class="optional">지역아동센터 평가 대비</span></h2></div>' +
+  return '<details class="card fold" id="indCard"' + (open ? " open" : "") + '><summary><h2>평가 지표 맞추기 <span class="optional">지역아동센터 평가 대비</span>' + (done ? ' <span class="done-tag">✓ 다 채웠어요</span>' : "") + '</h2>' +
+    '<small class="fold-sum">' + esc(I.name + " · 의견 수렴: " + (plan.opinion.from.join(", ") || "없음") + (plan.share.length ? " · 공유: " + plan.share.join(", ") : "")) + '</small></summary><div class="fold-body" style="gap:0">' +
     '<p class="hint">평가 때 이 프로그램을 어느 지표로 낼지 고르면, 그 지표가 보는 항목을 아래 점검과 서류에 넣어 드려요.</p>' +
     '<div class="ind-row"><span>평가 지표</span><div class="chips">' +
       Object.keys(IND).map(k => chipHTML(IND[k].name, plan.ind === k, 'data-ind="' + k + '"', "sm")).join("") + "</div>" +
       '<p class="hint" style="margin:0">필수조건: ' + esc(I.must) + ". 계획 · 실행 · 평가 기록 모두, 시설장·생활복지사 결재 포함</p>" +
       (plan.ind === "edu" && plan.type === "regular" && plan.schedule.length < 10 ? '<div class="row"><span class="hint" style="margin:0">지금 ' + plan.schedule.length + '회기예요.</span><button type="button" class="btn btn-ai btn-small" data-act="to10">10회기로 맞추기</button></div>' : "") +
-      (plan.ind === "edu" && plan.type !== "regular" ? '<p class="hint" style="margin:0;color:#B54708">교육프로그램은 정기 프로그램(10회기 이상)이어야 해요. 하루 행사·캠프는 문화프로그램으로 내세요.</p>' : "") + "</div>" +
+      (plan.ind === "edu" && plan.type !== "regular" ? '<p class="hint" style="margin:0;color:var(--caution)">교육프로그램은 정기 프로그램(10회기 이상)이어야 해요. 하루 행사·캠프는 문화프로그램으로 내세요.</p>' : "") + "</div>" +
     '<div class="ind-row"><span>사업계획서 반영 <small>필수조건</small></span><div class="chips">' + chk("inAnnual", plan.inAnnual, "연간·월간 사업계획서에 넣었어요 (또는 운영위원회·종사자 회의에서 논의)") + "</div></div>" +
     '<div class="ind-row"><span>③ 의견 수렴 <small>계획 전에 누구의 의견을 들었나요? (하나 이상)</small></span><div class="chips">' +
       OPINION_FROM.map(f => chipHTML(f, plan.opinion.from.includes(f), 'data-op="' + esc(f) + '"', "sm")).join("") + "</div>" +
@@ -1929,7 +1991,7 @@ function indicatorCard() {
       chk("childPlan", plan.childPlan, "아동이 계획에 참여 (자치회 등)") + chk("childEval", plan.childEval, "아동 평가회를 할 거예요") + "</div></div>" +
     '<div class="ind-row"><span>⑦ 지역사회와 공유 <small>' + (plan.ind === "special" ? "특화 지표 평가항목" : "선택") + '</small></span><div class="chips">' +
       SHARE_WAYS.map(w => chipHTML(w, plan.share.includes(w), 'data-sh="' + esc(w) + '"', "sm")).join("") + "</div></div>" +
-  "</div>";
+  "</div></details>";
 }
 
 /* v2.1 서류 만들기 전 점검: 빠진 칸이나 숫자 없는 목표를 미리 알려 줌 (막지는 않음) */
@@ -1993,7 +2055,7 @@ function navHTML() {
 }
 
 const step2 = document.getElementById("step2");
-step2.addEventListener("toggle", e => { const d = e.target; if (d.classList && d.classList.contains("fold")) { d.open ? openFolds.add(d.id) : openFolds.delete(d.id); } }, true);
+step2.addEventListener("toggle", e => { const d = e.target; if (d.classList && d.classList.contains("fold") && d.id !== "indCard") { d.open ? openFolds.add(d.id) : openFolds.delete(d.id); } }, true);
 step2.addEventListener("input", e => {
   const t = e.target;
   if (t.dataset.f) plan[t.dataset.f] = t.value;
@@ -2008,6 +2070,9 @@ step2.addEventListener("input", e => {
   saveDraft(); refreshChecks();
 });
 step2.addEventListener("click", e => {
+  // 평가 지표 카드는 선생님이 직접 열고 닫은 것만 기억 (다 채우면 저절로 접힘)
+  const indSum = e.target.closest("#indCard > summary");
+  if (indSum) { const d = indSum.parentElement; d.open ? openFolds.delete("indCard") : openFolds.add("indCard"); }
   const ph = e.target.closest("[data-phr]");
   if (ph) {
     const f = ph.dataset.phr;
@@ -2025,7 +2090,7 @@ step2.addEventListener("click", e => {
     else if (d.ib) plan[d.ib] = !plan[d.ib];
     else if (d.op) plan.opinion.from = plan.opinion.from.includes(d.op) ? plan.opinion.from.filter(x => x !== d.op) : [...plan.opinion.from, d.op];
     else if (d.sh) plan.share = plan.share.includes(d.sh) ? plan.share.filter(x => x !== d.sh) : [...plan.share, d.sh];
-    const card = document.getElementById("indCard"); card.outerHTML = indicatorCard();
+    const card = document.getElementById("indCard"); card.outerHTML = indicatorCard(card.open);
     saveDraft(); refreshChecks();
     if (d.ind) say(IND[d.ind].name + "로 낼 거군요.", "평가 때 보는 항목을 점검 목록에 넣었어요. 칸마다 '이 칸은 이렇게 써요'를 열어 보세요.", "happy");
     return;
@@ -2059,6 +2124,8 @@ step2.addEventListener("click", e => {
     say("이 제목은 어때요?", "'" + plan.title + "' — 마음에 들지 않으면 직접 고쳐 써도 돼요.", "happy");
   }
   else if (act === "ai") polishWithAI();
+  else if (act === "aiCopy") copyText(aiPrompt()).then(ok => say(ok ? "부탁 글을 복사했어요." : "복사하지 못했어요.",
+    ok ? "Claude나 ChatGPT 채팅창에 붙여 넣으세요. 아동 이름·사진은 들어 있지 않아요. 받은 문장은 칸에 붙여 넣고 숫자가 그대로인지 확인해 주세요." : "브라우저가 복사를 막았어요. 다른 브라우저로 해 보세요.", ok ? "happy" : "think", !ok));
   else if (act === "undoAi" && plan.aiBackup) {
     Object.assign(plan, JSON.parse(JSON.stringify(plan.aiBackup)));
     delete plan.aiBackup; delete plan.aiChanged; saveDraft(); renderStep2();
@@ -2133,7 +2200,7 @@ function logDoc(p, i) {
   const date = p.dates[i] ? fmtDot(fromISO(p.dates[i])) : (p.schedule[i] ? p.schedule[i].date : "");
   const sub = p.type === "regular" ? p.title + " (" + (i + 1) + "회기" + (p.schedule[i] ? ": " + p.schedule[i].topic : "") + ")"
             : p.type === "camp" ? p.title + " (" + (i + 1) + "일차)" : p.title;
-  const photos = (L.photos || []).length && !WORD ? '<div class="doc-photos">' + L.photos.map(src => '<img src="' + src + '" alt="활동 사진">').join("") + "</div>" : "";
+  const photos = (L.photos || []).length && !WORD ? '<div class="doc-photos">' + L.photos.map(src => '<img src="' + photoSrc(src) + '" alt="활동 사진">').join("") + "</div>" : "";
   return wrapPaper(headHTML("프로그램 일지") +
     '<table class="form">' + COLS +
     "<tr><th>프로그램명</th><td>" + esc(catText(p)) + "</td><th>담당자</th><td>" + esc(input.teacher) + "</td></tr>" +
@@ -2293,7 +2360,7 @@ function renderDocOpts() {
         phraseBox("log.opinion", LOG_PHRASES, L.opinion, "관찰 문장 도우미",
           "느낌보다 아이가 한 행동을 쓰면 좋아요. ('즐거워했다' → '끝까지 완성하고 친구에게 보여 주었다') 이름 대신 '○○ 아동'으로 쓰고, 넣은 뒤에 우리 아이들에 맞게 고쳐 주세요.") +
         '<div class="field"><span>사진 <small style="font-weight:400;color:var(--muted)">' + MAXPHOTO + '장까지, 여러 장을 한 번에 골라도 돼요</small></span><div class="photos">' +
-          (L.photos || []).map((src, k) => '<figure><img src="' + src + '" alt="첨부한 사진 ' + (k + 1) + '"><div class="ph-btns"><button type="button" class="btn btn-sub btn-small" data-mos="' + k + '">모자이크</button><button type="button" class="btn btn-sub btn-small" data-delphoto="' + k + '">지우기</button></div></figure>').join("") +
+          (L.photos || []).map((src, k) => '<figure><img src="' + photoSrc(src) + '" alt="첨부한 사진 ' + (k + 1) + '"><div class="ph-btns"><button type="button" class="btn btn-sub btn-small" data-mos="' + k + '">모자이크</button><button type="button" class="btn btn-sub btn-small" data-delphoto="' + k + '">지우기</button></div></figure>').join("") +
           ((L.photos || []).length < MAXPHOTO ? '<label class="btn btn-sub btn-small file-btn">사진 넣기<input type="file" accept="image/*" multiple id="photoIn"></label>' : "") +
         '</div><p class="hint" style="margin:0">사진을 넣으면 모자이크 창이 열려요. 아동 얼굴이나 이름표를 끌어서 가릴 수 있어요.</p></div>' + tipBox("log");
     } else form = '<p class="hint">모든 일지를 한 번에 인쇄해요. 칸을 채우려면 하나를 골라 주세요. 빈칸은 손으로 쓸 수 있게 비워서 인쇄돼요.</p>';
@@ -2382,7 +2449,7 @@ docOpts.addEventListener("click", e => {
   else if (b.dataset.log) ui.log = Number(b.dataset.log);
   else if (b.dataset.nb) plan.notice[b.dataset.nb] = !plan.notice[b.dataset.nb];
   else if (b.dataset.st) { const r = plan.evalr.results[Number(b.dataset.st)]; r.status = r.status === b.dataset.sv ? "" : b.dataset.sv; }
-  else if (b.dataset.delphoto) plan.logs[ui.log].photos.splice(Number(b.dataset.delphoto), 1);
+  else if (b.dataset.delphoto) dropPhoto(plan.logs[ui.log].photos.splice(Number(b.dataset.delphoto), 1)[0]);
   else if (b.dataset.mos) { mosQueue = []; openMosaic(ui.log, Number(b.dataset.mos)); return; }
   else return;
   saveUi(); saveDraft(); renderStep3();
@@ -2401,6 +2468,63 @@ docOpts.addEventListener("input", e => {
   if (t.tagName === "TEXTAREA") autoGrow(t);
   saveDraft(); renderPaper();
 });
+/* v2.4 사진은 브라우저의 큰 저장소(IndexedDB)에 따로 저장
+   일지에는 "idb:<id>" 글자만 남겨서 작은 저장소(localStorage, 약 5MB)가 차지 않게 함.
+   IndexedDB를 못 쓰는 브라우저면 예전처럼 사진 글자(dataURL)를 그대로 둠 */
+const PhotoDB = (() => {
+  let dbp = null;
+  const open = () => dbp || (dbp = new Promise((res, rej) => {
+    if (!window.indexedDB) return rej(new Error("no-idb"));
+    const r = indexedDB.open("program-supporter", 1);
+    r.onupgradeneeded = () => r.result.createObjectStore("photos");
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+  }));
+  const run = (mode, fn) => open().then(db => new Promise((res, rej) => {
+    const t = db.transaction("photos", mode), req = fn(t.objectStore("photos"));
+    t.oncomplete = () => res(req.result); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error);
+  }));
+  return { put: (id, v) => run("readwrite", st => st.put(v, id)), get: id => run("readonly", st => st.get(id)), del: id => run("readwrite", st => st.delete(id)) };
+})();
+const photoCache = {};
+function photoSrc(ref) { ref = String(ref || ""); return ref.startsWith("idb:") ? (photoCache[ref.slice(4)] || "") : ref; }
+async function savePhoto(dataURL, ref) {
+  try {
+    const id = ref && String(ref).startsWith("idb:") ? ref.slice(4) : "ph" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+    await PhotoDB.put(id, dataURL); photoCache[id] = dataURL; return "idb:" + id;
+  } catch (e) { return dataURL; }
+}
+function dropPhoto(ref) { if (String(ref).startsWith("idb:")) { const id = ref.slice(4); delete photoCache[id]; PhotoDB.del(id).catch(() => {}); } }
+async function loadPlanPhotos(p) {
+  const need = [];
+  (p && p.logs || []).forEach(l => (l && l.photos || []).forEach(r => { if (String(r).startsWith("idb:") && !photoCache[r.slice(4)]) need.push(r.slice(4)); }));
+  for (const id of need) { try { const v = await PhotoDB.get(id); if (v) photoCache[id] = v; } catch (e) {} }
+  return need.length;
+}
+// 예전 방식(사진 글자를 그대로 저장)의 사진을 큰 저장소로 옮김. 옮긴 수를 돌려줌
+async function migratePhotos(p) {
+  let n = 0;
+  for (const l of (p && p.logs || [])) {
+    if (!l || !Array.isArray(l.photos)) continue;
+    for (let k = 0; k < l.photos.length; k++) {
+      if (String(l.photos[k]).startsWith("data:")) { const r = await savePhoto(l.photos[k]); if (r !== l.photos[k]) { l.photos[k] = r; n++; } }
+    }
+  }
+  return n;
+}
+// 백업용: idb 사진을 다시 사진 글자로 펼친 복사본
+async function inlinePhotos(p) {
+  const c = JSON.parse(JSON.stringify(p));
+  for (const l of (c.logs || [])) {
+    if (!l || !Array.isArray(l.photos)) continue;
+    for (let k = 0; k < l.photos.length; k++) {
+      const r = String(l.photos[k]);
+      if (r.startsWith("idb:")) { let v = photoCache[r.slice(4)]; if (!v) { try { v = await PhotoDB.get(r.slice(4)); } catch (e) {} } l.photos[k] = v || ""; }
+    }
+    l.photos = l.photos.filter(Boolean);
+  }
+  return c;
+}
+
 // 사진 넣기: 여러 장을 한 번에 골라도 됨. 크기를 줄여 저장한 뒤 한 장씩 모자이크 창을 엶
 function loadPhoto(file) {
   return new Promise(resolve => {
@@ -2426,7 +2550,7 @@ docOpts.addEventListener("change", async e => {
   const room = MAXPHOTO - photos.length;
   const files = Array.from(e.target.files).slice(0, room);
   let failed = 0; const added = [];
-  for (const f of files) { const d = await loadPhoto(f); if (d) { photos.push(d); added.push(photos.length - 1); } else failed++; }
+  for (const f of files) { const d = await loadPhoto(f); if (d) { photos.push(await savePhoto(d)); added.push(photos.length - 1); } else failed++; }
   const ok = saveDraft();
   renderStep3();
   const skipped = e.target.files.length - files.length;
@@ -2449,7 +2573,7 @@ function openMosaic(logIdx, photoIdx) {
     updateMos();
     if (!mosDlg.open) mosDlg.showModal();
   };
-  img.src = plan.logs[logIdx].photos[photoIdx];
+  img.src = photoSrc(plan.logs[logIdx].photos[photoIdx]);
 }
 function updateMos() {
   document.getElementById("mosUndo").disabled = !mos || !mos.hist.length;
@@ -2498,8 +2622,8 @@ document.getElementById("mosUndo").addEventListener("click", () => {
 });
 function closeMos(save) {
   if (save && mos && mos.hist.length) {
-    plan.logs[mos.log].photos[mos.idx] = mosCv.toDataURL("image/jpeg", 0.8);
-    if (!saveDraft()) say("모자이크는 적용했어요.", "저장 공간이 부족해서 창을 닫으면 사진이 사라질 수 있어요. 인쇄는 됩니다.", "think", true);
+    const L = plan.logs[mos.log], k = mos.idx, data = mosCv.toDataURL("image/jpeg", 0.8);
+    savePhoto(data, L.photos[k]).then(r => { L.photos[k] = r; if (!saveDraft()) say("모자이크는 적용했어요.", "저장 공간이 부족해서 창을 닫으면 사진이 사라질 수 있어요. 인쇄는 됩니다.", "think", true); renderStep3(); });
   }
   mos = null;
   if (mosQueue.length) { const n = mosQueue.shift(); openMosaic(n[0], n[1]); }
@@ -2540,14 +2664,20 @@ document.getElementById("wordBtn").addEventListener("click", () => {
    10) 화면 이동과 저장
    ============================================================ */
 function go(n) {
-  step = n;
+  step = n; document.body.dataset.step = n;
+  say.quietUntil = Date.now() + 1500; // 단계를 옮기면 맨 위로 올라가니 아래 알림은 안 띄움
   ["step1", "step2", "step3"].forEach((id, i) => { document.getElementById(id).hidden = (i + 1) !== n; });
   document.querySelectorAll("#steps li").forEach(li => {
     const s = Number(li.dataset.s);
     li.classList.toggle("on", s === n); li.classList.toggle("done", s < n);
     if (s === n) li.setAttribute("aria-current", "step"); else li.removeAttribute("aria-current");
   });
-  if (n === 1) { renderStep1(); renderPlans(); say("안녕하세요, 저는 별이예요!", "다섯 가지만 골라 주시면 계획서를 만들고, 일지와 평가서도 채워 드릴게요. 모르는 칸은 비워 두셔도 괜찮아요.", "normal"); }
+  if (n === 1) {
+    renderStep1(); renderPlans();
+    const cnt = Object.keys(getPlans()).length;
+    say("안녕하세요, 저는 별이예요!", cnt ? "전에 쓰던 프로그램 " + cnt + "개가 아래 '내 프로그램'에 있어요. '열기'로 이어 쓰거나, 다섯 가지를 골라 새로 만들어 보세요."
+      : "다섯 가지만 골라 주시면 계획서를 만들고, 일지와 평가서도 채워 드릴게요. 모르는 칸은 비워 두셔도 괜찮아요.", "normal");
+  }
   if (n === 2) {
     renderStep2();
     say("계획서 초안을 만들었어요!", plan.generic ? "처음 보는 키워드라 기본 틀로 만들었어요. 활동 내용을 우리 센터에 맞게 고쳐 주세요."
@@ -2561,17 +2691,34 @@ function go(n) {
 }
 /* v2.3 여러 프로그램 저장: ps.plans = { id: { input, plan, updated } }, ps.cur = 지금 작성 중인 id
    계획서를 만들기 전(1단계)에는 ps.draft에 고른 내용만 둠 */
-let curId = null;
+let curId = null, plansAll = false, lastSave = 0;
+/* v2.4 같은 컴퓨터에서 탭을 두 개 열고 같은 프로그램을 고치면 나중에 저장한 쪽이 덮어씀 → 알려 줌 */
+addEventListener("storage", e => {
+  if (e.key === "ps.plans") {
+    let all = {}; try { all = JSON.parse(e.newValue || "{}"); } catch (err) {}
+    if (step === 1) renderPlans();
+    if (curId && all[curId] && (all[curId].updated || 0) > lastSave) {
+      say("다른 탭에서 이 프로그램이 바뀌었어요!", "여기서 계속 고치면 그 탭의 내용이 덮어써져요. 한쪽 탭만 쓰시고, 최신 내용을 보려면 이 탭을 새로고침해 주세요.", "think", true);
+      lastSave = all[curId].updated;
+    }
+  }
+});
 function newId() { return "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
 function getPlans() { const v = store.get("plans"); return v && typeof v === "object" ? v : {}; }
 function saveDraft() {
   if (!plan) return store.set("draft", { input, plan: null });
   if (!curId) curId = newId();
   const all = getPlans();
-  all[curId] = { input, plan, updated: Date.now() };
+  all[curId] = { input, plan, updated: lastSave = Date.now() };
   const ok = store.set("plans", all);
   store.set("cur", curId); store.del("draft");
   return ok;
+}
+// 계획서를 열 때마다: 예전 사진 옮기기 → 사진 읽어 오기 → 3단계면 다시 그리기
+function preparePhotos() {
+  const p = plan; if (!p) return;
+  migratePhotos(p).then(n => { if (n && p === plan) saveDraft(); return loadPlanPhotos(p); })
+    .then(() => { if (p === plan && step === 3) renderStep3(); }).catch(() => {});
 }
 function storageUse() { let n = 0; try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k.startsWith("ps.")) n += (localStorage.getItem(k) || "").length; } } catch (e) {} return n * 2; }
 function renderPlans() {
@@ -2580,13 +2727,15 @@ function renderPlans() {
   card.hidden = !ids.length;
   if (!ids.length) return;
   document.getElementById("plansCount").textContent = ids.length + "개 · 이 컴퓨터에 저장";
-  document.getElementById("plansList").innerHTML = ids.map(id => {
+  const more = ids.length > 3 && !plansAll, shown = more ? ids.filter((id, i) => i < 3 || id === curId) : ids;
+  document.getElementById("plansList").innerHTML = shown.map(id => {
     const e = all[id], p = e.plan || {}, d = new Date(e.updated);
     const done = (p.logs || []).filter(l => l && String(l.opinion || "").trim()).length;
     return '<li class="' + (id === curId ? "cur" : "") + '"><div class="pt"><b>' + esc(p.title || "(제목 없음)") + (id === curId ? " · 지금 작성 중" : "") + "</b><small>" +
       esc((NOTICE_TYPES[p.type] || "") + " · " + (p.kw || "") + " · " + (p.period || "")) + " · 일지 " + done + "/" + (p.logs || []).length + " · " + (d.getMonth() + 1) + "/" + d.getDate() + " 저장</small></div>" +
       '<div class="pb"><button type="button" class="btn btn-sub btn-small" data-popen="' + id + '">열기</button><button type="button" class="btn btn-sub btn-small" data-pdel="' + id + '">지우기</button></div></li>';
-  }).join("") + '<li class="new"><button type="button" class="btn btn-sub btn-small" id="newPlanBtn">+ 새 프로그램 만들기</button></li>';
+  }).join("") + (more ? '<li class="more"><button type="button" class="btn btn-sub btn-small" id="plansMore">' + (ids.length - shown.length) + "개 더 보기</button></li>" : "") +
+    '<li class="new"><button type="button" class="btn btn-sub btn-small" id="newPlanBtn">+ 새 프로그램 만들기</button></li>';
   const kb = storageUse() / 1024, pct = Math.min(100, Math.round(kb / 5000 * 100));
   document.getElementById("storageHint").textContent = "브라우저 저장 공간 약 " + pct + "% 사용 (사진이 많으면 늘어나요). 브라우저 기록을 지우면 사라지니 가끔 '백업 파일 받기'를 눌러 주세요." + (pct >= 70 ? " ⚠ 공간이 부족해지고 있어요. 다 끝난 프로그램은 백업한 뒤 지워 주세요." : "");
 }
@@ -2614,6 +2763,29 @@ document.getElementById("aiClear").addEventListener("click", () => {
   say("키를 지웠어요.", "이 컴퓨터에 저장된 키가 없어졌어요.", "normal");
 });
 
+const AI_SYSTEM = "너는 지역아동센터 프로그램 계획서 문장을 다듬는 도우미다. 사회복지 현장 계획서 문체(~한다)로 짧고 쉽고 구체적으로 고친다. " +
+  "규칙: 목표에 들어 있는 숫자(인원, 비율, 회기, 권수, 횟수)는 절대 바꾸지 않는다. 목표 개수와 순서를 유지한다. " +
+  "입력에 없는 사실(예산, 기관명, 통계, 외부 기관)을 만들지 않는다. requests에 적힌 요청은 methods에 반드시 남긴다. methods는 줄마다 '• '로 시작하는 목록 문자열로 쓴다. effects는 3~4개 문장 배열로 쓴다.";
+// v2.4 아동 이름·사진은 넣지 않음 (계획서 문장만)
+function aiDraft() {
+  return {
+    keyword: plan.kw, type: typeName(plan.type), category: catText(plan), target: plan.target, count: plan.count, place: plan.place,
+    traits: input.traits.map(i => TRAITS[i].name), memo: input.memo, requests: input.requests,
+    need: plan.need, purpose: plan.purpose,
+    goals: plan.goals.map(g => ({ text: g.text, measure: g.measure })),
+    methods: plan.methods, effects: lines(plan.effects)
+  };
+}
+/* v2.4 키 없이 쓰는 방법: 부탁 글을 복사해서 Claude·ChatGPT 같은 채팅창에 붙여 넣기 */
+function aiPrompt() {
+  return AI_SYSTEM + "\n\n아래 계획서 초안을 위 규칙대로 다듬어 줘. 칸 이름(need, purpose, goals, methods, effects)별로 고친 문장만 보여 줘.\n\n" + JSON.stringify(aiDraft(), null, 2);
+}
+async function copyText(t) {
+  try { await navigator.clipboard.writeText(t); return true; } catch (e) {
+    const ta = document.createElement("textarea"); ta.value = t; ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta); ta.select();
+    let ok = false; try { ok = document.execCommand("copy"); } catch (e2) {} ta.remove(); return ok;
+  }
+}
 const AI_SCHEMA = {
   type: "object",
   properties: {
@@ -2633,16 +2805,8 @@ async function polishWithAI() {
   btn.disabled = true; btn.textContent = "별이가 다듬는 중…";
   say("문장을 다듬고 있어요.", "10~30초쯤 걸려요. 잠시만 기다려 주세요.", "think");
 
-  const draft = {
-    keyword: plan.kw, type: typeName(plan.type), category: catText(plan), target: plan.target, count: plan.count, place: plan.place,
-    traits: input.traits.map(i => TRAITS[i].name), memo: input.memo, requests: input.requests,
-    need: plan.need, purpose: plan.purpose,
-    goals: plan.goals.map(g => ({ text: g.text, measure: g.measure })),
-    methods: plan.methods, effects: lines(plan.effects)
-  };
-  const system = "너는 지역아동센터 프로그램 계획서 문장을 다듬는 도우미다. 사회복지 현장 계획서 문체(~한다)로 짧고 쉽고 구체적으로 고친다. " +
-    "규칙: 목표에 들어 있는 숫자(인원, 비율, 회기, 권수, 횟수)는 절대 바꾸지 않는다. 목표 개수와 순서를 유지한다. " +
-    "입력에 없는 사실(예산, 기관명, 통계, 외부 기관)을 만들지 않는다. requests에 적힌 요청은 methods에 반드시 남긴다. methods는 줄마다 '• '로 시작하는 목록 문자열로 쓴다. effects는 3~4개 문장 배열로 쓴다.";
+  const draft = aiDraft();
+  const system = AI_SYSTEM;
 
   try {
     const res = await fetch("https://api.anthropic.com/v1/messages", {
@@ -2714,14 +2878,15 @@ async function polishWithAI() {
   if (d && d.plan && d.plan.goals) { const id = newId(); all[id] = { input: d.input, plan: d.plan, updated: Date.now() }; store.set("plans", all); store.set("cur", id); store.del("draft"); }
   const cid = store.get("cur"), allNow = getPlans();
   if (cid && allNow[cid]) {
-    curId = cid; const e = allNow[cid];
+    curId = cid; const e = allNow[cid]; lastSave = e.updated || 0;
     input = Object.assign(input, e.input, { center: input.center || e.input.center || "", teacher: input.teacher || e.input.teacher || "" });
-    plan = ensurePlan(e.plan);
+    plan = ensurePlan(e.plan); preparePhotos();
   } else if (d && d.input) input = Object.assign(input, d.input, { center: input.center || d.input.center || "", teacher: input.teacher || d.input.teacher || "" });
   const pl = document.getElementById("plansList");
   pl.addEventListener("click", e => {
     const b = e.target.closest("button"); if (!b) return;
     const all = getPlans();
+    if (b.id === "plansMore") { plansAll = true; renderPlans(); return; }
     if (b.id === "newPlanBtn") {
       if (plan) saveDraft();
       curId = null; plan = null; input = freshInput(); store.del("cur"); saveDraft(); renderStep1(); renderPlans();
@@ -2730,20 +2895,23 @@ async function polishWithAI() {
     } else if (b.dataset.popen) {
       if (plan) saveDraft();
       const e2 = all[b.dataset.popen]; if (!e2) return;
-      curId = b.dataset.popen; plan = ensurePlan(e2.plan);
+      openFolds.delete("indCard"); curId = b.dataset.popen; lastSave = e2.updated || 0; plan = ensurePlan(e2.plan); preparePhotos();
       input = Object.assign(input, e2.input, { center: input.center, teacher: input.teacher });
       store.set("cur", curId); ui.log = 0; go(2);
     } else if (b.dataset.pdel) {
       if (!b.dataset.armed) { b.dataset.armed = "1"; b.textContent = "한 번 더 누르면 지워져요"; return; }
+      ((all[b.dataset.pdel] || {}).plan || { logs: [] }).logs.forEach(l => (l && l.photos || []).forEach(dropPhoto));
       delete all[b.dataset.pdel]; store.set("plans", all);
       if (b.dataset.pdel === curId) { curId = null; plan = null; store.del("cur"); input = freshInput(); renderStep1(); }
       renderPlans(); say("지웠어요.", "그 프로그램의 계획서·일지·평가서가 지워졌어요.", "normal");
     }
   });
   // 백업: 모든 프로그램과 센터 정보를 .json 파일 하나로
-  document.getElementById("backupBtn").addEventListener("click", () => {
+  document.getElementById("backupBtn").addEventListener("click", async () => {
     if (plan) saveDraft();
-    const data = { app: "program-supporter", v: 1, exported: new Date().toISOString(), info: store.get("info") || {}, plans: getPlans() };
+    const src = getPlans(), plans = {};
+    for (const [id, v] of Object.entries(src)) plans[id] = Object.assign({}, v, { plan: await inlinePhotos(v.plan) });
+    const data = { app: "program-supporter", v: 1, exported: new Date().toISOString(), info: store.get("info") || {}, plans };
     const a = document.createElement("a"), t = new Date();
     a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: "application/json" }));
     a.download = "프로그램서포터_백업_" + toISO(t).replaceAll("-", "") + ".json";
@@ -2753,12 +2921,13 @@ async function polishWithAI() {
   document.getElementById("restoreIn").addEventListener("change", e => {
     const f = e.target.files[0]; if (!f) return;
     const r = new FileReader();
-    r.onload = () => {
+    r.onload = async () => {
       let data; try { data = JSON.parse(r.result); } catch (err) { data = null; }
       if (!data || data.app !== "program-supporter" || !data.plans) { say("백업 파일이 아니에요.", "'프로그램서포터_백업_날짜.json' 파일을 골라 주세요.", "think", true); return; }
       const all = getPlans(); let n = 0;
-      Object.entries(data.plans).forEach(([id, v]) => { if (!v || !v.plan) return; if (!all[id] || (all[id].updated || 0) < (v.updated || 0)) { all[id] = v; n++; } });
+      for (const [id, v] of Object.entries(data.plans)) { if (!v || !v.plan) continue; if (!all[id] || (all[id].updated || 0) < (v.updated || 0)) { await migratePhotos(v.plan); all[id] = v; n++; } }
       if (!store.set("plans", all)) { say("저장 공간이 부족해요.", "다 끝난 프로그램을 지운 뒤 다시 불러와 주세요.", "think", true); return; }
+      if (curId && all[curId]) { plan = ensurePlan(all[curId].plan); preparePhotos(); }
       if (data.info && !input.center && !input.teacher) { input.center = data.info.center || ""; input.teacher = data.info.teacher || ""; store.set("info", data.info); renderStep1(); }
       renderPlans(); say(n + "개를 불러왔어요.", "같은 프로그램이 이미 있으면 더 최근 것을 남겼어요.", "happy");
     };

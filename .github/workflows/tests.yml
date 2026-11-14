@@ -1,0 +1,38 @@
+# 브라우저 자동 테스트 — main에 올리거나 PR을 열면 4개 테스트를 돌림
+# 하나라도 콘솔 오류가 나면(ERRORS가 none이 아니면) 실패로 표시됨
+name: tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Playwright 설치
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: 테스트 실행
+        run: |
+          mkdir -p .cache/shots
+          for t in tools/tests/test_*.js; do
+            echo "::group::$t"
+            node "$t" index.html .cache/shots
+            echo "::endgroup::"
+          done
+      - name: 화면 캡처 올리기
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: .cache/shots
+          retention-days: 7

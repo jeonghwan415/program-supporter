@@ -8,7 +8,7 @@ const [, , htmlPath, outDir] = process.argv;
   const errors = [];
   page.on('pageerror', e => errors.push('pageerror: ' + e.message));
   page.on('console', m => { if (m.type() === 'error') errors.push('console: ' + m.text()); });
-  page.on('dialog', d => d.dismiss());
+  let dlgAccept = false; page.on('dialog', d => dlgAccept ? d.accept() : d.dismiss());
   await page.goto('file://' + path.resolve(htmlPath));
   const log = (...a) => console.log(...a);
 
@@ -90,6 +90,8 @@ const [, , htmlPath, outDir] = process.argv;
   log('저장된 필요성 줄 수:', (await page.inputValue('[data-f="need"]')).split('\n').length);
 
   // 다른 새 키워드 모두 계획서 생성 확인
+  // v2.4: 일지를 쓴 프로그램을 다시 만들면 확인 창이 뜸 → 이 테스트에서는 '확인'
+  dlgAccept = true;
   for (const kw of ['미디어·AI 리터러시', '경제·용돈', '세계문화·다문화', '아동권리·자치']) {
     await page.click('[data-act="back"]');
     await page.click('[data-kw="' + kw + '"]');
@@ -105,6 +107,6 @@ const [, , htmlPath, outDir] = process.argv;
   await page.setViewportSize({ width: 390, height: 844 });
   await page.screenshot({ path: outDir + '/s2_mobile.png', fullPage: false });
 
-  log('ERRORS:', errors.length ? errors : 'none');
+  log('ERRORS:', errors.length ? errors : 'none'); if (errors.length) process.exitCode = 1;
   await browser.close();
 })();
