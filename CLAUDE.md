@@ -34,6 +34,7 @@ tools/analyze_vocabulary.py   형태소 빈도 + 워드클라우드 (개발할 �
 ## 실행
 
 - 확인: VS Code 오른쪽 아래 **Go Live** → `http://127.0.0.1:5500` (또는 `index.html` 더블클릭)
+- 브라우저 테스트: `tools/tests/README.md` (고친 뒤 세 개 모두 `ERRORS: none`인지 확인)
 - 문법 검사: `<script>` 안을 꺼내 `node --check`로 확인 (외부 라이브러리가 없어서 이것만으로 충분)
 - 배포: main에 push → GitHub Actions → https://jeonghwan415.github.io/program-supporter/
 
@@ -53,7 +54,7 @@ tools/analyze_vocabulary.py   형태소 빈도 + 워드클라우드 (개발할 �
 | 7) 만족도 | `surveyStats()` | 평균·4점 이상 비율 |
 | 8) 2단계 | `renderStep2()`, `indicatorCard()`, `planChecks()`, `checksHTML()`, `refreshChecks()` | 계획서 확인, 평가 지표 맞추기, 서류 점검 |
 | 9) 3단계 | `planDoc()`, `logDoc()`, `evalDoc()`, `noticeDoc()`(가정통신문), `surveyDoc()`, `opinionLine()`, `participateLines()`, `renderDocOpts()`, 모자이크, 워드 저장 | 서류와 출력 |
-| 10) 이동·저장 | `go()`, `saveDraft()`, `saveUi()` | |
+| 10) 이동·저장 | `go()`, `saveDraft()`, `saveUi()`, `getPlans()`, `renderPlans()`, `resizeSessions()`, `navHTML()`, `foldOpen()` | 여러 프로그램·백업, 회기 수만 바꾸기, 2단계 목차·접기 (v2.3) |
 | 11) AI (선택) | `polishWithAI()`, `AI_SCHEMA` | Claude API, 키가 있을 때만 |
 
 ## 데이터 형식
@@ -81,7 +82,7 @@ tools/analyze_vocabulary.py   형태소 빈도 + 워드클라우드 (개발할 �
 - 넣기·빼기는 `applyPhrase(text, 문장, mode)` — mode "line"이면 새 줄로 더하고 있으면 그 문장만 뺌, "replace"면 바꿈
 
 ### 저장 (localStorage)
-`ps.draft` = `{ input, plan }` (plan 안에 logs[], evalr, 사진 dataURL, v2.2: `ind`·`inAnnual`·`opinion{from,note}`·`childPlan`·`childEval`·`share[]`·`notice{date,fee,gather,bring,deadline,contact,extra,reply,photo}`) · `ps.info` = 센터·담당자 · `ps.ui` = 탭·조사지·결재란 · `ps.aiKey`
+`ps.plans` = `{ id: { input, plan, updated } }` (v2.3, 여러 프로그램), `ps.cur` = 지금 작성 중인 id, `ps.draft` = 계획서를 만들기 전 1단계 입력만 (`{ input, plan: null }`, 예전 버전은 여기에 계획서를 두었고 `init()`이 `ps.plans`로 옮김). plan 안에는 logs[], evalr, 사진 dataURL, v2.2: `ind`·`inAnnual`·`opinion{from,note}`·`childPlan`·`childEval`·`share[]`·`notice{date,fee,gather,bring,deadline,contact,extra,reply,photo}`) · `ps.info` = 센터·담당자 · `ps.ui` = 탭·조사지·결재란 · `ps.aiKey`
 **저장 형식을 바꾸면 예전에 쓰던 내용이 안 열릴 수 있어요.** `ensurePlan()`에서 빠진 칸을 채우는 방식으로만 늘려 주세요.
 
 ## 꼭 지킬 규칙

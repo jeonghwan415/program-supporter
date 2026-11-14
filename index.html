@@ -233,6 +233,28 @@ textarea.input { resize: vertical; line-height: 1.7; min-height: 90px; }
 .phr-g .chips { gap: 6px; }
 .chip.phrase { min-height: 0; padding: 8px 12px; font-size: .9rem; font-weight: 400; text-align: left; line-height: 1.45; border-radius: 12px; }
 .chip.phrase[aria-pressed="true"] { font-weight: 500; }
+/* v2.3 2단계 목차(위에 붙음)와 접는 카드 */
+.secnav { position: sticky; top: 0; z-index: 5; display: flex; gap: 6px; overflow-x: auto; padding: 8px; margin: 0 -4px; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); scrollbar-width: thin; }
+.secnav .nav-i { flex: none; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 12px; font-size: .9rem; cursor: pointer; color: var(--ink); }
+.secnav .nav-i.warn { border: 2px solid #E08A00; color: #8A4B00; font-weight: 700; }
+.secnav .nav-sum { flex: none; align-self: center; font-size: .85rem; font-weight: 700; color: var(--navy); padding: 0 6px; }
+#step2 .card { scroll-margin-top: 96px; }
+details.fold > summary { cursor: pointer; list-style: none; display: grid; gap: 4px; }
+details.fold > summary::-webkit-details-marker { display: none; }
+details.fold > summary h2::after { content: " ▸"; color: var(--muted); font-size: .9em; }
+details.fold[open] > summary h2::after { content: " ▾"; }
+details.fold .fold-sum { color: var(--muted); font-size: .9rem; }
+details.fold[open] .fold-sum { display: none; }
+.fold-body { display: grid; gap: 14px; margin-top: 14px; }
+/* v2.3 내 프로그램 목록 */
+.plans { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.plans li { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 10px 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+.plans li.cur { border: 2px solid var(--yellow-deep); background: var(--yellow-soft); }
+.plans .pt { display: grid; gap: 2px; min-width: 0; }
+.plans .pt b { font-size: 1rem; }
+.plans .pt small { color: var(--muted); font-size: .85rem; }
+.plans .pb { display: flex; gap: 6px; flex-wrap: wrap; }
+.plans li.new { justify-content: center; border-style: dashed; }
 /* v2.2 평가위원 팁 · 평가 지표 */
 .tip { border-left: 6px solid var(--navy); background: var(--bg); border-radius: 0 12px 12px 0; padding: 0; }
 .tip > summary { cursor: pointer; list-style: none; padding: 8px 12px; font-size: .88rem; font-weight: 700; color: var(--navy); }
@@ -397,9 +419,15 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
   <main>
     <!-- 1단계 -->
     <section id="step1" class="stack">
-      <div class="resume" id="resumeBox" hidden>
-        <span>지난번에 만들던 계획서가 있어요.</span>
-        <span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn btn-sub btn-small" id="resetBtn">지우고 새로 쓰기</button><button type="button" class="btn btn-sub btn-small" id="resumeBtn">이어서 고치기</button></span>
+      <div class="card" id="plansCard" hidden>
+        <div class="sec-head"><h2>내 프로그램 <span class="optional" id="plansCount"></span></h2>
+          <span style="display:flex;gap:8px;flex-wrap:wrap">
+            <button type="button" class="btn btn-sub btn-small" id="backupBtn">백업 파일 받기</button>
+            <label class="btn btn-sub btn-small file-btn">백업 불러오기<input type="file" accept=".json,application/json" id="restoreIn"></label>
+          </span>
+        </div>
+        <ul class="plans" id="plansList"></ul>
+        <p class="hint" id="storageHint" style="margin:0"></p>
       </div>
 
       <div class="card">
@@ -522,7 +550,7 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
   </main>
 
   <footer class="site-foot no-print">
-    <span>프로그램 서포터 v2.2 · 만든 사람 jeonghwan0415</span>
+    <span>프로그램 서포터 v2.3 · 만든 사람 jeonghwan0415</span>
     <span>문장·양식 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> · 코드 MIT · 무료로 쓰고 나눠 주세요 (판매 금지)</span>
     <span><a href="https://github.com/jeonghwan415/program-supporter/blob/main/docs/%EC%82%AC%EC%9A%A9%EC%84%A4%EB%AA%85%EC%84%9C.md" target="_blank" rel="noopener">사용 설명서</a> · <a href="https://github.com/jeonghwan415/program-supporter" target="_blank" rel="noopener">GitHub</a></span>
   </footer>
@@ -607,6 +635,10 @@ const KEYWORDS = {
       ["채소 토스트 피자", "빵 위에 채소를 올려 토스트 피자 만들기"],
       ["떡꼬치", "떡꼬치 굽기(가열은 교사가 진행)"],
       ["우리 집 레시피 카드", "가족에게 만들어 주고 싶은 요리 카드 쓰기"],
+      ["오므라이스", "달걀 풀기와 볶음밥 재료 다지기(가열은 교사)"],
+      ["김밥 말기", "김발로 김밥 말고 썰기"],
+      ["채소 비빔밥", "제철 채소를 고르고 비빔밥 담기"],
+      ["세계 간식 만들기", "다른 나라 간식 한 가지 만들어 맛보기"],
       ["마무리: 요리 파티", "배운 요리 중 하나를 골라 나눠 먹기"]
     ],
     materials: "앞치마·위생모, 일회용 장갑, 조리 도구, 회기별 식재료, 레시피 카드",
@@ -630,6 +662,10 @@ const KEYWORDS = {
       ["스마트폰 약속", "스마트폰 사용 시간 약속 정하기"],
       ["인사와 예절", "상황별 인사말 역할극"],
       ["건강한 간식 고르기", "간식 성분표 보고 고르는 연습"],
+      ["옷 개기와 신발 정리", "옷 개는 법 배우고 신발장 정리하기"],
+      ["물 마시기 습관", "하루 물 마시기 기록표 만들기"],
+      ["잠자기 전 습관", "잠들기 전 할 일 순서표 만들기"],
+      ["나만의 습관 달력", "한 달 습관 달력 세우고 친구와 응원하기"],
       ["마무리: 습관 시상식", "체크표 돌아보고 서로 칭찬하기"]
     ],
     materials: "습관 체크표, 칭찬 스티커, 위생 용품, 활동지",
@@ -652,6 +688,10 @@ const KEYWORDS = {
       ["화재 대피 훈련", "젖은 수건으로 입 막고 낮은 자세로 대피하기"],
       ["지진 대피 훈련", "책상 아래 몸 보호 후 넓은 곳으로 대피하기"],
       ["약물·흡연 예방", "몸에 해로운 물질 알고 거절하는 말 연습"],
+      ["감염병 예방", "손 씻기·기침 예절 실습"],
+      ["물놀이 안전", "물놀이 사고 예방 수칙과 구명조끼 입기"],
+      ["놀이터·자전거 안전", "헬멧 쓰기와 놀이기구 안전 수칙"],
+      ["응급 상황 신고", "119·112 신고 연습 역할극"],
       ["마무리: 안전 골든벨", "배운 내용으로 퀴즈 대회, 안전 지킴이 인증"]
     ],
     materials: "안전교육 영상·자료, 퀴즈지, 역할극 카드, 비상 대피 경로도",
@@ -674,6 +714,10 @@ const KEYWORDS = {
       ["낱말 놀이", "책에서 새로 알게 된 낱말로 빙고·퀴즈"],
       ["독서 신문 만들기", "모둠별로 읽은 책을 소개하는 신문 만들기"],
       ["친구에게 책 추천하기", "추천 카드를 쓰고 서로 바꿔 읽기"],
+      ["시 읽고 따라 쓰기", "동시를 읽고 나만의 시 한 편 쓰기"],
+      ["정보 책 읽기", "궁금한 주제를 책에서 찾아 정리하기"],
+      ["책 속 장면 그리기", "가장 기억에 남는 장면을 그림으로"],
+      ["독서 토론", "책 속 문제에 내 생각 말하기"],
       ["마무리: 독서 발표회", "가장 좋았던 책 발표, 독서 기록장 돌아보기"]
     ],
     materials: "그림책·동화책, 독서 기록장, 활동지, 색연필, 전지",
@@ -696,6 +740,10 @@ const KEYWORDS = {
       ["소리 내어 읽기", "짧은 글을 또박또박 읽고 녹음해 듣기"],
       ["교과 어휘 익히기", "교과서 속 어려운 낱말 뜻 찾고 문장 만들기"],
       ["짧은 글 요약하기", "읽은 글을 세 문장으로 줄여 쓰기"],
+      ["분수·도형 놀이", "교구로 분수와 도형 개념 익히기"],
+      ["받아쓰기와 맞춤법", "자주 틀리는 맞춤법 놀이로 익히기"],
+      ["문장 만들기", "배운 낱말로 짧은 문장 쓰기"],
+      ["복습 퀴즈 대회", "그동안 배운 내용 모둠 퀴즈"],
       ["마무리: 사후 진단과 시상", "사후 진단, 성장한 점 칭찬하기"]
     ],
     materials: "수준별 학습지, 연산 교구, 교과 어휘 카드, 학습 기록표, 칭찬 스티커",
@@ -719,6 +767,10 @@ const KEYWORDS = {
       ["화산 폭발 실험", "베이킹소다와 식초로 거품 화산 만들기"],
       ["돋보기 관찰", "주변 물건을 돋보기로 관찰해 그리기"],
       ["종이 다리 만들기", "종이로 튼튼한 다리 만들어 무게 견디기"],
+      ["자석의 힘", "자석으로 끌리는 물건 찾기"],
+      ["소리 전화기", "종이컵 전화기로 소리 전달 실험"],
+      ["식물 기르기", "콩나물·새싹 기르며 관찰 일지 쓰기"],
+      ["빛과 그림자", "손전등으로 그림자 연극 만들기"],
       ["마무리: 꼬마 과학 발표회", "가장 재미있던 실험 발표하기"]
     ],
     materials: "회기별 실험 재료, 보안경, 실험 기록지, 돋보기",
@@ -742,6 +794,10 @@ const KEYWORDS = {
       ["이야기 만들기", "캐릭터가 대화하는 짧은 애니메이션 만들기"],
       ["간단한 게임 만들기", "점수가 올라가는 게임 만들기"],
       ["디지털 안전", "개인정보 보호, 나쁜 댓글 대처 방법 알기"],
+      ["로봇 길 찾기", "보드 위에서 로봇 길 찾기 놀이"],
+      ["센서 체험", "소리·빛에 반응하는 작품 만들기"],
+      ["친구 작품 고쳐 보기", "친구 코드에 기능 하나 더하기"],
+      ["발표 자료 만들기", "내 작품을 소개하는 화면 만들기"],
       ["마무리: 작품 발표회", "만든 작품 소개하고 서로 해 보기"]
     ],
     materials: "태블릿 또는 노트북, 무료 블록 코딩 프로그램, 언플러그드 카드, 활동지",
@@ -765,6 +821,10 @@ const KEYWORDS = {
       ["협동 게임", "모두 힘을 모아 이기는 협동 게임"],
       ["말하기·추리 게임", "단서를 듣고 정답 추리하기"],
       ["모둠 대항전", "모둠별 리그전과 응원"],
+      ["단어 게임", "낱말 카드로 말 만들기 게임"],
+      ["규칙 바꿔 보기", "익숙한 게임 규칙을 바꿔 새로 해 보기"],
+      ["보드게임 설명하기", "친구에게 게임 방법 설명하기"],
+      ["가족과 함께 게임", "집에서 할 게임 골라 규칙표 만들기"],
       ["마무리: 우리가 만든 보드게임", "모둠이 만든 게임 발표하고 해 보기"]
     ],
     materials: "수준별 보드게임 세트, 모래시계, 점수판, 게임 만들기 재료",
@@ -787,6 +847,10 @@ const KEYWORDS = {
       ["직업 역할극", "관심 직업을 골라 하루 체험 역할극"],
       ["내 강점 찾기", "친구가 본 나의 강점 이야기 나누기"],
       ["10년 뒤의 나", "미래의 나에게 편지 쓰기"],
+      ["직업 체험 놀이", "관심 직업의 하루 체험 역할극"],
+      ["직업 인터뷰 준비", "궁금한 직업인에게 물을 질문 만들기"],
+      ["미래 직업 상상하기", "10년 뒤 생길 직업 상상해 그리기"],
+      ["꿈 지도 만들기", "꿈을 이루는 단계를 지도로 그리기"],
       ["마무리: 꿈 발표회", "나의 꿈 계획표 발표하기"]
     ],
     materials: "직업 카드, 활동지, 역할극 소품, 영상 자료",
@@ -809,6 +873,10 @@ const KEYWORDS = {
       ["종이접기 작품", "종이접기로 동물·꽃 만들어 꾸미기"],
       ["재활용 만들기", "빈 상자·병으로 생활 소품 만들기"],
       ["모둠 협동화", "큰 종이에 모둠이 함께 그림 그리기"],
+      ["판화 찍기", "스티로폼 판화 찍기"],
+      ["명화 따라 그리기", "좋아하는 명화를 내 방식으로 그리기"],
+      ["가면 만들기", "감정을 담은 가면 꾸미기"],
+      ["전시 준비", "작품 제목·설명 카드 만들기"],
       ["마무리: 작은 전시회", "작품 전시하고 서로 감상 나누기"]
     ],
     materials: "도화지, 물감·붓, 색연필, 점토, 색종이, 가위·풀, 재활용품, 전시용 집게",
@@ -831,6 +899,10 @@ const KEYWORDS = {
       ["노래 배우기 2", "새 노래 끝까지 부르기"],
       ["가사 바꿔 부르기", "우리 이야기로 가사 바꿔 부르기"],
       ["합주 연습", "노래와 리듬악기 함께 맞추기"],
+      ["세계의 노래", "다른 나라 노래와 악기 알아보기"],
+      ["소리 탐험", "생활 물건으로 소리 만들기"],
+      ["노래 만들기", "짧은 가락에 우리 가사 붙이기"],
+      ["음악회 리허설", "순서 정하고 무대 연습하기"],
       ["마무리: 작은 음악회", "가족·친구 앞에서 발표하기"]
     ],
     materials: "리듬악기(탬버린·캐스터네츠 등), 음원, 스피커, 가사지",
@@ -853,6 +925,10 @@ const KEYWORDS = {
       ["장애물 달리기", "콘·훌라후프로 코스 만들어 달리기"],
       ["피구·발야구", "규칙을 정하고 팀 경기 하기"],
       ["새 놀이 만들기", "모둠이 직접 규칙을 만든 놀이 해 보기"],
+      ["균형 잡기 놀이", "평균대·한 발 서기 도전"],
+      ["단체 줄넘기", "긴 줄넘기 협동 도전"],
+      ["뉴스포츠", "플라잉디스크·킨볼 체험"],
+      ["운동회 준비", "팀 이름 정하고 응원 연습"],
       ["마무리: 작은 운동회", "배운 놀이로 운동회 열고 서로 응원하기"]
     ],
     timeTable: [["13:00", "준비운동, 안전 교육, 팀 나누기"], ["13:30", "개회식, 팀 응원 구호 정하기"], ["14:00", "1부: 이어달리기, 줄다리기"], ["15:00", "쉬는 시간, 물·간식"], ["15:20", "2부: 협동 공 옮기기, 전래놀이"], ["16:20", "시상, 소감 나누기, 정리"]],
@@ -878,6 +954,10 @@ const KEYWORDS = {
       ["수영장·워터파크", "물놀이 안전 수칙을 지키며 체험하기"],
       ["체험 농장", "수확 체험하고 먹거리의 소중함 알기"],
       ["지역 축제 참여", "지역 행사에 참여하며 우리 동네 알기"],
+      ["도서관·과학관 견학", "전시 관람 후 궁금한 점 찾기"],
+      ["전통문화 체험", "전통 놀이·공예 체험"],
+      ["안전한 대중교통 이용", "버스·지하철 타는 법 익히기"],
+      ["나들이 계획 세우기", "아동이 일정과 준비물 직접 정하기"],
       ["마무리: 추억 사진전", "나들이 사진으로 전시회 열기"]
     ],
     materials: "이동 차량, 구급함, 비상연락망, 개인 준비물 안내문, 물·간식",
@@ -902,6 +982,10 @@ const KEYWORDS = {
       ["발표 연습 2", "무대에서 순서대로 연습하기"],
       ["초대장·포스터 만들기", "가족과 이웃에게 보낼 초대장 만들기"],
       ["리허설", "전체 순서대로 미리 해 보기"],
+      ["홍보 영상 만들기", "행사 홍보 영상 찍기"],
+      ["초대 손님 정하기", "초대할 사람과 초대 방법 정하기"],
+      ["무대 꾸미기", "무대 장식 함께 만들기"],
+      ["행사 돌아보기", "잘된 점·아쉬운 점 나누기"],
       ["마무리: 행사 당일", "행사 진행 후 소감 나누기"]
     ],
     materials: "무대 소품, 놀이 부스 재료, 음향 장비, 시상품, 간식, 초대장",
@@ -924,6 +1008,10 @@ const KEYWORDS = {
       ["나의 장점 나무", "내 장점을 나뭇잎에 써서 나무 완성하기"],
       ["칭찬 릴레이", "친구의 좋은 점을 찾아 칭찬하기"],
       ["걱정 인형 만들기", "걱정을 털어놓는 인형 만들기"],
+      ["몸과 마음 이완", "호흡·스트레칭으로 마음 진정하기"],
+      ["감정 그림책", "그림책 속 인물 감정 알아보기"],
+      ["고마운 사람", "고마운 사람에게 감사 카드 쓰기"],
+      ["나의 마음 지도", "내 마음을 지도로 그려 나누기"],
       ["마무리: 나에게 쓰는 편지", "나를 응원하는 편지 쓰기"]
     ],
     materials: "감정 카드, 활동지, 색연필, 걱정 인형 재료, 편지지",
@@ -947,6 +1035,10 @@ const KEYWORDS = {
       ["갈등 상황 역할극", "다툼 상황을 바꿔 연기하며 해결 방법 찾기"],
       ["칭찬 샤워", "한 친구에게 모두가 칭찬 한마디씩 하기"],
       ["모둠 프로젝트", "모둠이 함께 작은 작품 완성하기"],
+      ["경청 놀이", "친구 말 끝까지 듣고 따라 말하기"],
+      ["거절하는 말", "기분 상하지 않게 거절하는 말 연습"],
+      ["사과와 화해", "사과하는 말과 화해 방법 익히기"],
+      ["우리 반 규칙 점검", "처음 정한 약속을 돌아보고 고치기"],
       ["마무리: 우정 파티", "고마운 친구에게 편지 쓰고 나누기"]
     ],
     materials: "활동지, 놀이 도구, 역할극 상황 카드, 칭찬 카드",
@@ -969,6 +1061,10 @@ const KEYWORDS = {
       ["가족 보드게임", "가족이 한 팀이 되어 게임하기"],
       ["부모 교육: 칭찬 대화법", "보호자 대상 칭찬·공감 대화 연습"],
       ["가족 나들이", "가까운 공원에서 가족 미션 활동"],
+      ["가족 인터뷰", "가족에게 어릴 적 이야기 묻고 기록하기"],
+      ["가족 화분 가꾸기", "가족과 함께 화분 심어 기르기"],
+      ["보호자 간담회", "프로그램 이야기를 나누고 의견 듣기"],
+      ["가족 신문 만들기", "우리 가족 소식 신문 만들기"],
       ["마무리: 가족 감사 파티", "활동 사진 보며 소감 나누기"]
     ],
     materials: "가정통신문, 만들기 재료, 요리 재료, 편지지, 보드게임",
@@ -992,6 +1088,10 @@ const KEYWORDS = {
       ["동네 환경 정화", "센터 주변 쓰레기 줍기 봉사"],
       ["이웃 나눔", "경로당에 편지 전하기, 작은 공연"],
       ["우리 동네 신문", "탐방 내용으로 동네 소개 신문 만들기"],
+      ["우리 동네 역사", "동네 옛 모습 사진 보고 이야기 나누기"],
+      ["경로당 방문", "어르신께 공연·편지 전하기"],
+      ["동네 지도 고치기", "탐방 후 동네 지도 다시 그리기"],
+      ["봉사 돌아보기", "봉사 후 느낀 점과 다음 계획 나누기"],
       ["마무리: 탐방 발표회", "탐방·봉사 사진 보며 발표하기"]
     ],
     materials: "동네 지도, 탐방 활동지, 봉사 용품(장갑·집게·봉투), 이름표",
@@ -1019,6 +1119,10 @@ const KEYWORDS = {
       ["내 탄소 발자국 찾기", "하루 생활을 돌아보며 에너지 아끼는 방법 찾기"],
       ["씨앗 심기", "화분에 씨앗을 심고 관찰 일기 쓰기"],
       ["우리 동네 환경 지킴이", "센터 주변을 걸으며 쓰레기 줍기(플로깅)"],
+      ["물 아끼기", "하루 물 사용량 알아보고 줄이는 방법 찾기"],
+      ["에너지 탐정", "센터에서 새는 전기 찾기"],
+      ["친환경 장보기", "포장 적은 물건 고르기 놀이"],
+      ["환경 캠페인 준비", "포스터와 실천 약속 카드 만들기"],
       ["마무리: 실천 선언과 전시회", "만든 작품을 전시하고 환경 실천 약속 발표하기"]
     ],
     materials: "분리배출 카드, 재활용 재료(우유팩·페트병), 화분·씨앗, 장갑·집게·봉투, 활동지",
@@ -1042,6 +1146,10 @@ const KEYWORDS = {
       ["개인정보와 디지털 발자국", "온라인에 남기면 안 되는 정보 알기"],
       ["사이버폭력 멈춰!", "나쁜 댓글·단톡방 상황 역할극과 대처 방법 연습"],
       ["AI로 만드는 우리 그림책", "교사 계정으로 AI 그림을 만들고 이야기 붙이기"],
+      ["광고 읽기", "광고가 숨긴 정보 찾기"],
+      ["좋은 질문 만들기", "AI에게 묻는 질문을 바꿔 보며 결과 비교"],
+      ["사진과 저작권", "남의 사진을 쓸 때 지킬 약속"],
+      ["디지털 쉼 실천", "화면 없는 하루 계획 세우기"],
       ["마무리: 디지털 시민 선언", "배운 내용으로 우리 센터 디지털 약속 만들고 발표하기"]
     ],
     materials: "태블릿 또는 노트북(교사 계정), 팩트체크 활동지, 역할극 카드, 퀴즈지",
@@ -1065,6 +1173,10 @@ const KEYWORDS = {
       ["저축과 목표", "갖고 싶은 것을 위한 저축 계획 세우기"],
       ["광고 속 비밀", "광고가 사고 싶게 만드는 방법 찾기"],
       ["나눔과 기부", "작은 나눔 계획 세우고 실천하기"],
+      ["물건의 일생", "물건이 만들어져 오는 길 알아보기"],
+      ["가격 비교 놀이", "같은 물건 가격 비교하기"],
+      ["직업과 돈", "일과 돈의 관계 알아보기"],
+      ["알뜰 장터 준비", "팔 물건 정하고 가격표 만들기"],
       ["마무리: 센터 알뜰 장터", "모형 화폐로 물건을 사고팔며 배운 것 써 보기"]
     ],
     materials: "모형 화폐, 용돈 기입장, 마트 전단지, 물건 카드, 저금통",
@@ -1088,6 +1200,10 @@ const KEYWORDS = {
       ["명절과 전통 의상", "나라별 명절과 옷을 알아보고 그려 보기"],
       ["세계 그림책 읽기", "다른 나라 이야기를 읽고 비슷한 점·다른 점 찾기"],
       ["우리 친구 나라 소개", "원하는 아동이 가족의 나라 문화를 소개하기"],
+      ["세계의 학교", "다른 나라 학교생활 알아보기"],
+      ["세계의 동화", "다른 나라 동화 읽고 비교하기"],
+      ["우리말 다른 말", "여러 나라 말로 같은 낱말 알아보기"],
+      ["축제 준비", "부스 역할 나누고 준비물 만들기"],
       ["마무리: 세계 문화 축제", "모둠별로 한 나라를 맡아 놀이·음식 부스 열기"]
     ],
     materials: "세계 지도, 나라별 놀이 도구, 간식 재료, 그림책, 활동지",
@@ -1111,6 +1227,10 @@ const KEYWORDS = {
       ["센터 규칙 함께 정하기", "자치회의로 센터 규칙 고치기"],
       ["우리가 고른 프로그램", "다음에 하고 싶은 프로그램을 자치회의로 정하기"],
       ["권리 캠페인", "아동권리 포스터 만들어 센터에 붙이기"],
+      ["아동권리헌장 읽기", "헌장 조항을 쉬운 말로 바꿔 보기"],
+      ["의견 모으기", "의견함·투표로 친구 의견 모으기"],
+      ["센터 시설 점검", "아이 눈으로 센터 안전·불편 점검"],
+      ["자치회 평가", "자치회 활동을 돌아보고 다음 계획 세우기"],
       ["마무리: 자치회의 결과 발표", "정한 내용과 지킨 약속을 돌아보고 발표하기"]
     ],
     materials: "아동권리 카드, 회의록 양식, 투표 용지, 포스터 재료",
@@ -1137,7 +1257,11 @@ function genericKeyword(K) {
       ["모둠별 " + K + " 활동", "모둠이 함께 과제 해결하기"],
       ["나만의 " + K, "배운 것을 바탕으로 나만의 결과물 만들기"],
       [K + " 심화 활동", "조금 더 어려운 과제에 도전하기"],
+      [K + " 응용하기", "배운 방법을 생활 속 상황에 적용하기"],
+      ["친구와 바꿔 해 보기", "서로의 결과물을 해 보고 좋은 점 말하기"],
+      [K + " 다시 도전", "어려웠던 과정을 한 번 더 연습하기"],
       ["발표 준비", "결과물을 정리하고 발표 연습하기"],
+      ["아동 평가회", "좋았던 점과 바꿀 점을 아이들이 직접 정리하기"],
       ["마무리: 발표회", "결과물 발표하고 소감 나누기"]
     ],
     materials: "활동지, 필기도구, 활동 재료(회기별 준비)",
@@ -1449,6 +1573,7 @@ document.getElementById("step1").addEventListener("click", e => {
     input.keyword = b.dataset.kw; input.custom = "";
     const K = KEYWORDS[b.dataset.kw];
     if (K.prefer && input.type === "regular") { input.type = K.prefer; say("'" + b.dataset.kw + "'는 보통 하루 행사로 해요.", "형태를 '하루 행사'로 바꿨어요. 여러 번 한다면 1번에서 '정기 프로그램'을 눌러 주세요.", "happy"); }
+    else if (K.cat === "교육" && input.type === "regular" && input.sessions < 10) { input.sessions = 10; say("'" + b.dataset.kw + "' 프로그램이군요!", "교육 영역은 지역아동센터 평가 기준(교육프로그램 10회기 이상)에 맞춰 회기를 10회로 맞췄어요. 4번에서 바꿀 수 있어요.", "happy"); }
     else say("'" + b.dataset.kw + "' 프로그램이군요!", K.cat + "프로그램(" + K.sub + ") 영역이에요. 이제 누가 참여하는지 골라 주세요.", "happy");
   }
   else if (b.dataset.grade === "ALL") { input.grades = GRADES.every(g => input.grades.includes(g)) ? [] : [...GRADES]; }
@@ -1571,7 +1696,7 @@ function buildPlan(inp, variant) {
     const freqLabel = FREQS.find(f => f[0] === inp.freq)[1];
     schedule = pickSessions(K.sessions, c).map((s, i) => ({ date: fmtShort(dates[i]), topic: s[0], act: s[1] }));
     scheduleWhy = K.generic ? "목록에 없는 키워드라 기본 틀로 만들었어요. 활동 내용을 꼭 확인해 주세요."
-                            : "'" + kw + "' 기본 활동 8개에서 " + c + "회에 맞게 골랐어요. 날짜는 " + freqLabel + " 기준이에요.";
+                            : "'" + kw + "' 기본 활동 " + K.sessions.length + "개에서 " + c + "회에 맞게 골랐어요. 날짜는 " + freqLabel + " 기준이에요." + (c > K.sessions.length ? " 기본 활동보다 회기가 많아 '(심화)' 회기가 있어요. 꼭 고쳐 주세요." : "");
     sessionsInfo = freqLabel + ", 총 " + c + "회, 회당 " + inp.minutes + "분";
     period = fmtDot(dates[0]) + " ~ " + fmtDot(dates[dates.length - 1]);
   } else if (type === "event") {
@@ -1610,6 +1735,25 @@ function buildPlan(inp, variant) {
     variant
   };
   return ensurePlan(p);
+}
+
+/* v2.3 회기 수만 바꾸기: 고친 문장(필요성·목표 등)은 그대로 두고 일정·날짜·출석 목표만 다시 계산 */
+function resizeSessions(n) {
+  if (!plan || plan.type !== "regular") return;
+  input.sessions = n;
+  const K = kwData(plan.kw), dates = computeDates(input.start, input.freq, n), freqLabel = FREQS.find(f => f[0] === input.freq)[1];
+  const old = plan.schedule;
+  plan.schedule = pickSessions(K.sessions, n).map((x, i) => ({ date: fmtShort(dates[i]), topic: x[0], act: x[1] }));
+  // 이미 고친 회기 내용은 같은 주제면 살림
+  plan.schedule.forEach(sc => { const o = old.find(q => q.topic === sc.topic); if (o) sc.act = o.act; });
+  plan.dates = dates.map(toISO);
+  plan.sessionsInfo = freqLabel + ", 총 " + n + "회, 회당 " + input.minutes + "분";
+  plan.period = fmtDot(dates[0]) + " ~ " + fmtDot(dates[dates.length - 1]);
+  plan.scheduleWhy = "'" + plan.kw + "' 기본 활동 " + K.sessions.length + "개에서 " + n + "회에 맞게 다시 골랐어요. 날짜는 " + freqLabel + " 기준이에요.";
+  const att = plan.goals.find(g => g.measure === "출석부");
+  if (att) att.reason = "총 " + n + "회 중 평균 " + Math.ceil(n * 0.8) + "회 이상 출석. 출석부로 바로 확인할 수 있어요.";
+  plan.logs = plan.logs.slice(0, n);
+  ensurePlan(plan);
 }
 
 // 일지·평가서 칸 준비 (계획서 내용으로 미리 채움)
@@ -1683,10 +1827,11 @@ function renderStep2() {
   const s2 = document.getElementById("step2");
   const tm = plan.timeMode;
   s2.innerHTML =
+    '<nav class="secnav no-print" id="secNav" aria-label="계획서 목차">' + navHTML() + "</nav>" +
     '<div class="card" id="checkCard">' + checksHTML() + "</div>" +
     (plan.aiChanged ? '<div class="ai-note"><span>별이가 AI로 문장을 다듬었어요. <b>노란 칸</b>이 바뀐 곳이에요. 숫자가 그대로인지 확인해 주세요.</span><button type="button" class="btn btn-sub btn-small" data-act="undoAi">AI 고치기 전으로 되돌리기</button></div>' : "") +
 
-    '<div class="card"><div class="sec-head"><h2>기본 정보</h2>' +
+    '<div class="card" id="sec-basic"><div class="sec-head"><h2>기본 정보</h2>' +
       (hasKey ? '<button type="button" class="btn btn-ai btn-small" data-act="ai" id="aiBtn">AI로 문장 다듬기</button>' : "") + "</div>" +
       '<div class="field"><span>프로그램 영역 (대분류)</span><div class="chips">' +
         Object.keys(CATS).map(c => chipHTML(c, plan.category === c, 'data-cat="' + c + '"', "sm")).join("") + "</div></div>" +
@@ -1709,16 +1854,16 @@ function renderStep2() {
 
     indicatorCard() +
 
-    '<div class="card"><h2>필요성</h2>' + ta("need", 4, aiCls("need")) + tipBox("need") +
+    '<div class="card" id="sec-need"><h2>필요성</h2>' + ta("need", 4, aiCls("need")) + tipBox("need") +
       '<span class="why">\'' + esc(plan.kw) + "' 프로그램의 기본 문장" + (input.traits.length || input.memo.trim() ? "에 고르신 아동 특성과 메모를 더했어요." : "이에요.") + "</span>" +
       phraseBox("need", [{ g: plan.category + " 영역에서 자주 쓰는 문장", items: NEED_MORE[plan.category] || [] }, { g: "근거 더하기", items: NEED_MORE["공통"] }],
         plan.need, "필요성 문장 더 보기", "필요성은 '아이들의 지금 모습 → 그래서 필요한 것' 순서로 2~3문장이면 충분해요.") + "</div>" +
 
-    '<div class="card"><h2>목적</h2>' + ta("purpose", 2, aiCls("purpose")) + tipBox("purpose") +
+    '<div class="card" id="sec-purpose"><h2>목적</h2>' + ta("purpose", 2, aiCls("purpose")) + tipBox("purpose") +
       phraseBox("purpose", [{ g: "", items: [kwData(plan.kw).purpose].concat((PURPOSE_MORE[plan.category] || []).map(x => fillK(x, plan.kw))) }],
         plan.purpose, "다른 목적 문장 고르기", "목적은 큰 방향 한 문장이에요. 숫자는 아래 '목표'에 써요.", "replace") + "</div>" +
 
-    '<div class="card"><h2>목표 (숫자로 확인할 수 있게)</h2>' +
+    '<div class="card" id="sec-goals"><h2>목표 (숫자로 확인할 수 있게)</h2>' +
       '<p class="hint">각 목표 아래 \'근거\'에 숫자를 어떻게 정했는지 적혀 있어요. 평가 방법은 계획서의 \'프로그램 평가방법\'과 평가서에 그대로 이어져요.</p>' + tipBox("goals") +
       plan.goals.map((g, i) =>
         '<div class="goal">' +
@@ -1728,7 +1873,7 @@ function renderStep2() {
         "</div>").join("") +
     "</div>" +
 
-    '<div class="card"><h2>프로그램 내용</h2><span class="why">' + esc(plan.scheduleWhy) + "</span>" + tipBox("content") +
+    '<div class="card" id="sec-content"><h2>프로그램 내용</h2><span class="why">' + esc(plan.scheduleWhy) + "</span>" + tipBox("content") +
       '<div class="tbl-wrap"><table class="sched"><thead><tr>' + (tm ? "" : "<th>회기</th>") + '<th style="width:' + (plan.type === "camp" ? 150 : 120) + 'px">' + (tm ? "시간" : "날짜") + "</th><th>" + (tm ? "내용" : "주제") + "</th><th>" + (tm ? "비고" : "활동 내용") + "</th></tr></thead><tbody>" +
       plan.schedule.map((s, i) =>
         "<tr>" + (tm ? "" : '<td class="n">' + (i + 1) + "</td>") +
@@ -1738,11 +1883,11 @@ function renderStep2() {
       "</tbody></table></div>" +
       "<h3>운영 방법</h3>" + ta("methods", 5, aiCls("methods")) + '<span class="why">' + esc(plan.methodsWhy) + "</span></div>" +
 
-    '<div class="card"><h2>기대효과</h2><p class="hint">한 줄에 하나씩 써 주세요.</p>' + ta("effects", 4, aiCls("effects")) +
+    '<div class="card" id="sec-effects"><h2>기대효과</h2><p class="hint">한 줄에 하나씩 써 주세요.</p>' + ta("effects", 4, aiCls("effects")) +
       phraseBox("effects", [{ g: "'" + plan.kw + "' 기본 문장", items: kwData(plan.kw).effects }, { g: plan.category + " 영역에서 자주 쓰는 문장", items: EFFECT_MORE[plan.category] || [] }],
         plan.effects, "기대효과 문장 더 보기", "기대효과는 3~4줄이 알맞아요. '~이 자란다', '~을 익힌다'처럼 아이의 변화로 써요.") + "</div>" +
 
-    '<div class="card"><h2>프로그램 예산 <span class="optional">비워 두면 빈칸으로 인쇄</span></h2>' + tipBox("budget") +
+    foldOpen("sec-budget", "프로그램 예산", "선택 · 비워 두면 빈칸으로 인쇄", budgetTotal(plan.budget) ? "합계 " + budgetTotal(plan.budget) : "아직 비어 있어요") + tipBox("budget") +
       '<div class="tbl-wrap"><table class="sched"><thead><tr><th>항목</th><th>산출 근거</th><th style="width:160px">금액</th></tr></thead><tbody>' +
       plan.budget.map((b, i) =>
         '<tr><td><input class="input" data-b="' + i + '" data-bk="item" value="' + esc(b.item) + '" placeholder="예: 입장료"></td>' +
@@ -1750,14 +1895,14 @@ function renderStep2() {
         '<td><input class="input" data-b="' + i + '" data-bk="amount" value="' + esc(b.amount) + '" placeholder="예: 200,000"></td></tr>').join("") +
       "</tbody></table></div>" +
       '<div class="row"><button type="button" class="btn btn-sub btn-small" data-act="addBudget">+ 줄 추가</button><span id="budgetSum" class="sc-sum">' + (budgetTotal(plan.budget) ? "합계 " + budgetTotal(plan.budget) : "") + "</span></div>" +
-    "</div>" +
+    "</div></details>" +
 
-    '<div class="card"><h2>프로그램 평가방법</h2><p class="hint">목표별 평가 방법이 먼저 들어가고, 아래 문장이 이어서 들어가요.</p>' + ta("evaluation", 2) + tipBox("evaluation") + "</div>" +
+    foldOpen("sec-eval", "프로그램 평가방법", "목표별 평가 방법이 자동으로 들어가요", "만족도 조사 문장 + 목표 " + plan.goals.length + "개의 평가 방법") + '<p class="hint">목표별 평가 방법이 먼저 들어가고, 아래 문장이 이어서 들어가요.</p>' + ta("evaluation", 2) + tipBox("evaluation") + "</div></details>" +
 
-    '<div class="card"><h2>아동 만족도 조사 문항</h2><p class="hint">5점 척도 문항 5개와 서술형 2개가 인쇄돼요. 결과는 평가서에서 입력해요.</p>' +
+    foldOpen("sec-survey", "아동 만족도 조사 문항", "자동으로 만들어졌어요", "5점 척도 " + plan.survey.length + "문항 + 서술형 " + plan.open.length + "문항") + '<p class="hint">5점 척도 문항 5개와 서술형 2개가 인쇄돼요. 결과는 평가서에서 입력해요.</p>' +
       plan.survey.map((q, i) => '<label class="field"><span>문항 ' + (i + 1) + '</span><input class="input" data-q="' + i + '" value="' + esc(q) + '"></label>').join("") +
       plan.open.map((q, i) => '<label class="field"><span>서술형 ' + (i + 1) + '</span><input class="input" data-o="' + i + '" value="' + esc(q) + '"></label>').join("") +
-    "</div>" +
+    "</div></details>" +
 
     '<div class="actions"><button type="button" class="btn btn-sub" data-act="back">← 내용 다시 고르기</button>' +
     '<button type="button" class="btn btn-main" data-act="next">서류 만들기로</button></div>';
@@ -1773,7 +1918,9 @@ function indicatorCard() {
     '<p class="hint">평가 때 이 프로그램을 어느 지표로 낼지 고르면, 그 지표가 보는 항목을 아래 점검과 서류에 넣어 드려요.</p>' +
     '<div class="ind-row"><span>평가 지표</span><div class="chips">' +
       Object.keys(IND).map(k => chipHTML(IND[k].name, plan.ind === k, 'data-ind="' + k + '"', "sm")).join("") + "</div>" +
-      '<p class="hint" style="margin:0">필수조건: ' + esc(I.must) + ". 계획 · 실행 · 평가 기록 모두, 시설장·생활복지사 결재 포함</p></div>" +
+      '<p class="hint" style="margin:0">필수조건: ' + esc(I.must) + ". 계획 · 실행 · 평가 기록 모두, 시설장·생활복지사 결재 포함</p>" +
+      (plan.ind === "edu" && plan.type === "regular" && plan.schedule.length < 10 ? '<div class="row"><span class="hint" style="margin:0">지금 ' + plan.schedule.length + '회기예요.</span><button type="button" class="btn btn-ai btn-small" data-act="to10">10회기로 맞추기</button></div>' : "") +
+      (plan.ind === "edu" && plan.type !== "regular" ? '<p class="hint" style="margin:0;color:#B54708">교육프로그램은 정기 프로그램(10회기 이상)이어야 해요. 하루 행사·캠프는 문화프로그램으로 내세요.</p>' : "") + "</div>" +
     '<div class="ind-row"><span>사업계획서 반영 <small>필수조건</small></span><div class="chips">' + chk("inAnnual", plan.inAnnual, "연간·월간 사업계획서에 넣었어요 (또는 운영위원회·종사자 회의에서 논의)") + "</div></div>" +
     '<div class="ind-row"><span>③ 의견 수렴 <small>계획 전에 누구의 의견을 들었나요? (하나 이상)</small></span><div class="chips">' +
       OPINION_FROM.map(f => chipHTML(f, plan.opinion.from.includes(f), 'data-op="' + esc(f) + '"', "sm")).join("") + "</div>" +
@@ -1819,9 +1966,34 @@ function checksHTML() {
       '<button type="button" class="btn btn-sub btn-small" data-jump="' + esc(x.jump) + '">고치러 가기</button></li>').join("") +
     "</ul>" + (c.some(x => x.ok) ? '<div class="ready" style="margin-top:6px">' + c.filter(x => x.ok).map(x => '<span class="ok" title="' + esc(x.text) + '">' + esc(x.label) + "</span>").join("") + "</div>" : "");
 }
-function refreshChecks() { const c = document.getElementById("checkCard"); if (c) c.innerHTML = checksHTML(); }
+function refreshChecks() { const c = document.getElementById("checkCard"); if (c) c.innerHTML = checksHTML(); const n = document.getElementById("secNav"); if (n) n.innerHTML = navHTML(); }
+
+/* v2.3 2단계 목차와 접기: 긴 화면에서 지금 위치와 남은 일을 한눈에 */
+const openFolds = new Set();
+function foldOpen(id, title, tag, summary) {
+  return '<details class="card fold" id="' + id + '"' + (openFolds.has(id) ? " open" : "") + '><summary><h2>' + esc(title) + ' <span class="optional">' + esc(tag) + '</span></h2><small class="fold-sum">' + esc(summary) + '</small></summary><div class="fold-body">';
+}
+function navHTML() {
+  const c = planChecks(plan), warn = lbl => c.some(x => !x.ok && x.label === lbl);
+  const items = [
+    ["sec-basic", "기본 정보", warn("제목") || warn("장소")],
+    ["indCard", "평가 지표", warn("사업계획서 반영") || warn("의견 수렴") || warn("10회기") || warn("아동 참여") || warn("지역사회 공유")],
+    ["sec-need", "필요성", warn("필요성")],
+    ["sec-purpose", "목적", false],
+    ["sec-goals", "목표", warn("숫자 목표") || warn("평가 방법")],
+    ["sec-content", "내용", warn("일정")],
+    ["sec-effects", "기대효과", warn("기대효과")],
+    ["sec-budget", "예산", warn("예산")],
+    ["sec-eval", "평가방법", false],
+    ["sec-survey", "만족도", false]
+  ];
+  const bad = c.filter(x => !x.ok).length;
+  return '<span class="nav-sum">' + (bad ? "확인할 곳 " + bad : "모두 좋아요") + "</span>" +
+    items.map(([id, l, w]) => '<button type="button" class="nav-i' + (w ? " warn" : "") + '" data-go="' + id + '">' + (w ? "! " : "✓ ") + esc(l) + "</button>").join("");
+}
 
 const step2 = document.getElementById("step2");
+step2.addEventListener("toggle", e => { const d = e.target; if (d.classList && d.classList.contains("fold")) { d.open ? openFolds.add(d.id) : openFolds.delete(d.id); } }, true);
 step2.addEventListener("input", e => {
   const t = e.target;
   if (t.dataset.f) plan[t.dataset.f] = t.value;
@@ -1844,6 +2016,8 @@ step2.addEventListener("click", e => {
     syncPhraseChips(f, plan[f]); saveDraft(); refreshChecks();
     return;
   }
+  const go2 = e.target.closest("[data-go]");
+  if (go2) { const el = document.getElementById(go2.dataset.go); if (el) { if (el.tagName === "DETAILS") { el.open = true; openFolds.add(el.id); } el.scrollIntoView({ behavior: "smooth", block: "start" }); } return; }
   const ic = e.target.closest("[data-ind],[data-ib],[data-op],[data-sh]");
   if (ic) {
     const d = ic.dataset;
@@ -1859,6 +2033,7 @@ step2.addEventListener("click", e => {
   const jp = e.target.closest("[data-jump]");
   if (jp) {
     const el = step2.querySelector(jp.dataset.jump);
+    const fd = el && el.closest("details.fold"); if (fd && !fd.open) { fd.open = true; openFolds.add(fd.id); }
     if (el) { el.scrollIntoView({ behavior: "smooth", block: "center" }); setTimeout(() => el.focus({ preventScroll: true }), 350); }
     return;
   }
@@ -1872,6 +2047,10 @@ step2.addEventListener("click", e => {
   else if (act === "next") {
     if (plan.timeMode && !plan.place.trim()) { say("장소가 비어 있어요.", "기본 정보의 '장소' 칸을 채워 주세요. 비워 두고 넘어가도 괜찮아요.", "think", true); plan._placeWarned = (plan._placeWarned || 0) + 1; if (plan._placeWarned < 2) return; }
     go(3);
+  }
+  else if (act === "to10") {
+    resizeSessions(10); saveDraft(); renderStep2();
+    say("10회기로 맞췄어요.", "일정과 날짜, 출석 목표만 다시 계산했어요. 고친 필요성·목표 문장은 그대로예요. 1단계 회기 수도 10회로 바뀌었어요.", "happy");
   }
   else if (act === "addBudget") { plan.budget.push({ item: "", calc: "", amount: "" }); saveDraft(); renderStep2(); }
   else if (act === "title") {
@@ -2368,7 +2547,7 @@ function go(n) {
     li.classList.toggle("on", s === n); li.classList.toggle("done", s < n);
     if (s === n) li.setAttribute("aria-current", "step"); else li.removeAttribute("aria-current");
   });
-  if (n === 1) { renderStep1(); say("안녕하세요, 저는 별이예요!", "다섯 가지만 골라 주시면 계획서를 만들고, 일지와 평가서도 채워 드릴게요. 모르는 칸은 비워 두셔도 괜찮아요.", "normal"); }
+  if (n === 1) { renderStep1(); renderPlans(); say("안녕하세요, 저는 별이예요!", "다섯 가지만 골라 주시면 계획서를 만들고, 일지와 평가서도 채워 드릴게요. 모르는 칸은 비워 두셔도 괜찮아요.", "normal"); }
   if (n === 2) {
     renderStep2();
     say("계획서 초안을 만들었어요!", plan.generic ? "처음 보는 키워드라 기본 틀로 만들었어요. 활동 내용을 우리 센터에 맞게 고쳐 주세요."
@@ -2380,7 +2559,40 @@ function go(n) {
   }
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
-function saveDraft() { return store.set("draft", { input, plan }); }
+/* v2.3 여러 프로그램 저장: ps.plans = { id: { input, plan, updated } }, ps.cur = 지금 작성 중인 id
+   계획서를 만들기 전(1단계)에는 ps.draft에 고른 내용만 둠 */
+let curId = null;
+function newId() { return "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function getPlans() { const v = store.get("plans"); return v && typeof v === "object" ? v : {}; }
+function saveDraft() {
+  if (!plan) return store.set("draft", { input, plan: null });
+  if (!curId) curId = newId();
+  const all = getPlans();
+  all[curId] = { input, plan, updated: Date.now() };
+  const ok = store.set("plans", all);
+  store.set("cur", curId); store.del("draft");
+  return ok;
+}
+function storageUse() { let n = 0; try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k.startsWith("ps.")) n += (localStorage.getItem(k) || "").length; } } catch (e) {} return n * 2; }
+function renderPlans() {
+  const all = getPlans(), ids = Object.keys(all).sort((a, b) => all[b].updated - all[a].updated);
+  const card = document.getElementById("plansCard");
+  card.hidden = !ids.length;
+  if (!ids.length) return;
+  document.getElementById("plansCount").textContent = ids.length + "개 · 이 컴퓨터에 저장";
+  document.getElementById("plansList").innerHTML = ids.map(id => {
+    const e = all[id], p = e.plan || {}, d = new Date(e.updated);
+    const done = (p.logs || []).filter(l => l && String(l.opinion || "").trim()).length;
+    return '<li class="' + (id === curId ? "cur" : "") + '"><div class="pt"><b>' + esc(p.title || "(제목 없음)") + (id === curId ? " · 지금 작성 중" : "") + "</b><small>" +
+      esc((NOTICE_TYPES[p.type] || "") + " · " + (p.kw || "") + " · " + (p.period || "")) + " · 일지 " + done + "/" + (p.logs || []).length + " · " + (d.getMonth() + 1) + "/" + d.getDate() + " 저장</small></div>" +
+      '<div class="pb"><button type="button" class="btn btn-sub btn-small" data-popen="' + id + '">열기</button><button type="button" class="btn btn-sub btn-small" data-pdel="' + id + '">지우기</button></div></li>';
+  }).join("") + '<li class="new"><button type="button" class="btn btn-sub btn-small" id="newPlanBtn">+ 새 프로그램 만들기</button></li>';
+  const kb = storageUse() / 1024, pct = Math.min(100, Math.round(kb / 5000 * 100));
+  document.getElementById("storageHint").textContent = "브라우저 저장 공간 약 " + pct + "% 사용 (사진이 많으면 늘어나요). 브라우저 기록을 지우면 사라지니 가끔 '백업 파일 받기'를 눌러 주세요." + (pct >= 70 ? " ⚠ 공간이 부족해지고 있어요. 다 끝난 프로그램은 백업한 뒤 지워 주세요." : "");
+}
+function freshInput() {
+  return Object.assign({}, input, { type: "regular", keyword: "", custom: "", grades: [], count: 10, start: nextMonday(), freq: "week1", sessions: 8, minutes: 60, nights: 1, traits: [], memo: "", requests: "" });
+}
 function saveUi() { store.set("ui", { tab: ui.tab, survey: ui.survey, approvers: ui.approvers }); }
 
 /* ============================================================
@@ -2497,20 +2709,60 @@ async function polishWithAI() {
 
   const su = store.get("ui");
   if (su && Array.isArray(su.approvers) && su.approvers.length) ui = Object.assign(ui, su);
-  const d = store.get("draft");
-  if (d && d.input) {
-    input = Object.assign(input, d.input, { center: input.center || d.input.center || "", teacher: input.teacher || d.input.teacher || "" });
-    if (d.plan && d.plan.goals) { plan = ensurePlan(d.plan); document.getElementById("resumeBox").hidden = false; }
-  }
-  document.getElementById("resumeBtn").addEventListener("click", () => { if (plan) go(2); });
-  // v2.2 지우고 새로 쓰기: 실수로 지우지 않게 두 번 눌러야 지워짐
-  const resetBtn = document.getElementById("resetBtn");
-  resetBtn.addEventListener("click", () => {
-    if (!resetBtn.dataset.armed) { resetBtn.dataset.armed = "1"; resetBtn.textContent = "한 번 더 누르면 지워져요"; say("지난 계획서를 지울까요?", "'한 번 더 누르면 지워져요'를 누르면 작성하던 계획서·일지·평가서가 모두 지워져요. 센터 정보는 남아요.", "think", true); return; }
-    store.del("draft"); plan = null;
-    input = Object.assign({}, input, { type: "regular", keyword: "", custom: "", grades: [], count: 10, start: nextMonday(), freq: "week1", sessions: 8, minutes: 60, nights: 1, traits: [], memo: "", requests: "" });
-    document.getElementById("resumeBox").hidden = true; renderStep1();
-    say("깨끗하게 지웠어요.", "처음부터 새로 골라 주세요.", "happy");
+  // v2.3 예전 저장(ps.draft에 계획서 1개) → 내 프로그램 목록으로 옮김
+  const d = store.get("draft"), all = getPlans();
+  if (d && d.plan && d.plan.goals) { const id = newId(); all[id] = { input: d.input, plan: d.plan, updated: Date.now() }; store.set("plans", all); store.set("cur", id); store.del("draft"); }
+  const cid = store.get("cur"), allNow = getPlans();
+  if (cid && allNow[cid]) {
+    curId = cid; const e = allNow[cid];
+    input = Object.assign(input, e.input, { center: input.center || e.input.center || "", teacher: input.teacher || e.input.teacher || "" });
+    plan = ensurePlan(e.plan);
+  } else if (d && d.input) input = Object.assign(input, d.input, { center: input.center || d.input.center || "", teacher: input.teacher || d.input.teacher || "" });
+  const pl = document.getElementById("plansList");
+  pl.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    const all = getPlans();
+    if (b.id === "newPlanBtn") {
+      if (plan) saveDraft();
+      curId = null; plan = null; input = freshInput(); store.del("cur"); saveDraft(); renderStep1(); renderPlans();
+      say("새 프로그램을 시작해요.", "지금까지 쓴 프로그램은 '내 프로그램'에 그대로 남아 있어요. 아래에서 새로 골라 주세요.", "happy");
+      document.getElementById("typeChips").scrollIntoView({ behavior: "smooth", block: "center" });
+    } else if (b.dataset.popen) {
+      if (plan) saveDraft();
+      const e2 = all[b.dataset.popen]; if (!e2) return;
+      curId = b.dataset.popen; plan = ensurePlan(e2.plan);
+      input = Object.assign(input, e2.input, { center: input.center, teacher: input.teacher });
+      store.set("cur", curId); ui.log = 0; go(2);
+    } else if (b.dataset.pdel) {
+      if (!b.dataset.armed) { b.dataset.armed = "1"; b.textContent = "한 번 더 누르면 지워져요"; return; }
+      delete all[b.dataset.pdel]; store.set("plans", all);
+      if (b.dataset.pdel === curId) { curId = null; plan = null; store.del("cur"); input = freshInput(); renderStep1(); }
+      renderPlans(); say("지웠어요.", "그 프로그램의 계획서·일지·평가서가 지워졌어요.", "normal");
+    }
+  });
+  // 백업: 모든 프로그램과 센터 정보를 .json 파일 하나로
+  document.getElementById("backupBtn").addEventListener("click", () => {
+    if (plan) saveDraft();
+    const data = { app: "program-supporter", v: 1, exported: new Date().toISOString(), info: store.get("info") || {}, plans: getPlans() };
+    const a = document.createElement("a"), t = new Date();
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: "application/json" }));
+    a.download = "프로그램서포터_백업_" + toISO(t).replaceAll("-", "") + ".json";
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    say("백업 파일을 받았어요.", "다운로드 폴더에 있어요. 다른 컴퓨터에서 '백업 불러오기'로 열 수 있어요. 아동 이름·사진이 들어 있으니 USB나 메일로 옮긴 뒤 지워 주세요.", "happy");
+  });
+  document.getElementById("restoreIn").addEventListener("change", e => {
+    const f = e.target.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      let data; try { data = JSON.parse(r.result); } catch (err) { data = null; }
+      if (!data || data.app !== "program-supporter" || !data.plans) { say("백업 파일이 아니에요.", "'프로그램서포터_백업_날짜.json' 파일을 골라 주세요.", "think", true); return; }
+      const all = getPlans(); let n = 0;
+      Object.entries(data.plans).forEach(([id, v]) => { if (!v || !v.plan) return; if (!all[id] || (all[id].updated || 0) < (v.updated || 0)) { all[id] = v; n++; } });
+      if (!store.set("plans", all)) { say("저장 공간이 부족해요.", "다 끝난 프로그램을 지운 뒤 다시 불러와 주세요.", "think", true); return; }
+      if (data.info && !input.center && !input.teacher) { input.center = data.info.center || ""; input.teacher = data.info.teacher || ""; store.set("info", data.info); renderStep1(); }
+      renderPlans(); say(n + "개를 불러왔어요.", "같은 프로그램이 이미 있으면 더 최근 것을 남겼어요.", "happy");
+    };
+    r.readAsText(f); e.target.value = "";
   });
   document.getElementById("infoClear").addEventListener("click", () => {
     input.center = ""; input.teacher = ""; store.del("info"); saveDraft(); renderStep1();
