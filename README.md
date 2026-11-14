@@ -62,6 +62,7 @@ main 브랜치에 올리면 자동으로 배포돼요. 처음 한 번만 저장�
 | `docs/06_wireframe.md` | 06 와이어프레임 — 실제 화면 캡처 16장 (`docs/images/06_wireframe/`) |
 | `docs/07_prompts.md` | 07 프롬프트 모음 — Claude Code 요청, 프로그램 안 프롬프트 |
 | `docs/08_vocabulary.md` | 08 어휘 보강 — 공개 자료 크롤링, 형태소 빈도, 워드클라우드 |
+| `docs/09_field_test.md` | 09 현장 테스트 준비 — 시연 순서·기록지·설문, 카톡 안내 글·구글 폼 문항 |
 | `docs/작업기록.md` | 내가 해야 할 일, 버전별 작업 기록 |
 | `docs/과제문서_원본/` | 처음 제출한 과제 문서 6종(.docx) 원본 |
 | `data/vocabulary/` | 수집 자료 목록, 빈도 분석 결과(JSON) |

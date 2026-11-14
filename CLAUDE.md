@@ -22,7 +22,7 @@
 index.html              ★ 프로그램 전체 (HTML+CSS+JS 한 파일, 빌드 없음, 외부 라이브러리 없음). 문장 데이터도 이 안에 있음
 PRD.md                  01 PRD (기획, 진행 상황)
 docs/사용설명서.md       선생님용 사용 설명서
-docs/02~08_*.md         개인과제 문서: 02 벤치마킹 · 03 인터뷰 · 04 아키텍처 · 05 handoff · 06 와이어프레임(캡처 images/06_wireframe/) · 07 프롬프트 · 08 어휘 보강(images/08_vocabulary/)
+docs/02~09_*.md         개인과제 문서: 02 벤치마킹 · 03 인터뷰 · 04 아키텍처 · 05 handoff · 06 와이어프레임(캡처 images/06_wireframe/) · 07 프롬프트 · 08 어휘 보강(images/08_vocabulary/) · 09 현장 테스트
 docs/작업기록.md         사람이 할 일, 버전별 기록
 docs/과제문서_원본/      처음 제출한 docx 6종 (고치지 않음)
 data/vocabulary/        어휘 분석 결과 (수집 목록, 빈도 JSON). corpus/는 올리지 않음
