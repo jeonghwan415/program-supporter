@@ -11,6 +11,7 @@ node tools/tests/test_v23_sessions_plans_nav.js index.html .cache/shots
 node tools/tests/test_v24_photos_holidays_layout.js index.html .cache/shots
 node tools/tests/test_v25_time_offdays_byeol.js index.html .cache/shots
 node tools/tests/test_v25_hwpx.js index.html .cache/shots
+node tools/tests/test_v26_feedback.js index.html .cache/shots
 ```
 
 | 파일 | 확인하는 것 |
@@ -19,6 +20,7 @@ node tools/tests/test_v25_hwpx.js index.html .cache/shots
 | `test_v22_evaluation_notice.js` | 평가 지표 경고, 서류 근거 문장, 가정통신문·회신서, 워드 저장, 지우기 |
 | `test_v23_sessions_plans_nav.js` | 교육 10회기, '10회기로 맞추기', 목차·접기, 여러 프로그램, 백업·복원, 옛 저장 옮기기 |
 | `test_v25_time_offdays_byeol.js` | 시간 4개·직접 입력, 센터 쉬는 날, 2028년 안내, 별이 확인 창(Esc·계속), 새 별이 표정, 다크 모드, 키보드 포커스, 브라우저 기본 창 0개 |
+| `test_v26_feedback.js` | 평가서 아동 의견·환류 문장·환류 점검, 출석률 계산, 다음 해 '작년 평가 불러오기', 계획서 환류 문장 |
 | `test_v25_hwpx.js` | 한글(.hwpx) 저장 파일 받기 (zip·XML 검사는 `unzip -t`로) |
 | `test_v24_photos_holidays_layout.js` | 사진 IndexedDB·새로고침 복원, 공휴일 건너뛰기, AI 부탁 글 복사, 지표 카드 접기, 3단계 나란히, 아래 알림, 덮어쓰기 확인, 탭 두 개 경고, 목록 더 보기, 14px 미만 글씨 |
 

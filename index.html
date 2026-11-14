@@ -364,6 +364,9 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
 .toast strong { font-family: var(--font-display); font-weight: 400; font-size: 1.05rem; color: var(--ink); }
 .toast.alert { border-color: var(--caution-line); }
 .s3-side { display: grid; gap: 16px; }
+.fb-guide { border-left: 6px solid var(--navy); background: var(--bg); border-radius: 0 12px 12px 0; padding: 10px 14px; font-size: .95rem; }
+.fb-check { margin: 0; font-size: .9rem; font-weight: 700; color: var(--caution); }
+.fb-check.ok { color: var(--ok); }
 .min-custom { display: inline-flex; align-items: center; gap: 8px; margin-top: 8px; font-weight: 700; }
 .min-custom .input { width: 110px; text-align: center; }
 .sec-tools { display: flex; gap: 6px; flex-wrap: wrap; }
@@ -605,7 +608,7 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
   </main>
 
   <footer class="site-foot no-print">
-    <span>프로그램 서포터 v2.5 · 만든 사람 jeonghwan0415</span>
+    <span>프로그램 서포터 v2.6 · 만든 사람 jeonghwan0415</span>
     <span>문장·양식 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> · 코드 MIT · 무료로 쓰고 나눠 주세요 (판매 금지)</span>
     <span><a href="https://github.com/jeonghwan415/program-supporter/blob/main/docs/%EC%82%AC%EC%9A%A9%EC%84%A4%EB%AA%85%EC%84%9C.md" target="_blank" rel="noopener">사용 설명서</a> · <a href="https://github.com/jeonghwan415/program-supporter" target="_blank" rel="noopener">GitHub</a></span>
   </footer>
@@ -1491,6 +1494,7 @@ const TIPS = {
   need: ["<b>① 필요성</b>: '지역사회 특성 또는 아동의 욕구'가 구체적으로 적혀 있는지 봅니다.",
          "<b>지금 모습 → 근거 → 그래서 필요한 것</b> 순서로 2~3문장. 근거는 숫자 하나면 충분해요 (예: 참여 아동 12명 중 7명이 ~).",
          "<b>③ 의견 수렴</b>: 아동자치회·보호자·운영위원·전문가 중 한 곳 이상의 의견을 <b>이번 계획을 위해</b> 직접 받고, 그 기록(자치회 회의록·보호자 간담회·운영위원회 일지·자문 기록)을 남겨요. 지난해 만족도 결과만으로는 인정되지 않을 수 있어요.",
+         "<b>작년에도 한 프로그램이면</b>: 작년 평가서의 아동 의견과 그래서 올해 바꾼 점을 한 문장으로 넣어요(환류). 단, 작년 의견은 올해 '의견 수렴'을 대신하지 못하니 올해 자치회에서 다시 확인받으세요.",
          "센터장 경험: '아이들이 원해서'보다 '아동자치회(○월 ○일)에서 아동 9명 중 7명이 선택'이 훨씬 힘이 있어요."],
   purpose: ["목적은 <b>큰 방향 한 문장</b>, 목표는 <b>측정할 수 있는 결과</b>예요. 두 칸에 같은 말을 쓰지 마세요.",
             "'~을 통해 ~을 기른다(향상한다)' 형태가 무난해요."],
@@ -1506,7 +1510,9 @@ const TIPS = {
   log: ["<b>④ 기록의 충실성</b>: 날짜 · 참여자 · 진행내용 · 아동 반응 · 담당자 의견 · 사진이 회기마다 있어야 해요.",
         "의견에는 느낌보다 <b>보인 행동</b>과 <b>다음 회기에 바꿀 점</b>을 쓰세요. 결재란 서명도 잊지 마세요."],
   eval: ["<b>⑤ 목표의 평가</b>: 목표마다 달성 여부와 <b>숫자 결과</b>를 적어요.",
-         "<b>⑥ 환류</b>: 추후계획에 '평가 결과 ○○ → 다음 연도 계획에서 △△으로 바꿈'처럼 구체적으로 쓰고, 다음 연도 계획서(또는 연간사업계획서)에 실제로 반영해요.",
+         "<b>⑥ 환류</b>: 추후계획은 '계속 운영한다'로 끝내지 말고 <b>평가 결과 → 원인·아동 의견 → 다음 계획에서 바꿀 점</b> 세 가지를 넣어요. 예) '목표 2 일부 달성(12명 중 7명), 아동 평가회에서 시간이 짧다는 의견 → 다음 연도에는 10회기로 늘림'.",
+         "환류는 <b>다음 해 계획서에 실제로 바뀐 것</b>이 보여야 인정돼요. 내년 계획서 '필요성'에 '전년도 평가 반영' 문장을 넣고, 연간사업계획서에도 같은 내용을 적어 두세요. (프로그램 서포터: 2단계 '작년 평가 반영'에서 이 평가서를 불러올 수 있어요)",
+         "아동 평가회·만족도 서술형에서 나온 <b>아동의 말</b>을 따옴표로 남겨 두면 내년 환류 근거가 돼요.",
          "<b>⑦ 지역사회와 공유</b>(특화): 발표회·전시회·소식지·홈페이지에 결과를 알리고 그 자료를 남겨요. 다음 해에 공유해도 인정돼요."]
 };
 function tipBox(key) { return '<details class="tip no-print"><summary>' + "이 칸은 이렇게 써요" + "</summary><ul>" + TIPS[key].map(t => "<li>" + t + "</li>").join("") + "</ul></details>"; }
@@ -1837,6 +1843,7 @@ function buildPlan(inp, variant) {
   else if (hasLow) methods.push("저학년 눈높이에 맞춰 그림과 놀이 중심으로 진행한다.");
   else methods.push("모둠 토의와 발표 비중을 높여 아동이 스스로 계획하고 참여하게 한다.");
   if (type === "event") methods.push("행사 전 교사별 역할(진행·안전·사진 기록)을 나누고 비상 연락 체계를 확인한다.");
+  if (type !== "regular") methods.push("사전 답사로 이동 경로와 위험 요소를 확인하고, 차량 안전 점검과 단체(여행자) 보험 가입 여부를 확인한다.");
   if (type === "camp") {
     if (!(K.extraMethod || "").includes("동의서")) methods.push("출발 전 보호자 동의서와 아동 건강 상태(알레르기·복용약)를 확인한다.");
     methods.push("숙소 안전 점검을 하고, 밤에는 교사가 순번을 정해 순찰한다.");
@@ -1937,6 +1944,8 @@ function ensurePlan(p) {
     if (!p.logs[i]) p.logs[i] = { participants: "", leader: "", content: defaultLogContent(p, i), opinion: "", photos: [] };
   }
   if (!p.evalr) p.evalr = { participants: "", results: [], survey: "", opinion: "", next: "" };
+  if (typeof p.evalr.childVoice !== "string") p.evalr.childVoice = "";
+  if (typeof p.evalr.change !== "string") p.evalr.change = "";
   // v2.2 평가 지표 맞추기 · 가정통신문 (예전 저장 내용에는 없으므로 여기서 채움)
   if (!p.ind || !IND[p.ind]) p.ind = defaultIndicator(p);
   if (!p.opinion) p.opinion = { from: [], note: "" };
@@ -1944,6 +1953,8 @@ function ensurePlan(p) {
   if (typeof p.inAnnual !== "boolean") p.inAnnual = false;
   if (typeof p.childPlan !== "boolean") p.childPlan = false;
   if (typeof p.childEval !== "boolean") p.childEval = false;
+  // v2.6 작년 평가 반영(환류): 작년에도 한 프로그램이면 작년 평가의 아동 의견 → 올해 바꾼 점
+  if (!p.prev || typeof p.prev !== "object") p.prev = { on: false, voice: "", change: "", from: "" };
   if (!p.notice) p.notice = { date: "", fee: "", gather: "", deadline: "", contact: "", extra: "", reply: true, photo: true };
   if (typeof p.notice.bring !== "string") p.notice.bring = p.type === "camp" ? "세면도구, 갈아입을 옷 2벌, 잠옷, 물병, 개인 상비약" : p.type === "event" ? "물병, 모자, 편한 운동화, 개인 상비약" : "따로 없어요 (센터에서 준비합니다)";
   if (!Array.isArray(p.evalr.counts)) p.evalr.counts = [];
@@ -1955,6 +1966,27 @@ function ensurePlan(p) {
 /* ============================================================
    7) 만족도 조사 결과 계산 (문항별 1~5점 응답 수 → 평균, 4점 이상 비율)
    ============================================================ */
+/* v2.6 일지 '참여자' 칸의 숫자로 평균 참여 인원·출석률 계산 (출석률 목표 평가에 씀) */
+function attendStats(p) {
+  const nums = p.logs.slice(0, logCount(p)).map(l => { const m = String((l && l.participants) || "").match(/(\d+)\s*명/) || String((l && l.participants) || "").match(/^\s*(\d+)/); return m ? +m[1] : null; }).filter(x => x != null);
+  if (!nums.length || !p.count) return null;
+  const avg = nums.reduce((a, b) => a + b, 0) / nums.length;
+  return { n: nums.length, avg, rate: Math.round(avg / p.count * 100), text: "일지 " + nums.length + "개 기준 평균 " + avg.toFixed(1) + "명 참여 (정원 " + p.count + "명 대비 출석률 " + Math.round(avg / p.count * 100) + "%)" };
+}
+/* v2.6 환류 점검·문장 만들기 */
+function hasFeedback(t) { t = String(t || ""); return /(다음|내년|차년도|다음 연도)/.test(t) && /(반영|바꾸|개선|늘리|줄이|조정)/.test(t) && /(결과|평가|의견|만족도|달성|미달)/.test(t); }
+function fbCheckText(t) { return hasFeedback(t) ? "✓ 환류 문장이 있어요 (평가 결과 → 다음 계획 반영)" : "! [평가 ⑥ 환류] 추후계획에 '평가 결과 → 다음 계획에서 바꿀 점'을 써 주세요. 위 '환류 문장 만들기'를 눌러도 돼요."; }
+function feedbackSentence(p) {
+  const E = p.evalr, eun = n => "은은는은는는은은은는"[n % 10]; // 숫자 읽는 소리에 맞춘 조사 (2→이는, 3→삼은)
+  const miss = p.goals.map((g, i) => ({ i, r: E.results[i] || {} })).filter(x => x.r.status && x.r.status !== "달성");
+  const parts = [];
+  if (miss.length) parts.push("평가 결과 " + miss.map(x => "목표 " + (x.i + 1) + eun(x.i + 1) + " " + x.r.status + (x.r.note ? "(" + x.r.note + ")" : "")).join(", ") + "이었다.");
+  else if (E.results.some(r => r.status)) parts.push("평가 결과 목표는 모두 달성되었다.");
+  const st = surveyStats(p); if (st) parts.push("만족도는 " + st.summary.split(" (")[0] + "였다.");
+  const voice = E.childVoice.trim().replace(/[.。]+$/, ""); if (voice) parts.push("아동 의견으로는 " + voice + " 등이 있었다.");
+  parts.push("이에 다음 연도 계획에 「" + (E.change.trim() ? E.change.trim().replace(/[.。]+$/, "") : "○○") + "」을(를) 반영하고, 계획 전 아동자치회에서 다시 의견을 듣는다.");
+  return parts.join(" ");
+}
 function surveyStats(p) {
   const rows = p.survey.map((q, i) => {
     const c = (p.evalr.counts[i] || []).map(v => Math.max(0, Number(v) || 0));
@@ -2078,7 +2110,27 @@ function renderStep2Inner() {
 function autoGrow(t) { t.style.height = "auto"; t.style.height = (t.scrollHeight + 4) + "px"; }
 
 /* v2.2 평가 지표 맞추기: 평가 때 보는 항목을 계획 단계에서 미리 챙김 */
-function indDone(p) { return planChecks(p).every(c => !["사업계획서 반영", "의견 수렴", "10회기", "아동 참여", "지역사회 공유"].includes(c.label) || c.ok); }
+/* v2.6 작년 평가 반영(환류) — 작년에도 했던 프로그램이면 작년 평가서의 아동 의견을 올해 계획에 반영 */
+function prevCandidates() {
+  const all = getPlans();
+  return Object.keys(all).filter(id => id !== curId).map(id => ({ id, p: all[id].plan || {} }))
+    .filter(x => x.p.evalr && [x.p.evalr.childVoice, x.p.evalr.next, x.p.evalr.opinion].some(v => String(v || "").trim()))
+    .sort((a, b) => (a.p.kw === plan.kw ? 0 : 1) - (b.p.kw === plan.kw ? 0 : 1));
+}
+function prevRow() {
+  const v = plan.prev, cands = v.on ? prevCandidates() : [];
+  return '<div class="ind-row" id="prevRow"><span>⑥ 작년 평가 반영 (환류) <small>' + (plan.ind === "edu" ? "교육 지표 평가항목" : "모든 지표에서 좋은 근거") + '</small></span><div class="chips">' +
+    chipHTML("작년에도 한 프로그램이에요", v.on, 'data-pv="on"', "sm") + "</div>" +
+    (v.on ? '<p class="hint" style="margin:0">작년 평가서(아동 평가회·만족도)에서 <b>아동들이 한 말</b>과 그래서 <b>올해 바꾼 점</b>을 쓰면, 계획서 필요성 아래에 \'전년도 평가 반영(환류)\' 문장으로 들어가요.</p>' +
+      (cands.length ? '<div class="row"><select class="input" id="prevSel" style="flex:1 1 240px" aria-label="불러올 작년 프로그램">' +
+        cands.map(x => '<option value="' + x.id + '">' + esc((x.p.title || "(제목 없음)") + " · " + (x.p.period || "")) + "</option>").join("") +
+        '</select><button type="button" class="btn btn-sub btn-small" data-act="prevLoad">작년 평가 불러오기</button></div>' : "") +
+      '<label class="field"><span>작년 평가에서 나온 아동 의견</span><input class="input" data-pvf="voice" value="' + esc(v.voice) + '" placeholder="예: 아동 평가회에서 \'요리 시간이 더 길었으면 좋겠다\'(12명 중 8명)"></label>' +
+      '<label class="field"><span>그래서 올해 바꾼 점</span><input class="input" data-pvf="change" value="' + esc(v.change) + '" placeholder="예: 회기를 8회에서 10회로 늘리고 아동이 메뉴를 직접 정하는 회기를 넣음"></label>' +
+      '<p class="hint" style="margin:0;color:var(--caution)">⚠ 작년 의견은 <b>환류</b>의 근거예요. <b>③ 의견 수렴</b>은 올해 계획을 위해 새로 받아야 해요. 작년 의견을 올해 아동자치회 안건으로 다시 올려 확인받으면 두 가지가 함께 돼요.</p>' : "") +
+  "</div>";
+}
+function indDone(p) { return planChecks(p).every(c => !["사업계획서 반영", "의견 수렴", "10회기", "아동 참여", "지역사회 공유", "작년 평가 반영"].includes(c.label) || c.ok); }
 /* v2.4 다 채우면 한 줄로 접힘 (열려 있던 카드는 그대로 둠) */
 function indicatorCard(keepOpen) {
   const I = IND[plan.ind], done = indDone(plan), open = keepOpen || !done || openFolds.has("indCard");
@@ -2099,6 +2151,7 @@ function indicatorCard(keepOpen) {
       chk("childPlan", plan.childPlan, "아동이 계획에 참여 (자치회 등)") + chk("childEval", plan.childEval, "아동 평가회를 할 거예요") + "</div></div>" +
     '<div class="ind-row"><span>⑦ 지역사회와 공유 <small>' + (plan.ind === "special" ? "특화 지표 평가항목" : "선택") + '</small></span><div class="chips">' +
       SHARE_WAYS.map(w => chipHTML(w, plan.share.includes(w), 'data-sh="' + esc(w) + '"', "sm")).join("") + "</div></div>" +
+    prevRow() +
   "</div></details>";
 }
 
@@ -2127,6 +2180,10 @@ function planChecks(p) {
     add(p.childPlan || p.childEval, "아동이 계획·평가에 참여해요.", "[평가 ⑤ 아동의 참여] 아동이 계획이나 평가에 참여하는 방법을 골라 주세요.", "#indCard");
     add(p.share.length > 0, "지역사회 공유: " + p.share.join(", "), "[평가 ⑦ 지역사회와 공유] 결과를 어떻게 알릴지 골라 주세요.", "#indCard");
   }
+  if (p.prev && p.prev.on) {
+    const ok = !!(p.prev.voice.trim() && p.prev.change.trim());
+    out.push({ ok, label: "작년 평가 반영", jump: "#prevRow", text: ok ? "작년 평가(아동 의견)를 올해 계획에 반영했어요." : "[평가 ⑥ 환류] 작년에도 한 프로그램이면 작년 평가에서 나온 아동 의견과 올해 바꾼 점을 써 주세요." });
+  }
   return out.filter(Boolean);
 }
 function checksHTML() {
@@ -2147,7 +2204,7 @@ function navHTML() {
   const c = planChecks(plan), warn = lbl => c.some(x => !x.ok && x.label === lbl);
   const items = [
     ["sec-basic", "기본 정보", warn("제목") || warn("장소")],
-    ["indCard", "평가 지표", warn("사업계획서 반영") || warn("의견 수렴") || warn("10회기") || warn("아동 참여") || warn("지역사회 공유")],
+    ["indCard", "평가 지표", warn("사업계획서 반영") || warn("의견 수렴") || warn("10회기") || warn("아동 참여") || warn("지역사회 공유") || warn("작년 평가 반영")],
     ["sec-need", "필요성", warn("필요성")],
     ["sec-purpose", "목적", false],
     ["sec-goals", "목표", warn("숫자 목표") || warn("평가 방법")],
@@ -2173,6 +2230,7 @@ step2.addEventListener("input", e => {
   else if (t.dataset.q) plan.survey[Number(t.dataset.q)] = t.value;
   else if (t.dataset.o) plan.open[Number(t.dataset.o)] = t.value;
   else if (t.dataset.opn) plan.opinion.note = t.value;
+  else if (t.dataset.pvf) { plan.prev[t.dataset.pvf] = t.value; refreshChecks(); }
   if (t.tagName === "TEXTAREA") autoGrow(t);
   if (t.dataset.f) syncPhraseChips(t.dataset.f, plan[t.dataset.f]);
   saveDraft(); refreshChecks();
@@ -2191,13 +2249,14 @@ step2.addEventListener("click", e => {
   }
   const go2 = e.target.closest("[data-go]");
   if (go2) { const el = document.getElementById(go2.dataset.go); if (el) { if (el.tagName === "DETAILS") { el.open = true; openFolds.add(el.id); } el.scrollIntoView({ behavior: "smooth", block: "start" }); } return; }
-  const ic = e.target.closest("[data-ind],[data-ib],[data-op],[data-sh]");
+  const ic = e.target.closest("[data-ind],[data-ib],[data-op],[data-sh],[data-pv]");
   if (ic) {
     const d = ic.dataset;
     if (d.ind) plan.ind = d.ind;
     else if (d.ib) plan[d.ib] = !plan[d.ib];
     else if (d.op) plan.opinion.from = plan.opinion.from.includes(d.op) ? plan.opinion.from.filter(x => x !== d.op) : [...plan.opinion.from, d.op];
     else if (d.sh) plan.share = plan.share.includes(d.sh) ? plan.share.filter(x => x !== d.sh) : [...plan.share, d.sh];
+    else if (d.pv) plan.prev.on = !plan.prev.on;
     const card = document.getElementById("indCard"), fk = focusKey(card); card.outerHTML = indicatorCard(card.open); restoreFocus(document.getElementById("indCard"), fk);
     saveDraft(); refreshChecks();
     if (d.ind) say(IND[d.ind].name + "로 낼 거군요.", "평가 때 보는 항목을 점검 목록에 넣었어요. 칸마다 '이 칸은 이렇게 써요'를 열어 보세요.", "happy");
@@ -2216,6 +2275,17 @@ step2.addEventListener("click", e => {
   if (sub) { plan.sub = sub.dataset.sub; saveDraft(); renderStep2(); return; }
   const b = e.target.closest("[data-act]"); if (!b) return;
   const act = b.dataset.act;
+  if (act === "prevLoad") {
+    const id = document.getElementById("prevSel").value, src = (getPlans()[id] || {}).plan; if (!src) return;
+    const E = src.evalr || {};
+    plan.prev.voice = String(E.childVoice || E.survey || "").trim();
+    plan.prev.change = String(E.change || "").trim() || lines(E.next).find(x => /다음|반영|개선|바꾸/.test(x)) || lines(E.next)[0] || "";
+    plan.prev.from = (src.title || "") + " " + (src.period || "");
+    const card = document.getElementById("indCard"); card.outerHTML = indicatorCard(true);
+    saveDraft(); refreshChecks();
+    say("작년 평가를 불러왔어요.", "'" + (src.title || "") + "' 평가서의 아동 의견과 추후계획을 넣었어요. 올해에 맞게 고쳐 주세요.", "happy");
+    return;
+  }
   if (act === "back") go(1);
   else if (act === "next") {
     if (plan.timeMode && !plan.place.trim()) { say("장소가 비어 있어요.", "기본 정보의 '장소' 칸을 채워 주세요. 비워 두고 넘어가도 괜찮아요.", "think", true); plan._placeWarned = (plan._placeWarned || 0) + 1; if (plan._placeWarned < 2) return; }
@@ -2266,6 +2336,13 @@ function opinionLine(p) {
   if (!p.opinion || (!p.opinion.from.length && !p.opinion.note.trim())) return "";
   return "※ 의견 수렴: " + (p.opinion.from.length ? p.opinion.from.join(", ") : "") + (p.opinion.note.trim() ? (p.opinion.from.length ? " — " : "") + p.opinion.note.trim() : "");
 }
+// v2.6 작년 평가 → 올해 계획 (계획서 '필요성' 아래에 붙음)
+function feedbackLine(p) {
+  const v = p.prev; if (!v || !v.on || (!v.voice.trim() && !v.change.trim())) return "";
+  const cut = t => t.trim().replace(/[.。]+$/, "");
+  return "※ 전년도 평가 반영(환류): " + (v.voice.trim() ? "지난해 평가의 아동 의견 — " + cut(v.voice) + "." : "") + (v.change.trim() ? (v.voice.trim() ? " → " : "") + "올해 바꾼 점 — " + cut(v.change) + "." : "");
+}
+function needFull(p) { return [p.need, opinionLine(p), feedbackLine(p)].filter(Boolean).join("\n"); }
 function participateLines(p) {
   const L = [];
   if (p.childPlan) L.push("아동이 프로그램 계획 수립에 참여함 (아동자치회 등)");
@@ -2291,7 +2368,7 @@ function planDoc(p) {
     '<tr><th>일 시</th><td colspan="3">' + esc(p.period) + (p.sessionsInfo ? " / " + esc(p.sessionsInfo) : "") + "</td></tr>" +
     "<tr><th>대 상</th><td>" + esc((input.center ? input.center + " " : "") + p.target) + " " + esc(p.count) + "명</td><th>장 소</th><td>" + esc(p.place) + "</td></tr>" +
     '<tr><th>준비물</th><td colspan="3">' + esc(p.materials) + "</td></tr>" +
-    '<tr><th>필요성</th><td colspan="3" class="vt"><p>' + esc(p.need + (opinionLine(p) ? "\n" + opinionLine(p) : "")) + "</p></td></tr>" +
+    '<tr><th>필요성</th><td colspan="3" class="vt"><p>' + esc(needFull(p)) + "</p></td></tr>" +
     '<tr><th>목 적</th><td colspan="3" class="vt"><p>' + esc(p.purpose) + "</p></td></tr>" +
     '<tr><th>목 표</th><td colspan="3" class="vt"><p>' + esc(goalsText(p)) + "</p></td></tr>" +
     '<tr><th>프로그램<br>내용</th><td colspan="3" class="vt">' + scheduleInner(p) + '<p style="margin-top:4px">' + esc(p.methods) + "</p></td></tr>" +
@@ -2344,12 +2421,13 @@ function evalDoc(p) {
     "<tr><th>일 시</th><td>" + esc(p.period) + "</td><th>장 소</th><td>" + esc(p.place) + "</td></tr>" +
     "<tr><th>대상아동</th><td>" + esc(p.target) + " " + esc(p.count) + "명</td><th>참여아동</th><td>" + esc(E.participants) + "</td></tr>" +
     '<tr><th>준비물</th><td colspan="3">' + esc(p.materials) + "</td></tr>" +
-    '<tr><th>필요성</th><td colspan="3" class="vt"><p>' + esc(p.need) + "</p></td></tr>" +
+    '<tr><th>필요성</th><td colspan="3" class="vt"><p>' + esc(needFull(p)) + "</p></td></tr>" +
     '<tr><th>목 적</th><td colspan="3" class="vt"><p>' + esc(p.purpose) + "</p></td></tr>" +
     '<tr><th>목 표</th><td colspan="3" class="vt"><p>' + esc(goalsText(p)) + "</p></td></tr>" +
     '<tr><th>기대효과</th><td colspan="3" class="vt">' + effectsList(p) + "</td></tr>" +
     '<tr><th>세부<br>프로그램<br>내용</th><td colspan="3" class="vt">' + scheduleInner(p) + "</td></tr>" +
     '<tr><th>평 가</th><td colspan="3" class="vt"><p>' + esc(evalText) + "</p>" + surveyResultHTML(p) +
+      (p.evalr.childVoice.trim() ? '<p style="margin-top:6px">' + esc("※ 아동 의견(아동 평가회·자치회): " + p.evalr.childVoice.trim()) + "</p>" : "") +
       (participateLines(p).length ? '<p style="margin-top:6px">' + esc(participateLines(p).map(x => "• " + x).join("\n")) + "</p>" : "") + "</td></tr>" +
     '<tr><th>담당자<br>의견</th><td colspan="3" class="mid"><p>' + esc(E.opinion) + "</p></td></tr>" +
     '<tr><th>추후계획</th><td colspan="3" class="mid"><p>' + esc(E.next) + "</p></td></tr>" +
@@ -2478,6 +2556,7 @@ function renderDocOpts() {
     box.innerHTML = "<h3>평가 결과 쓰기</h3>" +
       '<p class="hint">계획서 내용은 자동으로 들어가요. 아래 칸만 채우면 돼요. 비워 두면 손으로 쓸 수 있게 빈칸으로 인쇄돼요.</p>' +
       '<label class="field"><span>참여아동</span><input class="input" data-e="participants" value="' + esc(E.participants) + '" placeholder="예: 12명 중 10명 참여"></label>' +
+      (attendStats(p) ? '<p class="hint" style="margin:0">' + esc(attendStats(p).text) + " — 출석률 목표 결과에 쓰세요.</p>" : '<p class="hint" style="margin:0">일지 \'참여자\' 칸에 \'10명\'처럼 숫자를 쓰면 평균 출석률을 계산해 드려요.</p>') +
       p.goals.map((g, i) => {
         const r = E.results[i];
         return '<div class="goal-eval"><p>목표 ' + (i + 1) + ". " + esc(g.text) + '</p><div class="chips">' +
@@ -2490,10 +2569,16 @@ function renderDocOpts() {
           '<td><input class="input" type="number" min="0" inputmode="numeric" data-sc="' + i + '" data-sk="' + k + '" value="' + esc(E.counts[i][k]) + '" aria-label="' + (i + 1) + "번 문항 " + (k + 1) + '점 응답 수"></td>').join("") + "</tr>").join("") +
         '</table></div><span class="sc-sum" id="scSum">' + (st ? esc(st.summary) : "아직 입력한 응답이 없어요.") + "</span></div>" +
       '<label class="field"><span>만족도에 덧붙일 말 <span class="optional">선택</span></span><input class="input" data-e="survey" value="' + esc(E.survey) + '" placeholder="예: 서술형 응답에서 \'요리 활동\'이 가장 기억에 남는다는 답이 많았다."></label>' +
+      '<label class="field"><span>아동 의견 <span class="optional">아동 평가회·자치회에서 나온 말</span></span><textarea class="input" data-e="childVoice" rows="2" placeholder="예: \'요리 시간이 더 길었으면 좋겠다\'(12명 중 8명), \'다음엔 우리가 메뉴를 정하고 싶다\'">' + esc(E.childVoice) + "</textarea></label>" +
       '<label class="field"><span>담당자 의견</span><textarea class="input" data-e="opinion" rows="3">' + esc(E.opinion) + "</textarea></label>" +
       phraseBox("eval.opinion", EVAL_PHRASES.map(g => ({ g: g.g, items: g.items.map(x => fillK(x, p.kw)) })), E.opinion, "평가 문장 도우미",
         "잘된 점은 숫자·사례와 함께, 아쉬운 점은 다음에 바꿀 점과 이어서 쓰면 설득력이 높아져요.") +
-      '<label class="field"><span>추후계획</span><textarea class="input" data-e="next" rows="2" placeholder="예: 아동 의견을 반영하여 다음 학기에도 운영한다.">' + esc(E.next) + "</textarea></label>" +
+      '<div class="fb-guide"><b>환류란?</b> 평가 결과(무엇이 부족했나) → 원인·아동 의견 → <b>다음 계획에서 바꿀 점</b>을 쓰고, 내년 계획서에 실제로 반영하는 거예요. ' +
+        "내년에 이 프로그램을 다시 만들 때 2단계 '작년 평가 반영'에서 이 평가서를 불러올 수 있어요.</div>" +
+      '<div class="row"><label class="field" style="flex:1 1 280px"><span>다음에 바꿀 점</span><input class="input" data-e="change" value="' + esc(E.change) + '" placeholder="예: 회기를 10회로 늘리고 아동이 메뉴를 정하는 회기를 넣음"></label>' +
+        '<button type="button" class="btn btn-ai btn-small" data-fb="1" style="align-self:end">환류 문장 만들기</button></div>' +
+      '<label class="field"><span>추후계획</span><textarea class="input" data-e="next" rows="3" placeholder="예: 아동 의견을 반영하여 다음 학기에도 운영한다.">' + esc(E.next) + "</textarea></label>" +
+      '<p class="fb-check' + (hasFeedback(E.next) ? " ok" : "") + '" id="fbCheck">' + fbCheckText(E.next) + "</p>" +
       phraseBox("eval.next", NEXT_PHRASES, E.next, "추후계획 · 환류 문장 도우미", "평가 지표 ⑥ 환류: 평가 결과가 다음 연도 계획에 어떻게 반영되는지 쓰면 좋아요.") + tipBox("eval");
   } else {
     const N = p.notice;
@@ -2559,6 +2644,10 @@ docOpts.addEventListener("click", e => {
   if (b.dataset.opt === "survey") ui.survey = !ui.survey;
   else if (b.dataset.log) ui.log = Number(b.dataset.log);
   else if (b.dataset.nb) plan.notice[b.dataset.nb] = !plan.notice[b.dataset.nb];
+  else if (b.dataset.fb) {
+    const t = feedbackSentence(plan); plan.evalr.next = (plan.evalr.next.trim() ? plan.evalr.next.trim() + "\n" : "") + t;
+    say("환류 문장을 넣었어요.", plan.evalr.change.trim() ? "추후계획 맨 아래에 들어갔어요. 우리 센터 말투로 다듬어 주세요." : "'다음에 바꿀 점'이 비어서 ○○로 넣었어요. 바꿀 점을 채우고 고쳐 주세요.", plan.evalr.change.trim() ? "happy" : "think");
+  }
   else if (b.dataset.st) { const r = plan.evalr.results[Number(b.dataset.st)]; r.status = r.status === b.dataset.sv ? "" : b.dataset.sv; }
   else if (b.dataset.delphoto) dropPhoto(plan.logs[ui.log].photos.splice(Number(b.dataset.delphoto), 1)[0]);
   else if (b.dataset.mos) { mosQueue = []; openMosaic(ui.log, Number(b.dataset.mos)); return; }
@@ -2568,7 +2657,7 @@ docOpts.addEventListener("click", e => {
 docOpts.addEventListener("input", e => {
   const t = e.target;
   if (t.dataset.l) { plan.logs[ui.log][t.dataset.l] = t.value; syncPhraseChips("log." + t.dataset.l, t.value); }
-  else if (t.dataset.e) { plan.evalr[t.dataset.e] = t.value; syncPhraseChips("eval." + t.dataset.e, t.value); }
+  else if (t.dataset.e) { plan.evalr[t.dataset.e] = t.value; syncPhraseChips("eval." + t.dataset.e, t.value); if (t.dataset.e === "next") { const c = document.getElementById("fbCheck"); if (c) { c.textContent = fbCheckText(t.value); c.classList.toggle("ok", hasFeedback(t.value)); } } }
   else if (t.dataset.r) plan.evalr.results[Number(t.dataset.r)].note = t.value;
   else if (t.dataset.nt) plan.notice[t.dataset.nt] = t.value;
   else if (t.dataset.sc) {
@@ -2829,17 +2918,17 @@ function hwpxCells(p, logIdx) {
   const budget = (bud ? bud + "\n" : "") + "합계 : " + (budgetTotal(p.budget) || "");
   const evalLines = p.goals.map((g, i) => (i + 1) + ". " + g.measure + " (목표 " + (i + 1) + ")").join("\n") + (p.evaluation ? "\n" + p.evaluation : "") + participateLines(p).map(x => "\n• " + x).join("");
   const evalText = p.goals.map((g, i) => { const r = E.results[i] || {}; return (i + 1) + ". " + g.text + "\n    " + (r.status ? "→ " + r.status : "→ □ 달성  □ 일부 달성  □ 미달성") + (r.note ? " (" + r.note + ")" : ""); }).join("\n") +
-    (st ? "\n※ 만족도 조사: " + st.summary : "") + participateLines(p).map(x => "\n• " + x).join("");
+    (st ? "\n※ 만족도 조사: " + st.summary : "") + (E.childVoice.trim() ? "\n※ 아동 의견(아동 평가회·자치회): " + E.childVoice.trim() : "") + participateLines(p).map(x => "\n• " + x).join("");
   const target = p.target + " " + p.count + "명", ap = ui.approvers.length > 2 ? [ui.approvers[0], ui.approvers[ui.approvers.length - 1]] : ui.approvers;
   const head = { "5,0": ap[0] || "", "6,0": ap[1] || "", "5,1": "", "6,1": "" };
   return [
     Object.assign({ "1,2": catText(p), "1,3": p.title, "4,3": input.teacher, "1,4": p.period + (p.sessionsInfo ? " / " + p.sessionsInfo : ""), "4,4": (input.center ? input.center + " " : "") + target,
-      "1,5": p.place, "4,5": p.materials, "1,6": p.need + (opinionLine(p) ? "\n" + opinionLine(p) : ""), "1,7": p.purpose, "1,8": goalsText(p),
+      "1,5": p.place, "4,5": p.materials, "1,6": needFull(p), "1,7": p.purpose, "1,8": goalsText(p),
       "1,9": sched + (p.methods ? "\n\n" + p.methods : ""), "1,10": eff, "1,11": budget, "1,12": evalLines }, head),
     Object.assign({ "1,2": catText(p), "1,3": sub, "3,3": input.teacher, "1,4": p.place, "3,4": date, "1,5": L.leader || input.teacher, "3,5": p.materials,
       "1,6": L.participants || "", "1,7": L.content || "", "1,8": L.opinion || "", "0,10": (L.photos || []).length ? "(사진 " + L.photos.length + "장은 한글에서 '입력 → 그림'으로 넣어 주세요)" : "" }, head),
     Object.assign({ "1,2": catText(p), "1,3": p.title, "4,3": input.teacher, "1,4": p.period, "4,4": target, "1,5": p.place, "4,5": p.materials, "1,6": E.participants || "",
-      "1,7": p.need, "1,8": p.purpose, "1,9": goalsText(p), "1,10": eff, "1,11": sched, "1,12": evalText, "1,13": E.opinion || "", "1,14": E.next || "" }, head)
+      "1,7": needFull(p), "1,8": p.purpose, "1,9": goalsText(p), "1,10": eff, "1,11": sched, "1,12": evalText, "1,13": E.opinion || "", "1,14": E.next || "" }, head)
   ];
 }
 async function buildHwpx(p, logIdx) {
@@ -2870,7 +2959,7 @@ document.getElementById("hwpxBtn").addEventListener("click", async () => {
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
     a.download = (plan.title || "프로그램").replace(/[\\\/:*?"<>|]/g, "") + "_계획서·일지" + (li + 1) + "·평가서.hwpx";
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
-    say("한글 파일을 저장했어요.", "센터 양식 한 파일에 계획서 · " + (li + 1) + "회 일지 · 평가서가 들어 있어요." + (ui.log === -1 ? " (전체 일지는 1회만 들어가요. 다른 회기는 일지에서 회기를 고른 뒤 다시 저장하세요.)" : " 다른 회기 일지는 회기를 고른 뒤 다시 저장하세요.") + " 사진은 한글에서 넣어 주세요.", "happy");
+    say("한글 파일을 저장했어요.", "센터 양식 한 파일에 계획서 · " + (li + 1) + "회 일지 · 평가서가 들어 있어요." + (ui.log === -1 ? " (전체 일지는 1회만 들어가요. 다른 회기는 일지에서 회기를 고른 뒤 다시 저장하세요.)" : " 다른 회기 일지는 회기를 고른 뒤 다시 저장하세요.") + " 사진은 한글에서 넣어 주세요. 아동 이름이 들어 있으니 메일·USB로 옮긴 뒤에는 지워 주세요.", "happy");
   } catch (err) { say("한글 파일을 만들지 못했어요.", (err && err.message ? err.message + " " : "") + "워드(.doc) 저장이나 인쇄를 써 주세요.", "think", true); }
 });
 
