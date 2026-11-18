@@ -55,6 +55,7 @@ tools/analyze_vocabulary.py   형태소 빈도 + 워드클라우드 (개발할 �
 | 8) 2단계 | `renderStep2()`, `indicatorCard()`, `planChecks()`, `checksHTML()`, `refreshChecks()` | 계획서 확인, 평가 지표 맞추기, 서류 점검 |
 | 9) 3단계 | `planDoc()`, `logDoc()`, `evalDoc()`, `noticeDoc()`(가정통신문), `surveyDoc()`, `opinionLine()`, `participateLines()`, `renderDocOpts()`, 모자이크, 워드 저장 | 서류와 출력 |
 | 10) 이동·저장 | `go()`, `saveDraft()`, `saveUi()`, `getPlans()`, `renderPlans()`, `resizeSessions()`, `navHTML()`, `foldOpen()` | 여러 프로그램·백업, 회기 수만 바꾸기, 2단계 목차·접기 (v2.3) |
+| v2.8 추가 | `.makebar`(1단계 만들기 줄 `position: sticky`), `renderReady()`의 빠진 항목 버튼 `data-goto` → step1 클릭 처리 맨 앞에서 그 질문 카드로 이동, `<head>`의 글꼴 확인 스크립트 → `html.no-jua` | 화면만 바뀜. 저장 형식 그대로 |
 | v2.7 추가 | `holidaysFor()`·`holidayName()`·`HOLIDAY_EXTRA`, `centerSeed()`·`titlePool()`·`sameAsDraft()`·`originality()`·`markDraftSame()`, `minutesDoc()`·`childEvalDoc()`·`openStoredFile()`, `backupDue()`·`renderBackupNudge()`·`downloadIcs()`, `getGuides()`·`renderGuides()` | 공휴일은 계산, 임시공휴일만 표 |
 | v2.6 추가 | `prevRow()`·`prevCandidates()`·`feedbackLine()`·`needFull()`, `hasFeedback()`·`feedbackSentence()`, `attendStats()` | 환류: 평가서 → 다음 해 계획서 |
 | v2.5 추가 | `HWPX_TPL`·`buildHwpx()`·`hwpxCells()`·`zipStore()`, `minText()`·`parseOffDays()`, `ask()`(별이 확인 창), `focusKey()`·`restoreFocus()` | 한글 양식 칸 위치는 `hwpxCells()` 한 곳에 |
