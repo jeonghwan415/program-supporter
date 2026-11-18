@@ -15,7 +15,7 @@
 - 증빙·자료 (v2.7) > plan.`files[]` = {ref:'idb:…', kind:minutes|childeval|other, name, type, size, added}, 백업 시 dataURL로 펼침. 평가 안내 자료는 `ps.guides`(백업에 안 넣음, 다시 받으면 됨), `ps.lastBackup`, `ps.guideMonth`. 원문 초안은 plan.`base`(고유성 점검용)
 - 환류 (v2.6) > plan에 `prev{on,voice,change,from}`, evalr에 `childVoice`·`change` (없으면 `ensurePlan()`이 채움). `feedbackLine()`이 계획서·평가서 필요성 아래에 문장을 붙임. '작년 평가 불러오기'는 '내 프로그램'의 다른 프로그램 중 평가서에 아동 의견·추후계획이 있는 것만 보여 줌(같은 키워드 먼저)
 - 한글 저장 (v2.5) > `HWPX_TPL` = 센터 양식 hwpx 파일들(JSON)을 gzip+base64로 넣은 것. `DecompressionStream`으로 풀고 `DOMParser`로 표 3개(계획서·일지·평가서)의 칸을 `cellAddr`(열,행)로 찾아 채움 → `zipStore()`로 압축 없이 묶음(mimetype 맨 앞). 양식을 바꾸려면 새 hwpx의 값 칸을 비워 다시 넣고 `hwpxCells()`의 칸 위치를 맞추면 됨. 사진(BinData)은 아직 안 넣음
-- 1단계 화면 (v2.8) > '준비 n/4'와 만들기 버튼 줄(`.makebar`)이 화면 아래에 붙어 있음(`position: sticky`, 인쇄 안 됨). 빠진 항목은 버튼(`data-goto`)이라 누르면 그 질문 카드로 이동하고 첫 버튼에 포커스. 평가 안내 자료 카드는 ⑤ 아래로 옮김(매달 확인 알림·자동 열림은 그대로). 휴대폰(640px 이하)에서는 분야·아동 특성 칩 2칸, 학년 4칸, 아래 줄에는 빠진 항목만. 새 저장 항목 없음
+- 1단계 화면 (v2.8) > '준비 n/4'와 만들기 버튼 줄(`.makebar`)이 화면 아래에 붙어 있음(`position: sticky`, 인쇄 안 됨). 빠진 항목은 버튼(`data-goto`)이라 누르면 그 질문 카드로 이동하고 첫 버튼에 포커스. 평가 안내 자료 카드는 ⑤ 아래로 옮기고, 매달 확인할 때가 되면 상자를 펼치지 않고 접힌 제목 줄에 '이달 확인'(주황, `.optional.due`)만 보여 줌. 질문 번호(1~5) 칸은 노랑, 글 속 링크는 남색(`a:not(.btn)`). 휴대폰(640px 이하)에서는 분야·아동 특성 칩 2칸, 학년 4칸, 아래 줄에는 빠진 항목만. 새 저장 항목 없음
 - 권한 > 로그인 없음. 파일이나 사이트를 가진 사람 누구나 씀. AI 키는 입력한 브라우저에만 남고 파일에 들어가지 않음
 - API·DB > DB 없음. 선택 기능으로 Claude API(POST /v1/messages, 모델 claude-opus-5-5, JSON 형식 고정, effort low)를 브라우저에서 직접 부름. 다른 페이지 안(iframe)에서 열리면 AI·인쇄·저장을 숨김. 외부 라이브러리 없음. 글꼴은 Google Fonts(제목 Jua, 본문 Noto Sans KR)에서 받고, 인터넷이 없으면 맑은 고딕으로 보임 — v2.8부터 제목 글꼴을 못 받으면 `html.no-jua`를 붙여 제목을 굵게
 - 실패 조건 >

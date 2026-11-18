@@ -55,7 +55,9 @@ const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAFklEQVR
   const bkPath = path.join(out, 'v27_backup.json'); await bk.saveAs(bkPath); const bj = JSON.parse(fs.readFileSync(bkPath, 'utf8'));
   L('백업 뒤 알림 사라짐:', !(await p.isVisible('#backupNudge')), '| 백업에 보관 파일:', Object.values(bj.plans).some(v => (v.plan.files || []).some(x => x.ref.startsWith('data:'))));
   // 6) 평가 안내 자료
-  L('이달 확인 알림:', await p.isVisible('#guideNudge'));
+  // v2.8: 상자를 자동으로 펼치지 않고 접힌 제목 줄에 '이달 확인' 표시
+  L('이달 확인 알림:', await p.$eval('#guideCount', e => e.classList.contains('due') && e.textContent === '이달 확인'));
+  await p.click('#guideCard > summary');
   const g = path.join(out, '2027_ncrc_guide.pdf'); fs.writeFileSync(g, '%PDF-1.4\n%test\n');
   await p.setInputFiles('#guideIn', g); await p.waitForTimeout(1000);
   L('첨부 뒤 말풍선:', await p.textContent('#bubble'), await p.evaluate(() => localStorage.getItem('ps.guides')));
