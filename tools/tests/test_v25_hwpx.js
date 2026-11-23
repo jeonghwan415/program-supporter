@@ -5,7 +5,7 @@ const [, , htmlPath, out] = process.argv;
   const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1280, height: 900 }, acceptDownloads: true }); const p = await ctx.newPage();
   const errs = []; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
   const L = (...a) => console.log(...a);
-  await p.goto('file://' + path.resolve(htmlPath));
+  await p.goto('file://' + path.resolve(htmlPath) + '?full');
   await p.fill('#center', '○○지역아동센터'); await p.fill('#teacher', '김○○');
   await p.click('[data-type="event"]'); await p.click('[data-kw="나들이·체험"]'); await p.click('[data-grade="ALL"]');
   await p.click('#makeBtn'); await p.waitForSelector('#secNav');

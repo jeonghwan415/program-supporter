@@ -6,7 +6,7 @@ const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAFklEQVR
 (async () => {
   const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1280, height: 900 }, acceptDownloads: true });
   await ctx.grantPermissions(['clipboard-read', 'clipboard-write']);
-  const p = await ctx.newPage(); const url = 'file://' + path.resolve(htmlPath);
+  const p = await ctx.newPage(); const url = 'file://' + path.resolve(htmlPath) + '?full';
   const errs = []; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
   const L = (...a) => console.log(...a);
   await p.goto(url);

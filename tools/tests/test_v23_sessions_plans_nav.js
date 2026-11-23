@@ -5,7 +5,7 @@ const [, , htmlPath, out] = process.argv;
   const errs = []; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
   const L = (...a) => console.log(...a);
   // 예전 저장 형식(ps.draft) 옮기기 확인
-  await p.goto('file://' + path.resolve(htmlPath));
+  await p.goto('file://' + path.resolve(htmlPath) + '?full');
   await p.click('[data-kw="요리"]'); await p.click('[data-grade="초2"]'); await p.click('#makeBtn'); await p.waitForSelector('#secNav');
   const old = await p.evaluate(() => { const all = JSON.parse(localStorage.getItem('ps.plans')); const id = localStorage.getItem('ps.cur'); return JSON.stringify({ input: all[JSON.parse(id)].input, plan: all[JSON.parse(id)].plan }); });
   await p.evaluate(o => { localStorage.clear(); localStorage.setItem('ps.draft', o); }, old);

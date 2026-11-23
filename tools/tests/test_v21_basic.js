@@ -9,7 +9,7 @@ const [, , htmlPath, outDir] = process.argv;
   page.on('pageerror', e => errors.push('pageerror: ' + e.message));
   page.on('console', m => { if (m.type() === 'error') errors.push('console: ' + m.text()); });
   let dlgAccept = false; page.on('dialog', d => dlgAccept ? d.accept() : d.dismiss());
-  await page.goto('file://' + path.resolve(htmlPath));
+  await page.goto('file://' + path.resolve(htmlPath) + '?full');
   const log = (...a) => console.log(...a);
 
   // 1단계

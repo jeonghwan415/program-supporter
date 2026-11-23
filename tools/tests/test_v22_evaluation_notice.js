@@ -3,7 +3,7 @@ const [, , htmlPath, out] = process.argv;
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1200, height: 900 } });
   const errs = []; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
-  await p.goto('file://' + path.resolve(htmlPath));
+  await p.goto('file://' + path.resolve(htmlPath) + '?full');
   const L = (...a) => console.log(...a);
   L('placeholders:', await p.getAttribute('#center', 'placeholder'), await p.getAttribute('#teacher', 'placeholder'));
   await p.fill('#center', '테스트센터'); await p.click('#infoClear'); L('infoClear:', JSON.stringify(await p.inputValue('#center')));

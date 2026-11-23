@@ -55,6 +55,7 @@ tools/analyze_vocabulary.py   형태소 빈도 + 워드클라우드 (개발할 �
 | 8) 2단계 | `renderStep2()`, `indicatorCard()`, `planChecks()`, `checksHTML()`, `refreshChecks()` | 계획서 확인, 평가 지표 맞추기, 서류 점검 |
 | 9) 3단계 | `planDoc()`, `logDoc()`, `evalDoc()`, `noticeDoc()`(가정통신문), `surveyDoc()`, `opinionLine()`, `participateLines()`, `renderDocOpts()`, 모자이크, 워드 저장 | 서류와 출력 |
 | 10) 이동·저장 | `go()`, `saveDraft()`, `saveUi()`, `getPlans()`, `renderPlans()`, `resizeSessions()`, `navHTML()`, `foldOpen()` | 여러 프로그램·백업, 회기 수만 바꾸기, 2단계 목차·접기 (v2.3) |
+| v3.0 추가 | `ui.simple`(간단 모드, 기본 켜짐, `applyMode()`·`#modeBtn`, `html.simple .adv` 숨김), `ADV_SECS`·`ADV_LABELS`·`shownChecks()`(숨긴 칸 점검 빼기), `renderPrintCheck()`(#printCheck, data-fix), `hopeRows()`·`renderHope()`(#hopeCard, data-hope), `renderPlans()` 현황판 #planStats | 주소 끝 `?full`이면 모든 기능(자동 테스트는 모두 ?full로 엶). 새 고급 기능은 `adv` 클래스를 붙여요 |
 | v2.9 추가 | `KEYWORDS["AI 교육"]`(환경·기후·미디어·AI 리터러시 삭제), `CENTER_WHY`·`CENTER_WITH`·`CENTER_SHOW`, `input.whys`·`withs`·`show`, `pickSessionsFor()`(마지막 회기 바꾸기), `CENTER_Q0`(불러올 때 빈 값 먼저) | 저장 형식은 칸만 늘림. 예전 계획서에 지운 키워드가 있어도 저장된 문장으로 열림 |
 | v2.8 추가 | `.makebar`(1단계 만들기 줄 `position: sticky`), `renderReady()`의 빠진 항목 버튼 `data-goto` → step1 클릭 처리 맨 앞에서 그 질문 카드로 이동, `<head>`의 글꼴 확인 스크립트 → `html.no-jua` | 화면만 바뀜. 저장 형식 그대로 |
 | v2.7 추가 | `holidaysFor()`·`holidayName()`·`HOLIDAY_EXTRA`, `centerSeed()`·`titlePool()`·`sameAsDraft()`·`originality()`·`markDraftSame()`, `minutesDoc()`·`childEvalDoc()`·`openStoredFile()`, `backupDue()`·`renderBackupNudge()`·`downloadIcs()`, `getGuides()`·`renderGuides()` | 공휴일은 계산, 임시공휴일만 표 |

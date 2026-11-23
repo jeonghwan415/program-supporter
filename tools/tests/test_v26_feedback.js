@@ -5,7 +5,7 @@ const [, , htmlPath, out] = process.argv;
   const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1280, height: 900 } }); const p = await ctx.newPage();
   const errs = []; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
   const L = (...a) => console.log(...a);
-  await p.goto('file://' + path.resolve(htmlPath));
+  await p.goto('file://' + path.resolve(htmlPath) + '?full');
   // 작년 프로그램 (요리) — 평가서 쓰기
   await p.click('[data-kw="요리"]'); await p.click('[data-grade="초3"]'); await p.fill('#startDate', '2025-03-03'); await p.dispatchEvent('#startDate', 'change');
   await p.click('#makeBtn'); await p.waitForSelector('#secNav'); await p.click('[data-act="next"]'); await p.click('[data-tab="eval"]');
