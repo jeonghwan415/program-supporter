@@ -6,7 +6,7 @@ const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAFklEQVR
   const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1280, height: 900 }, acceptDownloads: true }); const p = await ctx.newPage();
   const errs = []; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
   const L = (...a) => console.log(...a);
-  await p.goto('file://' + path.resolve(htmlPath));
+  await p.goto('file://' + path.resolve(htmlPath) + '?full');
   // 1) 공휴일: 자동 계산 = 인사혁신처 발표(예전 표)
   const h = await p.evaluate(() => { const g = Object.assign({}, holidaysFor(2026), holidaysFor(2027)); const V = HOLIDAYS_FALLBACK;
     return { lunar: LUNAR_OK, diff: Object.keys(V).filter(k => g[k] !== V[k]).map(k => k + ' ' + V[k] + '≠' + g[k]), extra: Object.keys(g).filter(k => !V[k]), y2028: Object.keys(holidaysFor(2028)).length, ch2028: holidaysFor(2028)['2028-10-05'], kids2025: holidaysFor(2025)['2025-05-06'] }; });

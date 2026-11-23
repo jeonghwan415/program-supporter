@@ -11,7 +11,7 @@ const [, , htmlPath, out] = process.argv;
   async function makePlan(center, answers) {
     const ctx = await b.newContext({ viewport: { width: 1280, height: 900 } }); const p = await ctx.newPage();
     p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
-    await p.goto('file://' + path.resolve(htmlPath));
+    await p.goto('file://' + path.resolve(htmlPath) + '?full');
     await p.fill('#center', center);
     await p.click('[data-kw="독서"]'); await p.click('[data-grade="초1"]'); await p.click('[data-grade="초2"]');
     await p.click('[data-trait="0"]');
@@ -26,7 +26,7 @@ const [, , htmlPath, out] = process.argv;
   {
     const ctx = await b.newContext(); const p = await ctx.newPage();
     p.on('pageerror', e => errs.push(e.message));
-    await p.goto('file://' + path.resolve(htmlPath));
+    await p.goto('file://' + path.resolve(htmlPath) + '?full');
     const kws = await p.$$eval('#kwGroups .chip', els => els.map(e => e.dataset.kw));
     ok(kws.length === 22, '키워드 22개 (지금 ' + kws.length + ')');
     ok(kws.includes('AI 교육') && !kws.includes('환경·기후') && !kws.includes('미디어·AI 리터러시'), "'AI 교육'만 있고 환경·기후·미디어는 없음");

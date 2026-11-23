@@ -216,6 +216,28 @@ textarea.input { resize: vertical; line-height: 1.7; min-height: 90px; }
 .btn-ai { background: var(--navy); color: var(--surface); }
 .btn-ai[disabled] { opacity: .6; cursor: wait; }
 .btn-small { padding: 8px 14px; min-height: 40px; font-size: .9rem; border-radius: 10px; }
+/* v3.0 간단 모드: 처음 쓰는 선생님에게 꼭 필요한 칸만 (현장 인터뷰 '화면·버튼이 복잡하다') */
+html.simple .adv { display: none !important; }
+.mode-set { font-weight: 700; }
+/* v3.0 내 프로그램 현황판 (테크브리프 대시보드 숫자 카드처럼) */
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 4px 0 12px; }
+.stat { background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
+.stat small { display: block; color: var(--muted); font-size: .9rem; }
+.stat b { font-size: 1.6rem; font-family: var(--font-display); color: var(--navy); }
+.stat b span { font-size: 1rem; color: var(--muted); font-family: var(--font-body); font-weight: 500; }
+.stat.warn b { color: var(--caution); }
+@media (max-width: 520px) { .stats { grid-template-columns: 1fr; } .stat { display: flex; justify-content: space-between; align-items: baseline; } }
+/* v3.0 인쇄 전 확인 상자 (테크브리프 보고서함 '근거 확인 안 된 문장 n개'처럼) */
+.pre-check { border: 2px solid var(--caution-line); background: var(--caution-soft); }
+.pre-check.ok { border-color: var(--line); background: var(--surface); }
+.pre-check h2 { font-size: 1.05rem; margin: 0 0 6px; }
+.pre-check ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.pre-check li { display: flex; gap: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+/* v3.0 희망이음에 옮겨 적기 */
+.hope dl { display: grid; grid-template-columns: 6.5em 1fr auto; gap: 6px 10px; align-items: start; margin: 8px 0 0; }
+.hope dt { font-weight: 700; color: var(--muted); padding-top: 9px; }
+.hope dd { margin: 0; white-space: pre-wrap; padding-top: 9px; word-break: keep-all; }
+@media (max-width: 520px) { .hope dl { grid-template-columns: 1fr auto; } .hope dt { grid-column: 1 / -1; padding-top: 4px; } }
 .btn-sub[disabled] { opacity: .45; cursor: not-allowed; }
 .resume { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; background: var(--yellow-soft); border: 1px dashed var(--yellow-deep); border-radius: 14px; padding: 12px 16px; }
 
@@ -467,6 +489,7 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
         <small>지역아동센터 프로그램 계획서 · 일지 · 평가서</small>
       </div>
     </div>
+    <button type="button" class="ai-set mode-set" id="modeBtn" aria-pressed="true" title="간단히 보기 / 모든 기능 보기">모든 기능 보기</button>
     <button type="button" class="ai-set" id="aiSetBtn">AI 설정: <span id="aiState">꺼짐</span></button>
   </header>
 
@@ -533,6 +556,7 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
             <label class="btn btn-sub btn-small file-btn">백업 불러오기<input type="file" accept=".json,application/json" id="restoreIn"></label>
           </span>
         </div>
+        <div class="stats" id="planStats"></div>
         <div class="nudge" id="backupNudge" hidden></div>
         <ul class="plans" id="plansList"></ul>
         <p class="hint" id="storageHint" style="margin:0"></p>
@@ -626,7 +650,7 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
         </label>
       </div>
 
-      <details class="card fold" id="guideCard">
+      <details class="card fold adv" id="guideCard">
         <summary><h2>평가 안내 자료 <span class="optional" id="guideCount">선택</span></h2><small class="fold-sum" id="guideSum">아동권리보장원 평가 지표(PDF)를 이 컴퓨터에 첨부해 두고 열어 볼 수 있어요.</small></summary>
         <div class="fold-body">
           <div class="nudge" id="guideNudge" hidden></div>
@@ -663,8 +687,8 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
           <button type="button" class="tab" role="tab" data-tab="plan"><b>계획서</b><small>시작 전 · 계획</small></button>
           <button type="button" class="tab" role="tab" data-tab="log"><b>일지</b><small>회기마다 · 실행</small></button>
           <button type="button" class="tab" role="tab" data-tab="eval"><b>평가서</b><small>끝나면 · 평가</small></button>
-          <button type="button" class="tab" role="tab" data-tab="notice"><b>가정통신문</b><small>선택 · 보호자 안내</small></button>
-          <button type="button" class="tab" role="tab" data-tab="proof"><b>증빙 기록지</b><small>회의록 · 평가회 · 보관</small></button>
+          <button type="button" class="tab adv" role="tab" data-tab="notice"><b>가정통신문</b><small>선택 · 보호자 안내</small></button>
+          <button type="button" class="tab adv" role="tab" data-tab="proof"><b>증빙 기록지</b><small>회의록 · 평가회 · 보관</small></button>
         </div>
         <div class="field">
           <span>결재란</span>
@@ -675,7 +699,9 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
           </label>
         </div>
       </div>
+      <div class="card no-print pre-check" id="printCheck" hidden></div>
       <div class="card no-print" id="docOpts"></div>
+      <details class="card fold no-print hope" id="hopeCard" hidden><summary><h2>희망이음에 옮겨 적기 <span class="optional">항목별 복사</span></h2><small class="fold-sum">프로그램명·기간·대상·인원·예산을 하나씩 복사해 희망이음 칸에 붙여 넣어요.</small></summary><div class="fold-body" id="hopeBody"></div></details>
       <div class="actions no-print" style="margin-top:0">
         <button type="button" class="btn btn-sub" id="back2">← 계획서 다시 고치기</button>
         <div class="right">
@@ -690,7 +716,7 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
   </main>
 
   <footer class="site-foot no-print">
-    <span>프로그램 서포터 v2.8 · 만든 사람 jeonghwan0415</span>
+    <span>프로그램 서포터 v3.0 · 만든 사람 jeonghwan0415</span>
     <span>문장·양식 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> · 코드 MIT · 무료로 쓰고 나눠 주세요 (판매 금지)</span>
     <span><a href="https://github.com/jeonghwan415/program-supporter/blob/main/docs/%EC%82%AC%EC%9A%A9%EC%84%A4%EB%AA%85%EC%84%9C.md" target="_blank" rel="noopener">사용 설명서</a> · <a href="https://github.com/jeonghwan415/program-supporter" target="_blank" rel="noopener">GitHub</a></span>
   </footer>
@@ -1598,7 +1624,7 @@ const TIPS = {
          "아동 평가회·만족도 서술형에서 나온 <b>아동의 말</b>을 따옴표로 남겨 두면 내년 환류 근거가 돼요.",
          "<b>⑦ 지역사회와 공유</b>(특화): 발표회·전시회·소식지·홈페이지에 결과를 알리고 그 자료를 남겨요. 다음 해에 공유해도 인정돼요."]
 };
-function tipBox(key) { return '<details class="tip no-print"><summary>' + "이 칸은 이렇게 써요" + "</summary><ul>" + TIPS[key].map(t => "<li>" + t + "</li>").join("") + "</ul></details>"; }
+function tipBox(key) { return '<details class="tip no-print adv"><summary>' + "이 칸은 이렇게 써요" + "</summary><ul>" + TIPS[key].map(t => "<li>" + t + "</li>").join("") + "</ul></details>"; }
 function defaultIndicator(p) { return p.type !== "regular" || p.category === "문화" ? "culture" : p.category === "교육" ? "edu" : "special"; }
 const NOTICE_TYPES = { regular: "정기 프로그램", event: "하루 행사", camp: "숙박 캠프" };
 
@@ -1629,7 +1655,7 @@ let input = {
 const CENTER_Q0 = { whys: [], withs: [], show: -1 }; // v2.9 예전 저장에는 없는 칸 → 불러올 때 먼저 비워 둠
 let plan = null;
 let step = 1;
-let ui = { tab: "plan", log: 0, survey: true, approvers: APPROVE_SETS[0] };
+let ui = { tab: "plan", log: 0, survey: true, approvers: APPROVE_SETS[0], simple: true }; // v3.0 simple: 간단 모드(기본 켜짐)
 
 /* ============================================================
    4) 별이 말풍선
@@ -2292,7 +2318,7 @@ function indDone(p) { return planChecks(p).every(c => !["사업계획서 반영"
 function indicatorCard(keepOpen) {
   const I = IND[plan.ind], done = indDone(plan), open = keepOpen || !done || openFolds.has("indCard");
   const chk = (key, on, label) => chipHTML(label, on, 'data-ib="' + key + '"', "sm");
-  return '<details class="card fold" id="indCard"' + (open ? " open" : "") + '><summary><h2>평가 지표 맞추기 <span class="optional">지역아동센터 평가 대비</span>' + (done ? ' <span class="done-tag">✓ 다 채웠어요</span>' : "") + '</h2>' +
+  return '<details class="card fold adv" id="indCard"' + (open ? " open" : "") + '><summary><h2>평가 지표 맞추기 <span class="optional">지역아동센터 평가 대비</span>' + (done ? ' <span class="done-tag">✓ 다 채웠어요</span>' : "") + '</h2>' +
     '<small class="fold-sum">' + esc(I.name + " · 의견 수렴: " + (plan.opinion.from.join(", ") || "없음") + (plan.share.length ? " · 공유: " + plan.share.join(", ") : "")) + '</small></summary><div class="fold-body" style="gap:0">' +
     '<p class="hint">평가 때 이 프로그램을 어느 지표로 낼지 고르면, 그 지표가 보는 항목을 아래 점검과 서류에 넣어 드려요.</p>' +
     '<div class="ind-row"><span>평가 지표</span><div class="chips">' +
@@ -2313,6 +2339,16 @@ function indicatorCard(keepOpen) {
 }
 
 /* v2.1 서류 만들기 전 점검: 빠진 칸이나 숫자 없는 목표를 미리 알려 줌 (막지는 않음) */
+/* v3.0 간단 모드에서는 숨긴 칸(평가 지표·예산 등)을 가리키는 점검은 빼고 보여 줌 */
+const ADV_SECS = ["sec-budget", "sec-eval", "sec-survey"];
+const ADV_LABELS = ["예산", "사업계획서 반영", "의견 수렴", "10회기", "아동 참여", "지역사회 공유", "작년 평가 반영"];
+function shownChecks(p) { const c = planChecks(p); return ui.simple ? c.filter(x => !ADV_LABELS.includes(x.label)) : c; }
+function applyMode() {
+  document.documentElement.classList.toggle("simple", !!ui.simple);
+  const b = document.getElementById("modeBtn");
+  if (b) { b.textContent = ui.simple ? "모든 기능 보기" : "간단히 보기"; b.setAttribute("aria-pressed", String(!!ui.simple)); }
+  if (ui.simple && (ui.tab === "notice" || ui.tab === "proof")) ui.tab = "plan";
+}
 function planChecks(p) {
   const out = [];
   const LBL = ["제목", "장소", "필요성", "숫자 목표", "평가 방법", "일정", "기대효과", "예산", "사업계획서 반영", "의견 수렴", "10회기", "아동 참여", "지역사회 공유"];
@@ -2359,7 +2395,7 @@ function sameAsDraft(p) {
 }
 function originality(p) { const s = sameAsDraft(p); return s ? Math.round((5 - s.length) / 5 * 100) : null; }
 function checksHTML() {
-  const c = planChecks(plan), bad = c.filter(x => !x.ok).length;
+  const c = shownChecks(plan), bad = c.filter(x => !x.ok).length;
   return '<div class="sec-head"><h2>서류 만들기 전 점검</h2><span class="check-sum">' + (bad ? "확인할 곳 " + bad + "개" : "모두 좋아요!") + "</span></div>" +
     '<ul class="checks">' + c.filter(x => !x.ok).map(x => '<li class="warn"><span>' + esc(x.text) + "</span>" +
       '<button type="button" class="btn btn-sub btn-small" data-jump="' + esc(x.jump) + '">고치러 가기</button></li>').join("") +
@@ -2375,10 +2411,10 @@ function markDraftSame() {
 /* v2.3 2단계 목차와 접기: 긴 화면에서 지금 위치와 남은 일을 한눈에 */
 const openFolds = new Set();
 function foldOpen(id, title, tag, summary) {
-  return '<details class="card fold" id="' + id + '"' + (openFolds.has(id) ? " open" : "") + '><summary><h2>' + esc(title) + ' <span class="optional">' + esc(tag) + '</span></h2><small class="fold-sum">' + esc(summary) + '</small></summary><div class="fold-body">';
+  return '<details class="card fold' + (ADV_SECS.includes(id) ? " adv" : "") + '" id="' + id + '"' + (openFolds.has(id) ? " open" : "") + '><summary><h2>' + esc(title) + ' <span class="optional">' + esc(tag) + '</span></h2><small class="fold-sum">' + esc(summary) + '</small></summary><div class="fold-body">';
 }
 function navHTML() {
-  const c = planChecks(plan), warn = lbl => c.some(x => !x.ok && x.label === lbl);
+  const c = shownChecks(plan), warn = lbl => c.some(x => !x.ok && x.label === lbl);
   const items = [
     ["sec-basic", "기본 정보", warn("제목") || warn("장소")],
     ["indCard", "평가 지표", warn("사업계획서 반영") || warn("의견 수렴") || warn("10회기") || warn("아동 참여") || warn("지역사회 공유") || warn("작년 평가 반영")],
@@ -2393,7 +2429,7 @@ function navHTML() {
   ];
   const bad = c.filter(x => !x.ok).length;
   return '<span class="nav-sum">' + (bad ? "확인할 곳 " + bad : "모두 좋아요") + "</span>" +
-    items.map(([id, l, w]) => '<button type="button" class="nav-i' + (w ? " warn" : "") + '" data-go="' + id + '">' + (w ? "! " : "✓ ") + esc(l) + "</button>").join("");
+    items.filter(([id]) => !(ui.simple && (id === "indCard" || ADV_SECS.includes(id)))).map(([id, l, w]) => '<button type="button" class="nav-i' + (w ? " warn" : "") + '" data-go="' + id + '">' + (w ? "! " : "✓ ") + esc(l) + "</button>").join("");
 }
 
 const step2 = document.getElementById("step2");
@@ -2828,9 +2864,54 @@ function renderDocOpts() {
 }
 function renderStep3() {
   const s3 = document.getElementById("step3"), fk = focusKey(s3);
-  renderDocOpts(); renderPaper(); restoreFocus(s3, fk);
+  renderDocOpts(); renderPaper(); renderPrintCheck(); renderHope(); restoreFocus(s3, fk);
+}
+/* v3.0 인쇄 전 확인: 계획서 탭에서 빈칸·숫자 없는 목표·자동 초안 그대로인 칸을 모아 보여 주고, 누르면 2단계 그 칸으로 */
+function renderPrintCheck() {
+  const box = document.getElementById("printCheck"); if (!box) return;
+  if (ui.tab !== "plan" || !plan) { box.hidden = true; return; }
+  const bad = shownChecks(plan).filter(x => !x.ok);
+  box.hidden = false; box.classList.toggle("ok", !bad.length);
+  box.innerHTML = bad.length
+    ? "<h2>⚠ 인쇄 전에 확인할 곳 " + bad.length + "개</h2><ul>" + bad.map(x => "<li><span>" + esc(x.text) + '</span><button type="button" class="btn btn-sub btn-small" data-fix="' + esc(x.jump) + '">고치러 가기</button></li>').join("") + "</ul>"
+    : "<h2>✓ 인쇄 전 확인 — 모두 좋아요</h2><p class=\"hint\" style=\"margin:0\">빈칸 없이 숫자 목표와 우리 센터 문장까지 채워졌어요.</p>";
+}
+/* v3.0 희망이음(사회보장정보시스템)에 다시 입력하는 항목을 하나씩 복사 (현장 인터뷰: 아동 인원·예산을 다시 입력함) */
+function hopeRows() {
+  const p = plan, total = budgetTotal(p.budget);
+  return [
+    ["프로그램명", p.title], ["분야", catText(p)], ["기간", p.period], ["회기·시간", p.sessionsInfo],
+    ["대상", (input.center ? input.center + " " : "") + p.target], ["참여 인원", p.count + "명"], ["장소", p.place],
+    ["목적", p.purpose], ["목표", p.goals.map((g, i) => (i + 1) + ". " + g.text).join("\n")],
+    ["예산 합계", total || "(예산 칸이 비어 있어요)"], ["담당자", input.teacher]
+  ].filter(r => String(r[1] || "").trim());
+}
+function renderHope() {
+  const card = document.getElementById("hopeCard"); if (!card) return;
+  card.hidden = ui.tab !== "plan" || !plan; if (card.hidden) return;
+  const rows = hopeRows();
+  document.getElementById("hopeBody").innerHTML = '<button type="button" class="btn btn-sub btn-small" data-hope="all">전체 한 번에 복사</button><dl>' +
+    rows.map((r, i) => "<dt>" + esc(r[0]) + "</dt><dd>" + esc(r[1]) + '</dd><button type="button" class="btn btn-sub btn-small" data-hope="' + i + '" aria-label="' + esc(r[0]) + ' 복사">복사</button>').join("") + "</dl>";
 }
 
+document.getElementById("printCheck").addEventListener("click", e => {
+  const b = e.target.closest("[data-fix]"); if (!b) return;
+  const sel = b.dataset.fix; go(2);
+  setTimeout(() => { const el = step2.querySelector(sel); if (!el) return; const fd = el.closest("details.fold"); if (fd && !fd.open) { fd.open = true; openFolds.add(fd.id); }
+    el.scrollIntoView({ behavior: "smooth", block: "center" }); setTimeout(() => el.focus({ preventScroll: true }), 350); }, 80);
+});
+document.getElementById("hopeCard").addEventListener("click", e => {
+  const b = e.target.closest("[data-hope]"); if (!b) return;
+  const rows = hopeRows(), all = b.dataset.hope === "all", r = all ? null : rows[Number(b.dataset.hope)];
+  const text = all ? rows.map(x => x[0] + ": " + x[1]).join("\n") : String(r[1]);
+  copyText(text).then(ok => { say(ok ? (all ? "전체를 복사했어요." : "'" + r[0] + "'을(를) 복사했어요.") : "복사하지 못했어요.", ok ? "희망이음 칸에 붙여 넣으세요 (Ctrl+V)." : "글을 직접 끌어서 복사해 주세요.", ok ? "happy" : "think", !ok);
+    if (ok) { const t = b.textContent; b.textContent = "✓ 복사됨"; setTimeout(() => { b.textContent = t; }, 1500); } });
+});
+document.getElementById("modeBtn").addEventListener("click", () => {
+  ui.simple = !ui.simple; saveUi(); applyMode();
+  if (step === 2 && plan) renderStep2(); else if (step === 3 && plan) renderStep3();
+  say(ui.simple ? "간단히 보기로 바꿨어요." : "모든 기능을 보여 드려요.", ui.simple ? "꼭 필요한 칸만 보여요. 평가 지표·가정통신문·증빙·예산은 '모든 기능 보기'에서 쓸 수 있어요." : "평가 지표 맞추기, 평가위원 팁, 예산, 가정통신문, 증빙 기록지까지 모두 보여요.", "happy");
+});
 document.getElementById("docTabs").addEventListener("click", e => {
   const t = e.target.closest("[data-tab]"); if (!t) return;
   ui.tab = t.dataset.tab; saveUi(); renderStep3();
@@ -3300,6 +3381,14 @@ function renderPlans() {
   card.hidden = !ids.length;
   if (!ids.length) return;
   document.getElementById("plansCount").textContent = ids.length + "개 · 이 컴퓨터에 저장";
+  // v3.0 현황판: 프로그램 수 · 일지 작성 · 평가서 완료
+  let logDone = 0, logAll = 0, evDone = 0;
+  ids.forEach(id => { const p = all[id].plan || {}; const L = p.logs || []; logAll += L.length; logDone += L.filter(l => l && String(l.opinion || "").trim()).length;
+    const E = p.evalr || {}; if (String(E.opinion || "").trim() && (p.goals || []).every((g, i) => E.results && E.results[i] && E.results[i].status)) evDone++; });
+  document.getElementById("planStats").innerHTML =
+    '<div class="stat"><small>내 프로그램</small><b>' + ids.length + '<span>개</span></b></div>' +
+    '<div class="stat' + (logAll && logDone < logAll ? " warn" : "") + '"><small>일지 작성</small><b>' + logDone + '<span> / ' + logAll + '장</span></b></div>' +
+    '<div class="stat' + (evDone < ids.length ? " warn" : "") + '"><small>평가서 완료</small><b>' + evDone + '<span> / ' + ids.length + '개</span></b></div>';
   const more = ids.length > 3 && !plansAll, shown = more ? ids.filter((id, i) => i < 3 || id === curId) : ids;
   document.getElementById("plansList").innerHTML = shown.map(id => {
     const e = all[id], p = e.plan || {}, d = new Date(e.updated);
@@ -3356,7 +3445,7 @@ function renderGuides() {
 function freshInput() {
   return Object.assign({}, input, { type: "regular", keyword: "", custom: "", grades: [], count: 10, start: nextMonday(), freq: "week1", sessions: 8, minutes: 60, minCustom: false, offDays: "", nights: 1, traits: [], memo: "", requests: "", whys: [], withs: [], show: -1 });
 }
-function saveUi() { store.set("ui", { tab: ui.tab, survey: ui.survey, approvers: ui.approvers }); }
+function saveUi() { store.set("ui", { tab: ui.tab, survey: ui.survey, approvers: ui.approvers, simple: ui.simple }); }
 
 /* ============================================================
    11) AI로 문장 다듬기 (선택 기능 — API 키가 있을 때만)
@@ -3489,6 +3578,9 @@ async function polishWithAI() {
 
   const su = store.get("ui");
   if (su && Array.isArray(su.approvers) && su.approvers.length) ui = Object.assign(ui, su);
+  if (su && typeof su.simple === "boolean") ui.simple = su.simple;
+  if (/[?&]full\b/.test(location.search)) ui.simple = false; // 자동 테스트·설명용: 주소 끝 ?full 이면 모든 기능
+  applyMode();
   // v2.3 예전 저장(ps.draft에 계획서 1개) → 내 프로그램 목록으로 옮김
   const d = store.get("draft"), all = getPlans();
   if (d && d.plan && d.plan.goals) { const id = newId(); all[id] = { input: d.input, plan: d.plan, updated: Date.now() }; store.set("plans", all); store.set("cur", id); store.del("draft"); }

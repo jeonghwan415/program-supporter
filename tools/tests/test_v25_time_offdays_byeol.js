@@ -6,7 +6,7 @@ const [, , htmlPath, out] = process.argv;
   const errs = []; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
   let nativeDlg = 0; p.on('dialog', d => { nativeDlg++; d.dismiss(); });
   const L = (...a) => console.log(...a);
-  await p.goto('file://' + path.resolve(htmlPath));
+  await p.goto('file://' + path.resolve(htmlPath) + '?full');
   // 1) 시간 칩
   L('시간 칩:', (await p.$$eval('#minChips button', x => x.map(e => e.textContent))).join(' / '));
   await p.click('[data-kw="요리"]'); await p.click('[data-grade="초3"]');

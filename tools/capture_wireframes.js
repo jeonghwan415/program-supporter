@@ -4,7 +4,7 @@
 // 26_byeol_v25.png(예전 별이 비교)는 기록용이라 다시 찍지 않음.
 const { chromium } = require('playwright'); const path = require('path'); const fs = require('fs');
 const [, , htmlPath, out] = process.argv;
-const url = 'file://' + path.resolve(htmlPath);
+const url = 'file://' + path.resolve(htmlPath) + '?full';
 const START = '2026-12-07';
 
 (async () => {

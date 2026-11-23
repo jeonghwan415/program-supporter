@@ -14,6 +14,7 @@ node tools/tests/test_v25_hwpx.js index.html .cache/shots
 node tools/tests/test_v26_feedback.js index.html .cache/shots
 node tools/tests/test_v27_holidays_proof_backup.js index.html .cache/shots
 node tools/tests/test_v29_center_questions.js index.html .cache/shots
+node tools/tests/test_v30_simple_mode.js index.html .cache/shots
 ```
 
 | 파일 | 확인하는 것 |
@@ -23,6 +24,7 @@ node tools/tests/test_v29_center_questions.js index.html .cache/shots
 | `test_v23_sessions_plans_nav.js` | 교육 10회기, '10회기로 맞추기', 목차·접기, 여러 프로그램, 백업·복원, 옛 저장 옮기기 |
 | `test_v25_time_offdays_byeol.js` | 시간 4개·직접 입력, 센터 쉬는 날, 2028년 안내, 별이 확인 창(Esc·계속), 새 별이 표정, 다크 모드, 키보드 포커스, 브라우저 기본 창 0개 |
 | `test_v27_holidays_proof_backup.js` | 공휴일 자동 계산 = 2026·2027 발표, 우리 센터 문장 비율·초안 표시·센터별 제목, 증빙 기록지·보관함, 한글 저장 사진 안내·zip, 백업 알림·.ics, 평가 안내 자료 |
+| `test_v30_simple_mode.js` | 간단 모드(처음 열면 켜짐, 숨긴 칸·점검·목차, 전환·저장), 인쇄 전 확인과 '고치러 가기', 희망이음 항목 복사, 내 프로그램 현황판. **다른 테스트는 모두 주소 끝 `?full`(모든 기능)로 열어요** |
 | `test_v29_center_questions.js` | 키워드 22개·'AI 교육', 우리 센터 질문 → 필요성·운영 방법·목표·마지막 회기·기대효과가 센터마다 달라짐, 회기 수 바꿔도 마지막 회기 유지, 새로고침 후 답 유지 |
 | `test_v26_feedback.js` | 평가서 아동 의견·환류 문장·환류 점검, 출석률 계산, 다음 해 '작년 평가 불러오기', 계획서 환류 문장 |
 | `test_v25_hwpx.js` | 한글(.hwpx) 저장 파일 받기 (zip·XML 검사는 `unzip -t`로) |
