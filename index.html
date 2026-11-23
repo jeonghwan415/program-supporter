@@ -218,6 +218,10 @@ textarea.input { resize: vertical; line-height: 1.7; min-height: 90px; }
 .btn-small { padding: 8px 14px; min-height: 40px; font-size: .9rem; border-radius: 10px; }
 /* v3.0 간단 모드: 처음 쓰는 선생님에게 꼭 필요한 칸만 (현장 인터뷰 '화면·버튼이 복잡하다') */
 html.simple .adv { display: none !important; }
+.simple-only { display: none; }
+html.simple .simple-only { display: block; }
+.mode-hint { margin: 10px 0 0; padding: 10px 12px; border-radius: 12px; background: var(--bg); color: var(--muted); font-size: .95rem; line-height: 1.5; }
+.mode-hint button { border: 0; background: none; padding: 0 2px; color: var(--navy); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; min-height: 0; }
 .mode-set { font-weight: 700; }
 /* v3.0 내 프로그램 현황판 (테크브리프 대시보드 숫자 카드처럼) */
 .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 4px 0 12px; }
@@ -690,6 +694,7 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
           <button type="button" class="tab adv" role="tab" data-tab="notice"><b>가정통신문</b><small>선택 · 보호자 안내</small></button>
           <button type="button" class="tab adv" role="tab" data-tab="proof"><b>증빙 기록지</b><small>회의록 · 평가회 · 보관</small></button>
         </div>
+        <p class="mode-hint simple-only" id="modeHint">💡 <b>가정통신문·증빙 기록지</b>는 맨 위 <button type="button" data-mode-full>'모든 기능 보기'</button>를 누르면 쓸 수 있어요.</p>
         <div class="field">
           <span>결재란</span>
           <div class="chips" id="approveChips"></div>
@@ -716,7 +721,7 @@ dialog::backdrop { background: rgba(10, 20, 35, .5); }
   </main>
 
   <footer class="site-foot no-print">
-    <span>프로그램 서포터 v3.0 · 만든 사람 jeonghwan0415</span>
+    <span>프로그램 서포터 v3.0.1 · 만든 사람 jeonghwan0415</span>
     <span>문장·양식 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ko" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> · 코드 MIT · 무료로 쓰고 나눠 주세요 (판매 금지)</span>
     <span><a href="https://github.com/jeonghwan415/program-supporter/blob/main/docs/%EC%82%AC%EC%9A%A9%EC%84%A4%EB%AA%85%EC%84%9C.md" target="_blank" rel="noopener">사용 설명서</a> · <a href="https://github.com/jeonghwan415/program-supporter" target="_blank" rel="noopener">GitHub</a></span>
   </footer>
@@ -2907,6 +2912,7 @@ document.getElementById("hopeCard").addEventListener("click", e => {
   copyText(text).then(ok => { say(ok ? (all ? "전체를 복사했어요." : "'" + r[0] + "'을(를) 복사했어요.") : "복사하지 못했어요.", ok ? "희망이음 칸에 붙여 넣으세요 (Ctrl+V)." : "글을 직접 끌어서 복사해 주세요.", ok ? "happy" : "think", !ok);
     if (ok) { const t = b.textContent; b.textContent = "✓ 복사됨"; setTimeout(() => { b.textContent = t; }, 1500); } });
 });
+document.getElementById("modeHint").addEventListener("click", e => { if (e.target.closest("[data-mode-full]")) document.getElementById("modeBtn").click(); });
 document.getElementById("modeBtn").addEventListener("click", () => {
   ui.simple = !ui.simple; saveUi(); applyMode();
   if (step === 2 && plan) renderStep2(); else if (step === 3 && plan) renderStep3();

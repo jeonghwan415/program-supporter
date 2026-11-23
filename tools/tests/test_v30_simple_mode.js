@@ -26,6 +26,10 @@ const [, , htmlPath, out] = process.argv;
   // 3단계: 인쇄 전 확인 + 희망이음
   await p.click('[data-act="next"]');
   ok(!(await p.isVisible('[data-tab="notice"]')) && !(await p.isVisible('[data-tab="proof"]')), '간단 모드: 가정통신문·증빙 탭 숨김');
+  ok(await p.isVisible('#modeHint') && (await p.textContent('#modeHint')).includes('가정통신문·증빙 기록지'), '간단 모드: 숨긴 탭 안내 한 줄 보임');
+  await p.click('#modeHint [data-mode-full]');
+  ok(await p.isVisible('[data-tab="notice"]') && await p.isVisible('[data-tab="proof"]') && !(await p.isVisible('#modeHint')), "안내의 '모든 기능 보기'를 누르면 두 탭이 나오고 안내는 사라짐");
+  await p.click('#modeBtn');
   const pc = await p.textContent('#printCheck');
   ok(pc.includes('인쇄 전에 확인할 곳') && pc.includes('자동 초안'), '인쇄 전 확인 상자에 자동 초안 경고: ' + pc.slice(0, 40));
   await p.click('#printCheck [data-fix]'); await p.waitForTimeout(500);
