@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>프로그램 서포터 — A2 포스터</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700;900&display=block" rel="stylesheet">
+<style>
+@page { size: 420mm 594mm; margin: 0; }
+:root {
+  --navy: #22406E; --navy-deep: #182F52; --yellow: #FFC930; --yellow-deep: #E5A800;
+  --yellow-soft: #FFF3C9; --glass: #CDE5F3; --ink: #1D2939; --muted: #5A6577;
+  --line: #D9E0E8; --bg: #F3F6FA; --blush: #FF9BA9;
+  --display: "Jua", "NanumSquareRound", "Malgun Gothic", sans-serif;
+  --body: "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 420mm; height: 594mm; }
+body {
+  font-family: var(--body); color: var(--ink); background: var(--bg);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  overflow: hidden;
+}
+.poster { width: 420mm; height: 594mm; display: flex; flex-direction: column; }
+
+/* ── 헤더 ── */
+header {
+  background: var(--navy); color: #fff; position: relative;
+  padding: 20mm 20mm 10mm;
+}
+header::after { /* 노란 띠 */
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4mm; background: var(--yellow);
+}
+.course { font-size: 18pt; font-weight: 500; opacity: .85; letter-spacing: .02em; }
+.course b { color: var(--yellow); font-weight: 700; }
+.title-row { display: flex; align-items: center; justify-content: space-between; margin-top: 4mm; }
+h1 { font-family: var(--display); font-weight: 400; font-size: 120pt; line-height: 1; letter-spacing: -.01em; }
+.byeol { width: 66mm; height: auto; flex: none; margin-right: -2mm; }
+.tagline { font-size: 40pt; font-weight: 700; margin-top: 5mm; line-height: 1.2; }
+.tagline em { font-style: normal; color: var(--yellow); }
+.for { font-size: 20pt; margin-top: 4mm; opacity: .85; }
+
+main { flex: 1; min-height: 0; padding: 8mm 20mm 0; display: flex; flex-direction: column; gap: 7mm; }
+body { word-break: keep-all; }
+h2 { font-family: var(--display); font-weight: 400; font-size: 36pt; color: var(--navy); display: flex; align-items: center; gap: 4mm; line-height: 1; margin-bottom: 4mm; }
+h2 .no { display: inline-grid; place-items: center; width: 13mm; height: 13mm; border-radius: 4mm; background: var(--yellow); color: var(--navy); font-size: 28pt; }
+
+/* ── ① 문제 ── */
+.problems { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
+.card { background: #fff; border: .5mm solid var(--line); border-radius: 6mm; padding: 5mm 6mm; }
+.problems .card { border-top: 2.5mm solid var(--navy); }
+.problems .k { font-size: 16pt; font-weight: 700; color: var(--muted); }
+.problems .q { font-size: 23pt; font-weight: 700; line-height: 1.35; margin-top: 2mm; }
+.problems .q mark { background: linear-gradient(transparent 55%, var(--yellow-soft) 55%); color: inherit; }
+
+/* ── ② 해결 흐름 ── */
+.flow { display: grid; grid-template-columns: 1fr 12mm 1fr 12mm 1fr; align-items: stretch; }
+.step { background: #fff; border: .5mm solid var(--line); border-radius: 6mm; padding: 5mm 6mm; }
+.step .h { font-family: var(--display); font-size: 27pt; color: var(--navy); line-height: 1.1; }
+.step .d { font-size: 18pt; color: var(--muted); margin-top: 2mm; line-height: 1.4; }
+.step.mid { background: var(--navy); border-color: var(--navy); }
+.step.mid .h { color: var(--yellow); } .step.mid .d { color: #fff; opacity: .9; }
+.arrow { display: grid; place-items: center; color: var(--yellow-deep); font-size: 30pt; font-weight: 900; }
+.rule-note { font-size: 17pt; color: var(--muted); margin-top: 3.5mm; }
+.rule-note b { color: var(--navy); }
+
+/* ── ③ 기능 ── */
+.feat-sec { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.features { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: minmax(0,1fr) minmax(0,1fr); gap: 6mm; flex: 1; min-height: 0; }
+.feat { background: #fff; border: .5mm solid var(--line); border-radius: 6mm; padding: 5mm; display: flex; flex-direction: column; min-height: 0; }
+.shot { flex: 1; min-height: 0; border-radius: 3.5mm; overflow: hidden; border: .4mm solid var(--line); box-shadow: 0 1.2mm 3mm rgba(29,41,57,.12); background: #fff; position: relative; }
+.shot img { position: absolute; display: block; height: auto; width: var(--w, 100%); left: var(--l, 0); top: var(--t, 0); max-width: none; }
+.feat .t { font-family: var(--display); font-size: 27pt; color: var(--navy); margin-top: 4mm; line-height: 1.1; }
+.feat .t .n { color: var(--yellow-deep); margin-right: 2mm; }
+.feat .d { font-size: 18pt; color: var(--ink); margin-top: 1.5mm; line-height: 1.35; }
+.hl { position: absolute; border: 1.2mm solid var(--yellow); border-radius: 2.5mm; box-shadow: 0 0 0 100vmax rgba(255,255,255,0); }
+
+/* ── ④ 효과 ── */
+.effects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
+.fx { background: var(--yellow-soft); border-radius: 6mm; padding: 3mm 6mm 4mm; text-align: center; }
+.fx .big { font-family: var(--display); font-size: 62pt; color: var(--navy); line-height: 1.05; }
+.fx .big small { font-size: 34pt; }
+.fx .d { font-size: 18pt; font-weight: 700; margin-top: 1mm; }
+.fx .tag { display: inline-block; font-size: 13pt; font-weight: 700; color: #fff; background: var(--navy); border-radius: 2mm; padding: .4mm 2.2mm; margin-left: 1.5mm; vertical-align: .6mm; }
+
+/* ── 푸터 ── */
+footer {
+  margin-top: 8mm; background: #fff; border-top: .5mm solid var(--line);
+  padding: 6mm 20mm 20mm; display: flex; align-items: center; justify-content: space-between; gap: 10mm;
+}
+.maker { font-size: 18pt; line-height: 1.6; color: var(--muted); }
+.maker b { color: var(--ink); font-size: 22pt; }
+.qrbox { display: flex; align-items: center; gap: 6mm; }
+.qrtext { text-align: right; }
+.qrtext .h { font-family: var(--display); font-size: 30pt; color: var(--navy); }
+.qrtext .u { font-size: 15pt; color: var(--muted); margin-top: 1mm; }
+.qrtext .s { font-size: 16pt; margin-top: 1.5mm; }
+.qr { width: 38mm; height: 38mm; padding: 2.5mm; border: .6mm solid var(--navy); border-radius: 3mm; background: #fff; }
+.qr img { width: 100%; height: 100%; display: block; }
+</style>
+</head>
+<body>
+<div class="poster">
+
+  <header>
+    <div class="course">지역아동센터 선생님을 위한 <b>프로그램 서류 도우미</b></div>
+    <div class="title-row">
+      <h1>프로그램 서포터</h1>
+      <!-- 별이: index.html의 캐릭터 SVG(happy) -->
+      <svg class="byeol" viewBox="0 0 200 190" aria-label="별이">
+        <ellipse cx="100" cy="184" rx="62" ry="5.5" fill="#000" opacity=".25"/>
+        <path d="M100 34 Q97 26 101 18" fill="none" stroke="#E5A800" stroke-width="3.5" stroke-linecap="round"/>
+        <polygon points="101,1 104.2,8.6 112.4,9.2 106.1,14.5 108.1,22.5 101,18.2 93.9,22.5 95.9,14.5 89.6,9.2 97.8,8.6" fill="#FFC930" stroke="#E5A800" stroke-width="1.5"/>
+        <circle cx="97.8" cy="13.4" r="1.6" fill="#E0607A"/><circle cx="104.2" cy="13.4" r="1.6" fill="#E0607A"/>
+        <circle cx="20" cy="88" r="12" fill="#FFC930" stroke="#E5A800" stroke-width="3"/>
+        <circle cx="180" cy="88" r="12" fill="#FFC930" stroke="#E5A800" stroke-width="3"/>
+        <circle cx="20" cy="88" r="5" fill="#CDE5F3"/><circle cx="180" cy="88" r="5" fill="#CDE5F3"/>
+        <rect x="40" y="156" width="28" height="26" rx="13" fill="#2A3342"/>
+        <rect x="132" y="156" width="28" height="26" rx="13" fill="#2A3342"/>
+        <rect x="22" y="32" width="156" height="138" rx="58" fill="#FFC930" stroke="#E5A800" stroke-width="3"/>
+        <path d="M58 42 Q78 37 96 37" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+        <circle cx="148" cy="45" r="3" fill="#fff" opacity=".8"/>
+        <rect x="38" y="50" width="124" height="66" rx="33" fill="#CDE5F3"/>
+        <path d="M60 88 Q74 70 88 88" fill="none" stroke="#1D2939" stroke-width="5" stroke-linecap="round"/>
+        <path d="M112 88 Q126 70 140 88" fill="none" stroke="#1D2939" stroke-width="5" stroke-linecap="round"/>
+        <ellipse cx="52" cy="128" rx="13" ry="8" fill="#FF9BA9" opacity=".7"/>
+        <ellipse cx="148" cy="128" rx="13" ry="8" fill="#FF9BA9" opacity=".7"/>
+        <path d="M88 122 Q100 122 112 122 Q111 137 100 137 Q89 137 88 122 Z" fill="#7A2E3A" stroke="#1D2939" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M93 132 Q100 126 107 132 Q104 136.5 100 136.5 Q96 136.5 93 132 Z" fill="#FF8A9A"/>
+        <path d="M160 22 l2.4 6 6 2.4 -6 2.4 -2.4 6 -2.4 -6 -6 -2.4 6 -2.4 Z" fill="#fff" stroke="#E5A800" stroke-width="1.5"/>
+        <path d="M38 30 l1.6 4 4 1.6 -4 1.6 -1.6 4 -1.6 -4 -4 -1.6 4 -1.6 Z" fill="#fff" stroke="#E5A800" stroke-width="1.5"/>
+        <circle cx="44" cy="150" r="6.5" fill="#FFFDF2" stroke="#E5A800" stroke-width="2"/>
+        <circle cx="156" cy="150" r="6.5" fill="#FFFDF2" stroke="#E5A800" stroke-width="2"/>
+        <rect x="78" y="143" width="44" height="15" rx="7.5" fill="#fff" stroke="#E5A800" stroke-width="1.5"/>
+        <text x="100" y="154.5" text-anchor="middle" font-family="Jua, sans-serif" font-size="11" fill="#1D2939">별이</text>
+      </svg>
+    </div>
+    <p class="tagline">고르기만 하면 <em>계획서·일지·평가서</em>가 한 번에</p>
+  </header>
+
+  <main>
+    <section>
+      <h2><span class="no">1</span>이런 문제가 있었어요</h2>
+      <div class="problems">
+        <div class="card"><div class="k">장면 1 · 복사해서 쓰기</div><p class="q">작년 계획서를 열어 <mark>날짜만 바꿔</mark> 써요</p></div>
+        <div class="card"><div class="k">장면 2 · 숫자 없는 목표</div><p class="q">"안전수칙을 숙지할 수 있다" — <mark>몇 명이 하면 달성?</mark></p></div>
+        <div class="card"><div class="k">장면 3 · 세 번 옮겨 쓰기</div><p class="q">같은 내용을 <mark>서류 3장</mark>에 또 적어요</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="no">2</span>이렇게 해결해요</h2>
+      <div class="flow">
+        <div class="step"><div class="h">버튼으로 고르기</div><div class="d">형태 · 분야 · 학년 · 일정 · 아동 특성</div></div>
+        <div class="arrow">▶</div>
+        <div class="step mid"><div class="h">규칙으로 계산</div><div class="d">숫자 목표와 근거 · 회기 날짜 · 공휴일</div></div>
+        <div class="arrow">▶</div>
+        <div class="step"><div class="h">센터 양식 그대로</div><div class="d">A4 인쇄 · PDF · 워드 · 한글(.hwpx)</div></div>
+      </div>
+      <p class="rule-note"><b>기본 기능은 AI 없이 규칙으로</b> — 비용 0원, 누를 때마다 같은 결과, 아이 정보는 밖으로 나가지 않아요.</p>
+    </section>
+
+    <section class="feat-sec">
+      <h2><span class="no">3</span>주요 기능</h2>
+      <div class="features">
+      <div class="feat">
+        <div class="shot"><img src="assets/v29_keywords.png" alt="5대 영역 키워드 고르기 화면, AI 교육 선택" style="--w:136%; --l:-1mm; --t:-48mm"></div>
+        <div class="t"><span class="n">01</span>5대 영역 22개 키워드</div>
+        <div class="d">분야를 누르면 필요성·목적·회기 활동이 채워져요</div>
+      </div>
+      <div class="feat">
+        <div class="shot"><img src="assets/v29_goals.png" alt="숫자 목표와 근거 화면" style="--w:112%; --l:-3mm; --t:-134mm"></div>
+        <div class="t"><span class="n">02</span>숫자 목표 + 근거</div>
+        <div class="d">"참여 아동 8명(80%) 이상이 …" 숫자를 정한 이유까지</div>
+      </div>
+      <div class="feat">
+        <div class="shot"><img src="assets/23_step3_wide.png" alt="계획서 내용으로 채워진 일지 화면" style="--w:125%; --l:-2mm; --t:-27mm"></div>
+        <div class="t"><span class="n">03</span>한 번 쓰면 서류 3종</div>
+        <div class="d">일지·평가서로 이어지고 만족도는 자동 계산</div>
+      </div>
+      <div class="feat">
+        <div class="shot"><img src="assets/v29_center_q.png" alt="우리 센터 질문 화면" style="--w:100%; --l:0mm; --t:-91mm"></div>
+        <div class="t"><span class="n">04</span>우리 센터 질문</div>
+        <div class="d">같은 분야를 골라도 센터마다 다른 계획서</div>
+      </div>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="no">4</span>기대 효과</h2>
+      <div class="effects">
+        <div class="fx"><div class="big">80%<small>↓</small></div><div class="d">서류 작성 시간 단축<span class="tag">현장 피드백</span></div></div>
+        <div class="fx"><div class="big">1<small>번</small> → 3<small>종</small></div><div class="d">한 번 입력으로 계획서·일지·평가서</div></div>
+        <div class="fx"><div class="big">80<small>문장</small></div><div class="d">눌러 넣는 문장 도우미</div></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="maker">
+      <b>만든 사람 · GitHub jeonghwan415</b> (지역아동센터 생활복지사)<br>
+      2026 천안형 글로벌 인재육성사업 · AX 액션러닝 개인과제<br>
+      무료로 쓰고 고쳐 쓰기 · 문장·양식 CC BY-NC-SA 4.0 · 코드 MIT
+    </div>
+    <div class="qrbox">
+      <div class="qrtext">
+        <div class="h">바로 써 보기</div>
+        <div class="s">설치 없이 · 휴대폰에서도</div>
+        <div class="u">jeonghwan415.github.io/program-supporter</div>
+      </div>
+      <div class="qr"><img src="assets/qr.svg" alt="사이트 QR 코드"></div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

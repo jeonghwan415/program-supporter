@@ -43,7 +43,7 @@ tools/analyze_vocabulary.py   형태소 빈도 + 워드클라우드 (개발할 �
 | 구역 | 이름 | 내용 |
 |---|---|---|
 | 1) 기준 정보 | `CATS`, `TYPES` | 5대 영역 대분류·중분류, 형태 3종(regular·event·camp) |
-| 2) 키워드 문장 | `KEYWORDS`, `genericKeyword()`, `eventTable()`, `campTable()` | 키워드 23개, 목록에 없는 키워드의 기본 틀, 하루 행사·캠프 시간표 |
+| 2) 키워드 문장 | `KEYWORDS`, `genericKeyword()`, `eventTable()`, `campTable()` | 키워드 22개, 목록에 없는 키워드의 기본 틀, 하루 행사·캠프 시간표 |
 | 2) 그 밖의 목록 | `TRAITS`, `GRADES`, `FREQS`, `MINUTES`, `NIGHTS`, `COMMON_SURVEY`, `OPEN_Q`, `APPROVE_SETS`, `STATUS`, `SCALE` | 아동 특성 9개, 학년, 주기, 결재란 등 |
 | 2-1) 문장 도우미 | `NEED_MORE`, `PURPOSE_MORE`, `EFFECT_MORE`, `LOG_PHRASES`, `EVAL_PHRASES`, `NEXT_PHRASES`, `TITLE_MORE` | v2.1. 영역별·묶음별 문장 80개 |
 | 2-2) 평가 지표·팁 | `IND`, `OPINION_FROM`, `SHARE_WAYS`, `TIPS`, `tipBox()`, `defaultIndicator()` | v2.2. 평가 지표 2-1·2-2·2-3, 칸별 평가위원 팁 (`docs/10_evaluation.md`) |
@@ -55,6 +55,7 @@ tools/analyze_vocabulary.py   형태소 빈도 + 워드클라우드 (개발할 �
 | 8) 2단계 | `renderStep2()`, `indicatorCard()`, `planChecks()`, `checksHTML()`, `refreshChecks()` | 계획서 확인, 평가 지표 맞추기, 서류 점검 |
 | 9) 3단계 | `planDoc()`, `logDoc()`, `evalDoc()`, `noticeDoc()`(가정통신문), `surveyDoc()`, `opinionLine()`, `participateLines()`, `renderDocOpts()`, 모자이크, 워드 저장 | 서류와 출력 |
 | 10) 이동·저장 | `go()`, `saveDraft()`, `saveUi()`, `getPlans()`, `renderPlans()`, `resizeSessions()`, `navHTML()`, `foldOpen()` | 여러 프로그램·백업, 회기 수만 바꾸기, 2단계 목차·접기 (v2.3) |
+| v2.9 추가 | `KEYWORDS["AI 교육"]`(환경·기후·미디어·AI 리터러시 삭제), `CENTER_WHY`·`CENTER_WITH`·`CENTER_SHOW`, `input.whys`·`withs`·`show`, `pickSessionsFor()`(마지막 회기 바꾸기), `CENTER_Q0`(불러올 때 빈 값 먼저) | 저장 형식은 칸만 늘림. 예전 계획서에 지운 키워드가 있어도 저장된 문장으로 열림 |
 | v2.8 추가 | `.makebar`(1단계 만들기 줄 `position: sticky`), `renderReady()`의 빠진 항목 버튼 `data-goto` → step1 클릭 처리 맨 앞에서 그 질문 카드로 이동, `<head>`의 글꼴 확인 스크립트 → `html.no-jua` | 화면만 바뀜. 저장 형식 그대로 |
 | v2.7 추가 | `holidaysFor()`·`holidayName()`·`HOLIDAY_EXTRA`, `centerSeed()`·`titlePool()`·`sameAsDraft()`·`originality()`·`markDraftSame()`, `minutesDoc()`·`childEvalDoc()`·`openStoredFile()`, `backupDue()`·`renderBackupNudge()`·`downloadIcs()`, `getGuides()`·`renderGuides()` | 공휴일은 계산, 임시공휴일만 표 |
 | v2.6 추가 | `prevRow()`·`prevCandidates()`·`feedbackLine()`·`needFull()`, `hasFeedback()`·`feedbackSentence()`, `attendStats()` | 환류: 평가서 → 다음 해 계획서 |
@@ -97,7 +98,8 @@ tools/analyze_vocabulary.py   형태소 빈도 + 워드클라우드 (개발할 �
 3. **한 파일 유지.** `index.html`에 외부 라이브러리·외부 글꼴을 넣지 않아요. 인터넷 없이도 열려야 해요.
 4. **큰 글씨·큰 버튼·쉬운 말.** 칩 최소 높이 42~52px, "프롬프트·템플릿" 같은 말 대신 "문장 도우미·부탁하기".
 5. **인쇄 양식 지키기.** 센터 양식 칸 순서와 A4(여백 12mm) 크기를 바꾸면 PDF로 꼭 확인해요. 화면 전용 요소에는 `no-print`.
-6. **개인정보.** 아동 이름 대신 '○○ 아동'. 저장소에 아동 이름·사진을 올리지 않아요.
+6. **서류 말투는 '~합니다', 지난 일은 '~했습니다'.** (v2.9, 센터 서류 문체) 계획서·일지·평가서에 들어가는 문장(키워드·문장 도우미·우리 센터 질문)은 모두 이 말투로 써요. 화면 안내는 지금처럼 '~해요'.
+6-1. **개인정보.** 아동 이름 대신 '○○ 아동'. 저장소에 아동 이름·사진을 올리지 않아요.
 7. **평가 지표는 해마다 확인.** `IND`·`TIPS`는 아동권리보장원 「평가사업 안내」 기준이에요. 새 안내가 나오면 원문을 보고 사람이 고쳐요. 지표를 지어내지 않아요.
 8. **새 문장은 검토 필요.** AI가 쓴 키워드·문장은 PRD·작업기록에 "검토 필요"로 적어요.
 9. **외부 자료는 빈도만.** 크롤링한 원문을 그대로 옮기지 않아요. 발췌문(`data/vocabulary/corpus/`)은 올리지 않아요.

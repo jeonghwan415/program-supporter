@@ -16,7 +16,7 @@ const [, , htmlPath, outDir] = process.argv;
   log('ready(초기):', await page.textContent('#readyBox'));
   log('새 키워드:', await page.$$eval('#kwGroups .chip .new', els => els.map(e => e.parentElement.dataset.kw)));
   log('키워드 수:', await page.$$eval('#kwGroups .chip', els => els.length));
-  await page.click('[data-kw="환경·기후"]');
+  await page.click('[data-kw="AI 교육"]');
   await page.click('[data-grade="초3"]'); await page.click('[data-grade="초4"]');
   await page.click('[data-trait="0"]');
   log('ready(선택 후):', await page.textContent('#readyBox'));
@@ -92,7 +92,7 @@ const [, , htmlPath, outDir] = process.argv;
   // 다른 새 키워드 모두 계획서 생성 확인
   // v2.4: 일지를 쓴 프로그램을 다시 만들면 확인 창이 뜸 → 이 테스트에서는 '확인'
   dlgAccept = true;
-  for (const kw of ['미디어·AI 리터러시', '경제·용돈', '세계문화·다문화', '아동권리·자치']) {
+  for (const kw of ['독서', '경제·용돈', '세계문화·다문화', '아동권리·자치']) {
     await page.click('[data-act="back"]');
     await page.click('[data-kw="' + kw + '"]');
     await page.click('#makeBtn'); await page.waitForTimeout(150);
