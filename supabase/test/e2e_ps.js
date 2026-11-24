@@ -22,7 +22,7 @@ const ok = (c, m) => { console.log((c ? '✓ ' : '✗ ') + m); if (!c) process.e
     await p.waitForTimeout(300); await p.evaluate(() => go(1)); await p.waitForTimeout(300);
   }
   async function signup(p, email, shot) {
-    await p.click('#ccChip'); await p.waitForSelector('.cc-dlg[open]');
+    await p.click('#ccChip'); await p.waitForSelector('.cc-dlg[open]'); await p.click('[data-a="setup"]');
     if (shot) await p.screenshot({ path: shots + '/1_setup.png' });
     await p.fill('#ccUrl', 'http://localhost:54321'); await p.fill('#ccKey', KEY); await p.click('[data-a="save"]');
     await p.click('[data-tab="up"]'); await p.fill('#ccEmail', email); await p.fill('#ccPw', 'abcd1234'); await p.fill('#ccPw2', 'abcd1234');
