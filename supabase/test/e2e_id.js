@@ -5,7 +5,7 @@ const BASE = process.env.BASE || 'http://localhost:8090';
 const KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYW5vbiJ9.testanonkeytestanonkey';
 const ok = (c, m) => { console.log((c ? '✓ ' : '✗ ') + m); if (!c) process.exitCode = 1; };
 (async () => {
-  const db = new Client({ host: '/tmp', port: 5433, user: 'postgres', database: 't' }); await db.connect();
+  const db = new Client({ host: '/tmp', port: 5433, user: 'postgres', database: process.env.DB || 't' }); await db.connect();
   const b = await chromium.launch(); const errs = [];
   async function page(url, name) {
     const c = await b.newContext({ viewport: { width: 1280, height: 900 } }); const p = await c.newPage();
