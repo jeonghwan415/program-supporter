@@ -13,11 +13,9 @@ concurrency:
   group: pages
   cancel-in-progress: true
 jobs:
-  deploy:
+  # 1) 올릴 파일 묶기 — 배포와 단계를 나눠 묶음이 등록될 시간을 줘요 (같은 단계에서 바로 배포하면 "No artifacts named github-pages"로 실패할 때가 있음)
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
       - name: 올릴 파일 고르기 (문서·도구 빼기)
@@ -28,5 +26,15 @@ jobs:
       - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
+  # 2) 배포
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 묶음 등록 기다리기
+        run: sleep 30
       - id: deployment
         uses: actions/deploy-pages@v5
