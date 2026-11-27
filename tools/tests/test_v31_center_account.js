@@ -5,7 +5,9 @@ const path = require('path');
 const [, , htmlPath, outDir] = process.argv;
 (async () => {
   const browser = await chromium.launch();
+  // 서버 주소가 코드에 들어 있어도, 여기서는 '서버 연결 전' 화면을 시험하려고 비운 상태로 엶
   const page = await browser.newPage({ viewport: { width: 1200, height: 900 } });
+  await page.addInitScript(() => { Object.defineProperty(window, 'CENTER_CLOUD_CONFIG', { configurable: true, get() { return { url: '', anonKey: '' }; }, set() {} }); });
   const errors = [];
   page.on('pageerror', e => errors.push('pageerror: ' + e.message));
   page.on('console', m => { if (m.type() === 'error') errors.push('console: ' + m.text()); });
@@ -44,6 +46,18 @@ const [, , htmlPath, outDir] = process.argv;
   ok(!(await page.isVisible('.cc-tour')), 'Esc로 닫힘');
   await page.reload();
   ok((await page.textContent('#ccChip')).includes('이 컴퓨터에만'), '새로고침해도 그대로');
+  // 배포 상태(코드에 서버 주소가 있음): 저장 단추 → 바로 아이디 로그인 창, [이 컴퓨터 기록·개인정보 안내]로 모두 지우기 창
+  const real = await browser.newPage({ viewport: { width: 1200, height: 900 } });
+  real.on('pageerror', e => errors.push('pageerror(배포 상태): ' + e.message));
+  await real.goto('file://' + path.resolve(htmlPath) + '?full');
+  ok(await real.evaluate(() => CC.configured() && /supabase\.co$/.test(CC.config().url)), '배포 상태: 코드에 서버 주소가 들어 있음');
+  await real.click('#ccChip'); await real.waitForSelector('.cc-dlg[open]');
+  ok(await real.isVisible('#ccEmail') && !(await real.isVisible('#ccUrl')), '배포 상태: 저장 단추 → 바로 아이디 로그인 창 (서버 입력 없음)');
+  await real.click('[data-a="where"]');
+  ok(await real.isVisible('.cc-dlg[open] [data-a="wipe"]'), '배포 상태: 로그인 창에서 개인정보 안내·모두 지우기로 갈 수 있음');
+  await real.click('[data-a="setup"]');   // [센터 계정 로그인]으로 돌아감
+  await real.click('[data-tab="up"]'); await real.click('[data-a="go"]');
+  ok(await real.isVisible('#ccErr'), '배포 상태: 빈 칸으로 가입하면 안내만 (서버에 보내지 않음)');
   console.log('ERRORS:', errors.length ? errors.join('\n') : 'none');
   await browser.close();
   process.exit(errors.length ? 1 : 0);

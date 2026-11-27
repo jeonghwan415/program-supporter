@@ -13,6 +13,7 @@ const ok = (c, m) => { console.log((c ? '✓ ' : '✗ ') + m); if (!c) process.e
   const errs = [];
   async function ctx(name) {
     const c = await b.newContext({ viewport: { width: 1280, height: 900 }, acceptDownloads: true });
+    await c.addInitScript(([k]) => { Object.defineProperty(window, 'CENTER_CLOUD_CONFIG', { configurable: true, get() { return { url: 'http://localhost:54321', anonKey: k }; }, set() {} }); }, [KEY]);   // 코드에 든 실제 서버 대신 시험용 가짜 서버
     const p = await c.newPage(); p.on('pageerror', e => errs.push(name + ' ' + e.message)); p.on('console', m => { if (m.type() === 'error' && !/Failed to load resource|ERR_/.test(m.text())) errs.push(name + ' console ' + m.text()); });
     p.on('dialog', d => d.dismiss());
     return p;
@@ -22,9 +23,8 @@ const ok = (c, m) => { console.log((c ? '✓ ' : '✗ ') + m); if (!c) process.e
     await p.waitForTimeout(300); await p.evaluate(() => go(1)); await p.waitForTimeout(300);
   }
   async function signup(p, email, shot) {
-    await p.click('#ccChip'); await p.waitForSelector('.cc-dlg[open]'); await p.click('[data-a="setup"]');
+    await p.click('#ccChip'); await p.waitForSelector('.cc-dlg[open]');   // 서버 주소가 코드에 있으면 바로 로그인 창
     if (shot) await p.screenshot({ path: shots + '/1_setup.png' });
-    await p.fill('#ccUrl', 'http://localhost:54321'); await p.fill('#ccKey', KEY); await p.click('[data-a="save"]');
     await p.click('[data-tab="up"]'); await p.fill('#ccEmail', email); await p.fill('#ccPw', 'abcd1234'); await p.fill('#ccPw2', 'abcd1234');
     if (shot) await p.screenshot({ path: shots + '/2_signup.png' });
     await p.click('[data-a="go"]'); await p.waitForTimeout(800); try { await p.waitForSelector('.cc-card[data-a="new"]', { timeout: 8000 }); } catch (e) { await p.screenshot({ path: '/tmp/fail.png' }); console.error('FAIL DLG', await p.textContent('.cc-dlg'), await p.evaluate(() => JSON.stringify([localStorage.getItem('cc.session') && 'sess', localStorage.getItem('cc.config')]))); throw e; }
@@ -33,7 +33,8 @@ const ok = (c, m) => { console.log((c ? '✓ ' : '✗ ') + m); if (!c) process.e
   const A = await ctx('A'); await A.goto(URL); await A.waitForTimeout(500);
   await A.screenshot({ path: shots + '/e0_home.png' });
   await signup(A, 'owner@x.kr');
-  await A.click('[data-a="new"]'); await A.fill('#ccName', '해솔지역아동센터'); await A.fill('#ccMe', '박정환'); await A.check('#ccAck');
+  const openCode = (await db.query("select public.new_open_code('시험') c")).rows[0].c;
+  await A.click('[data-a="new"]'); await A.fill('#ccOpen', openCode); await A.fill('#ccName', '해솔지역아동센터'); await A.fill('#ccMe', '박정환'); await A.check('#ccAck');
   await Promise.all([A.waitForNavigation(), A.click('[data-a="go"]')]); await A.waitForTimeout(800);
   ok((await A.textContent('#ccChip')).includes('함께 저장'), 'A 센터 계정');
   await A.evaluate(() => { localStorage.setItem('seh-records-v1', JSON.stringify([{ id: 'r1', areaId: 'traffic', topicId: 'x', level: 'low', date: '2026-11-20', note: '시험' }])); });

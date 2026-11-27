@@ -13,6 +13,7 @@ const ok = (c, m) => { console.log((c ? '✓ ' : '✗ ') + m); if (!c) process.e
   const errs = [];
   async function ctx(name) {
     const c = await b.newContext({ viewport: { width: 1280, height: 900 }, acceptDownloads: true });
+    await c.addInitScript(([k]) => { Object.defineProperty(window, 'CENTER_CLOUD_CONFIG', { configurable: true, get() { return { url: 'http://localhost:54321', anonKey: k }; }, set() {} }); }, [KEY]);   // 코드에 든 실제 서버 대신 시험용 가짜 서버
     const p = await c.newPage(); p.on('pageerror', e => errs.push(name + ' ' + e.message)); p.on('console', m => { if (m.type() === 'error' && !/Failed to load resource|ERR_/.test(m.text())) errs.push(name + ' console ' + m.text()); });
     p.on('dialog', d => d.dismiss());
     return p;
@@ -22,9 +23,8 @@ const ok = (c, m) => { console.log((c ? '✓ ' : '✗ ') + m); if (!c) process.e
     await p.waitForTimeout(300); await p.evaluate(() => go(1)); await p.waitForTimeout(300);
   }
   async function signup(p, email, shot) {
-    await p.click('#ccChip'); await p.waitForSelector('.cc-dlg[open]'); await p.click('[data-a="setup"]');
+    await p.click('#ccChip'); await p.waitForSelector('.cc-dlg[open]');   // 서버 주소가 코드에 있으면 바로 로그인 창
     if (shot) await p.screenshot({ path: shots + '/1_setup.png' });
-    await p.fill('#ccUrl', 'http://localhost:54321'); await p.fill('#ccKey', KEY); await p.click('[data-a="save"]');
     await p.click('[data-tab="up"]'); await p.fill('#ccEmail', email); await p.fill('#ccPw', 'abcd1234'); await p.fill('#ccPw2', 'abcd1234');
     if (shot) await p.screenshot({ path: shots + '/2_signup.png' });
     await p.click('[data-a="go"]'); await p.waitForTimeout(800); try { await p.waitForSelector('.cc-card[data-a="new"]', { timeout: 8000 }); } catch (e) { await p.screenshot({ path: '/tmp/fail.png' }); console.error('FAIL DLG', await p.textContent('.cc-dlg'), await p.evaluate(() => JSON.stringify([localStorage.getItem('cc.session') && 'sess', localStorage.getItem('cc.config')]))); throw e; }
@@ -36,7 +36,8 @@ const ok = (c, m) => { console.log((c ? '✓ ' : '✗ ') + m); if (!c) process.e
   const nLocal = await A.evaluate(() => { const S = CJ.state(); return Object.keys(S.trips).length + Object.keys(S.vehicles).length; });
   await A.screenshot({ path: shots + '/c0_home.png' });
   await signup(A, 'owner@x.kr');
-  await A.click('[data-a="new"]'); await A.fill('#ccName', '해솔지역아동센터'); await A.fill('#ccMe', '박정환'); await A.check('#ccAck'); await A.click('[data-a="go"]');
+  const openCode = (await db.query("select public.new_open_code('시험') c")).rows[0].c;
+  await A.click('[data-a="new"]'); await A.fill('#ccOpen', openCode); await A.fill('#ccName', '해솔지역아동센터'); await A.fill('#ccMe', '박정환'); await A.check('#ccAck'); await A.click('[data-a="go"]');
   await A.waitForSelector('.cc-dlg [data-v="merge"]'); await Promise.all([A.waitForNavigation(), A.click('[data-v="merge"]')]); await A.waitForTimeout(1500);
   let r = await db.query("select count(*) n from center_data where app='chajikimi' and value is not null");
   ok(+r.rows[0].n >= nLocal, '이 기기 기록을 센터에 합침 (' + r.rows[0].n + '줄, 이 기기 ' + nLocal + ')');

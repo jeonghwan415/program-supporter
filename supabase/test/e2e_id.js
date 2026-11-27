@@ -30,7 +30,16 @@ const ok = (c, m) => { console.log((c ? '✓ ' : '✗ ') + m); if (!c) process.e
   ok(await A.isVisible('.cc-card[data-a="new"]'), '아이디(Haesol01)로 가입 → 센터 고르기');
   ok((await db.query("select email from auth.users")).rows.some(r => r.email === 'haesol01@example.com'), '서버에는 haesol01@example.com 으로 저장 (소문자)');
   ok((await A.textContent('.cc-dlg')).includes('haesol01') && !(await A.textContent('.cc-dlg')).includes('@example.com'), '화면에는 아이디만 보임');
-  await A.click('[data-a="new"]'); await A.fill('#ccName', '해솔지역아동센터'); await A.fill('#ccMe', '박정환'); await A.check('#ccAck');
+  // 센터 개설 코드: 없거나 틀리면 못 만듦, 맞는 코드로 한 번만
+  await A.click('[data-a="new"]'); await A.fill('#ccName', '해솔지역아동센터'); await A.fill('#ccMe', '박정환'); await A.check('#ccAck'); await A.click('[data-a="go"]');
+  ok((await A.textContent('#ccErr')).includes('센터 개설 코드'), '개설 코드 없이 센터 못 만듦');
+  await A.fill('#ccOpen', 'OPEN-WRONG1'); await A.click('[data-a="go"]'); await A.waitForTimeout(500);
+  ok((await A.textContent('#ccErr')).includes('맞지 않아요'), '틀린 개설 코드는 서버가 막음');
+  ok((await db.query('select count(*)::int n from centers')).rows[0].n === 0, '틀린 코드로는 센터가 생기지 않음');
+  const oc1 = (await db.query("select public.new_open_code('해솔') c")).rows[0].c;
+  ok(/^OPEN-[A-Z2-9]{6}$/.test(oc1), '관리자가 만든 개설 코드 모양 ' + oc1);
+  await A.fill('#ccOpen', oc1.toLowerCase());
+  await A.fill('#ccName', '해솔지역아동센터'); await A.fill('#ccMe', '박정환'); await A.check('#ccAck');
   await Promise.all([A.waitForNavigation(), A.click('[data-a="go"]')]); await A.waitForTimeout(800);
   ok((await A.textContent('#ccChip')).includes('해솔지역아동센터'), '센터 만들기 → 머리말에 센터 이름');
   ok(!(await A.getAttribute('#ccChip', 'title')).includes('@example.com'), '단추 설명에도 아이디만');
@@ -47,9 +56,21 @@ const ok = (c, m) => { console.log((c ? '✓ ' : '✗ ') + m); if (!c) process.e
   ok(await B.evaluate(() => JSON.parse(localStorage.getItem('seh-records-v1') || '[]').length) === 1, 'B: 초대 코드로 들어오자 센터장이 적은 교육 기록이 보임');
   // ---- 다른 센터: 다른 아이디로 새 센터 → 해솔 기록은 안 보임 (센터 고유)
   const C = await page(SE + '#home', 'C');
-  await signup(C, 'hanbit01'); await C.click('[data-a="new"]'); await C.fill('#ccName', '한빛지역아동센터'); await C.fill('#ccMe', '이센터장'); await C.check('#ccAck');
+  await signup(C, 'hanbit01'); await C.click('[data-a="new"]');
+  await C.fill('#ccOpen', oc1); await C.fill('#ccName', '한빛지역아동센터'); await C.fill('#ccMe', '이센터장'); await C.check('#ccAck'); await C.click('[data-a="go"]'); await C.waitForTimeout(500);
+  ok((await C.textContent('#ccErr')).includes('이미 쓴'), '이미 쓴 개설 코드로는 다른 센터를 못 만듦');
+  const oc2 = (await db.query("select public.new_open_code('한빛') c")).rows[0].c; await C.fill('#ccOpen', oc2);
+  await C.fill('#ccName', '한빛지역아동센터'); await C.fill('#ccMe', '이센터장'); await C.check('#ccAck');
   await Promise.all([C.waitForNavigation(), C.click('[data-a="go"]')]); await C.waitForTimeout(2000);
   ok(await C.evaluate(() => JSON.parse(localStorage.getItem('seh-records-v1') || '[]').length) === 0, '다른 센터(한빛)에서는 해솔 기록이 안 보임');
+  // ---- 관리자가 센터를 멈추면 그 센터 기록을 읽고 쓸 수 없음
+  ok((await db.query("select note, center_id is not null used from center_open_codes order by created_at")).rows.every(r => r.used), '개설 코드 목록에 어느 센터가 썼는지 남음');
+  await db.query("update centers set blocked = true where name = '한빛지역아동센터'");
+  const blockedRead = await C.evaluate(() => CC.pull('edu-safety-helper', null).then(r => r.length, e => 'err'));
+  await C.evaluate(() => { const l = JSON.parse(localStorage.getItem('seh-records-v1') || '[]'); l.push({ id: 'rblk', date: '2026-11-27', areaId: 'traffic', topicId: 'traffic-e-02', level: 'low', children: 3 }); localStorage.setItem('seh-records-v1', JSON.stringify(l)); });
+  await C.waitForTimeout(2500);
+  ok((await db.query("select count(*)::int n from center_data d join centers c on c.id = d.center_id where c.name = '한빛지역아동센터'")).rows[0].n === 0, '멈춘 센터는 서버에 기록을 쓸 수 없음 (읽기 결과: ' + blockedRead + ')');
+  await db.query("update centers set blocked = false where name = '한빛지역아동센터'");
   // ---- 비밀번호 바꾸기 → 로그아웃 → 새 비밀번호로 로그인 (프로그램 서포터에서도 같은 계정)
   await B.click('#ccChip'); await B.waitForSelector('[data-a="pw"]'); await B.click('[data-a="pw"]');
   await B.fill('#ccPw', 'newpass99'); await B.fill('#ccPw2', 'newpass99'); await B.click('[data-a="go"]'); await B.waitForTimeout(800);
